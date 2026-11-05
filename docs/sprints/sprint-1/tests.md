@@ -61,8 +61,8 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | #2 foundation (2026-11-05) | `npm ci`, `npm run build`, `npm run db:migrate`, `npm run db:seed` | Uncommitted tree on base `28be4c5`, same files as `d111892` | 0 | n/a | n/a | n/a | [issue2-verification.txt](../../evidence/sprint-1/issue2-verification.txt) |
 | #2 foundation (2026-11-05) | `npm test` (server) | Same as above | 0 | 12 | 0 | 0 | [issue2-verification.txt](../../evidence/sprint-1/issue2-verification.txt) |
 | #2 foundation (2026-11-05) | `npm test` (client) | Same as above | 0 | 1 | 0 | 0 | [issue2-verification.txt](../../evidence/sprint-1/issue2-verification.txt) |
-| #3 auth (2026-11-05) | `npm test` (server) | `<#3 commit SHA>` | 0 | 31 | 0 | 0 | `<link to saved output>` |
-| #3 auth (2026-11-05) | `npm test` (client) | `<#3 commit SHA>` | 0 | 9 | 0 | 0 | `<link to saved output>` |
+| #3 auth (2026-11-05) | `npm test` (server) | `296cc54` | 0 | 31 | 0 | 0 | [issue3-npm-test.txt](../../evidence/sprint-1/issue3-npm-test.txt) |
+| #3 auth (2026-11-05) | `npm test` (client) | `296cc54` | 0 | 9 | 0 | 0 | [issue3-npm-test.txt](../../evidence/sprint-1/issue3-npm-test.txt) |
 | Sprint 1 release | `npm run build` | `<SHA>` | `<>` | | | | `<>` |
 | Sprint 1 release | `npm test` (server) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
 | Sprint 1 release | `npm test` (client) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
@@ -72,10 +72,10 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 
 | AC | Planned test | Actual file and test name | Automated / manual | Result | Commit |
 |---|---|---|---|---|---|
-| AC-01 | T-01 | `server/tests/api/auth.test.ts` "T-01 / AC-01: login" (3 tests) | Automated | Pass | `<#3 commit SHA>` |
-| AC-02 | T-02 | `server/tests/api/auth.test.ts` "T-02 / AC-02" (3 tests); `server/tests/unit/password.test.ts` (4 tests) | Automated | Pass | `<#3 commit SHA>` |
-| AC-03 | T-03 | `server/tests/api/auth.test.ts` "T-03 / AC-03" (7 tests); `client/tests/App.test.tsx` access denied test | Automated | Pass | `<#3 commit SHA>` |
-| AC-04 | T-04 | `server/tests/api/auth.test.ts` "T-04 / AC-04" (2 tests); `client/tests/App.test.tsx` login and logout tests (8 tests) | Automated | Pass | `<#3 commit SHA>` |
+| AC-01 | T-01 | `server/tests/api/auth.test.ts` "T-01 / AC-01: login" (3 tests) | Automated | Pass | `296cc54` |
+| AC-02 | T-02 | `server/tests/api/auth.test.ts` "T-02 / AC-02" (3 tests); `server/tests/unit/password.test.ts` (4 tests) | Automated | Pass | `296cc54` |
+| AC-03 | T-03 | `server/tests/api/auth.test.ts` "T-03 / AC-03" (7 tests); `client/tests/App.test.tsx` access denied test | Automated | Pass | `296cc54` |
+| AC-04 | T-04 | `server/tests/api/auth.test.ts` "T-04 / AC-04" (2 tests); `client/tests/App.test.tsx` login and logout tests (8 tests) | Automated | Pass | `296cc54` |
 | AC-05 | T-05 | `<>` | Automated | Not run | |
 | AC-06 | T-06 | `<>` | Automated | Not run | |
 | AC-07 | T-07 | `<>` | Automated | Not run | |

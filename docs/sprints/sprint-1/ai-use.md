@@ -5,7 +5,7 @@ The single AI use declaration for Deliverable 1, covering AI assisted work and t
 | Member | AI tools used | Purpose |
 |---|---|---|
 | Chutipon Homsuwan | Claude (Anthropic) via claude.ai | Drafting documentation, design and test proposals, implementation assistance (#1, #3) |
-| `<teammate name>` | Codex, `<other>` | Drafting GitHub Issues #1 to #8, implementation assistance (#2) |
+| Napat Tantipibulsap | Codex | Drafting GitHub Issues #1 to #8, implementation assistance (#2) |
 
 How AI was used: drafting documentation from the handout and theme brief, proposing designs and tests, and assisting implementation. All AI output was reviewed and edited by us. Completion is supported by test output, commits and reviews we checked ourselves, never by AI claims. Automated test runs by AI tools are execution evidence (recorded in [tests.md](tests.md)), not human verification. Both members understand the design, tests and released behaviour.
 
@@ -23,7 +23,7 @@ How AI was used: drafting documentation from the handout and theme brief, propos
 |---|---|---|
 | Documentation (Parts A to E) | Chutipon compared every file against the Issue #1 text and requested fixes before PR #10 was merged. Tell52: `<what you checked in the PR #10 review>` | [PR #10](https://github.com/Tell52/SE_GPRJ3/pull/10) |
 | #2 Foundation | Chutipon set up the project from a fresh clone following the README (env files, Compose databases, migrate, seed) and ran `npm test` successfully. Tell52: `<what you checked in Codex's work before PR #11>` | [issue2-verification.txt](../../evidence/sprint-1/issue2-verification.txt), [PR #11](https://github.com/Tell52/SE_GPRJ3/pull/11) |
-| #3 Authentication | Chutipon ran `npm test` on his own machine: 31 server and 9 client tests passed, 0 failed or skipped. Tell52: `<what you checked in the PR #12 review>` | [issue3-npm-test.txt](../../evidence/sprint-1/issue3-npm-test.txt), [PR #11](https://github.com/Tell52/SE_GPRJ3/pull/11) |
+| #3 Authentication | Chutipon ran `npm test` on his own machine: 31 server and 9 client tests passed, 0 failed or skipped. Tell52: `<what you checked in the PR #12 review>` | [issue3-npm-test.txt](../../evidence/sprint-1/issue3-npm-test.txt), [PR #12](https://github.com/Tell52/SE_GPRJ3/pull/12) |
 
 ## Limits and corrected AI mistakes
 
