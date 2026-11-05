@@ -12,7 +12,7 @@ Authors never approve their own PRs. Each review records a specific check, quest
 | Issue | Branch | PR | Author | Reviewer | Review comment (specific check or finding) | Author response | Checks rerun | Result |
 |---|---|---|---|---|---|---|---|---|
 | #1 Documentation baseline | `feature/issue1-docs` | `<link>` | `<name>` | `<name>` | `<e.g. checked every AC-01 to AC-19 maps to a T test; questioned capacity cap DEC-03>` | `<response>` | `<ID consistency check>` | `<Approved / changes requested then approved>` |
-| #2 Foundation | `feature/issue2-foundation` | `<link>` | `<name>` | `<name>` | `<e.g. ran fresh migrate and seed twice; confirmed no duplicate rows>` | `<response>` | `<T-19>` | `<result>` |
+| #2 Foundation | `feature/issue2-foundation` | No PR; direct push requested by user | User authorized Codex commit | Pending teammate | Review not performed | Change summary supplied; user requested commit/push to sprint1 | [T-19 execution](../../evidence/sprint-1/issue2-foundation.md) | Automated results recorded; peer review and M-01 pending |
 | #3 Authentication | `feature/issue3-auth` | `<link>` | `<name>` | `<name>` | `<e.g. replayed old cookie after logout; checked no hash in responses>` | `<response>` | `<T-01 to T-04>` | `<result>` |
 | #4 Events | `feature/issue4-events` | `<link>` | `<name>` | `<name>` | `<comment>` | `<response>` | `<T-05 to T-09>` | `<result>` |
 | #5 Registration | `feature/issue5-registration` | `<link>` | `<name>` | `<name>` | `<e.g. verified T-12 red then green with unchanged assertions; asked about lock vs serializable>` | `<response>` | `<T-10 to T-15>` | `<result>` |
@@ -66,7 +66,7 @@ Screenshots of Issues, PRs, reviews, history and board are stored under `docs/ev
 | Issue | Branch | PR into `sprint1` | Reviewer | Status |
 |---|---|---|---|---|
 | #1 | `feature/issue1-docs` | `<link>` | `<name>` | Backlog |
-| #2 | `feature/issue2-foundation` | `<link>` | `<name>` | Backlog |
+| #2 | `feature/issue2-foundation` | User requested direct push to sprint1 | Pending teammate | Not Done: peer review and M-01 pending. GitHub board was not changed. |
 | #3 | `feature/issue3-auth` | `<link>` | `<name>` | Backlog |
 | #4 | `feature/issue4-events` | `<link>` | `<name>` | Backlog |
 | #5 | `feature/issue5-registration` | `<link>` | `<name>` | Backlog |
@@ -86,3 +86,4 @@ Screenshots of Issues, PRs, reviews, history and board are stored under `docs/ev
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 2026-11-03 | Review, contributions and process evidence templates |
+| 1.1 | 2026-11-05 | Record #2 local implementation/evidence without claiming human approval, commit, PR or integration. |
