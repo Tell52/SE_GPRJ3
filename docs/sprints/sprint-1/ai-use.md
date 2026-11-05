@@ -4,32 +4,31 @@ The single AI use declaration for Deliverable 1, covering AI assisted work and t
 
 | Member | AI tools used | Purpose |
 |---|---|---|
-| Chutipon Homsuwan | Claude (Anthropic) via claude.ai | Drafting documentation, design and test proposals, implementation assistance |
-| `<teammate name>` | `<tool>` | Drafting GitHub Issues #1 to #8, `<other>` |
+| Chutipon Homsuwan | Claude (Anthropic) via claude.ai | Drafting documentation, design and test proposals, implementation assistance (#1, #3) |
+| `<teammate name>` | Codex, `<other>` | Drafting GitHub Issues #1 to #8, implementation assistance (#2) |
 
-How AI was used: drafting documentation from the handout and theme brief, proposing designs and tests, and assisting implementation. All AI output was reviewed and edited by us. Completion is supported by test output, commits and reviews we checked ourselves, never by AI claims. Both members understand the design, tests and released behaviour.
+How AI was used: drafting documentation from the handout and theme brief, proposing designs and tests, and assisting implementation. All AI output was reviewed and edited by us. Completion is supported by test output, commits and reviews we checked ourselves, never by AI claims. Automated test runs by AI tools are execution evidence (recorded in [tests.md](tests.md)), not human verification. Both members understand the design, tests and released behaviour.
 
 ## Key Prompts
 
 | Prompt | Context / My Reflection |
 | --- | --- |
-| Draft Parts A to E aligned with Issues #1 to #8 | Asked Claude to write the SRS, decisions, features, traceability, SDS, plan and Sprint 1 specification, API, UI and test files using the IDs already in the Issues. My Reflection: `<what you checked or changed, e.g. reviewed DEC-01 to DEC-12, changed ...>` |
-| Issue #2: pull sprint1, create feature/issue2-foundation, follow repository docs, ask about conflicts, leave commit/push to the user | Codex assisted with the application foundation, Prisma migration/seed, isolated PostgreSQL Compose, tests and execution records. The user resolved the Docker scope conflict on 2026-11-05: local database Compose is included, application deployment is deferred. Human reflection/review of the implementation is pending. |
-| `<Issue #3: sessions and CSRF>` | `<context>`. My Reflection: `<>` |
-| `<Issue #4: events>` | `<context>`. My Reflection: `<>` |
-| `<Issue #5: registration concurrency, T-12 TDD>` | `<context>`. My Reflection: `<>` |
-| `<Issue #6: roster>` | `<context>`. My Reflection: `<>` |
-| `<Issue #7: E2E and restart check>` | `<context>`. My Reflection: `<>` |
+| Draft Parts A to E aligned with Issues #1 to #8 | Asked Claude to write the SRS, decisions, features, traceability, SDS, plan and Sprint 1 specification, API, UI and test files using the IDs already in the Issues. My Reflectio (JeenoXD): Claude's first drafts did not match Issue #1 (different file layout and IDs). I compared each file against the Issue #1 text myself and had it restructured: supporting records merged into the SRS, tests.md and reviewer.md, one ai-use.md, and loose notes moved into tables. |
+| Issue #2: build the foundation from the repository docs on `feature/issue2-foundation`, ask about conflicts, leave commit and push to the user | Codex built the client/server structure, Prisma migration and seed, local PostgreSQL Compose and T-19 tests. We decided Docker Compose is used only for the local database; app deployment stays in Lab 5. My Reflection (Tell52): `<to be written by Tell52>` |
+| Issue #3: implement F-01 (login, me, logout with server side sessions and CSRF) from the Sprint 1 specification, with T-01 to T-04 | Claude wrote the session, CSRF and role middleware, auth routes, login page, route guards and app shell, and the API and UI tests. My Reflection (JeenoXD): I set up my own local databases from the README, ran `npm test` myself (31 server and 9 client tests passed) and fixed setup problems along the way (missing `.env.test`, mismatched database password). I decided client tests live in `client/tests/` and had the config changed to match. |
 
 ## Human verification
 
-Issue #2 clarification (2026-11-05): automated tool execution is recorded in [foundation evidence](../../evidence/sprint-1/issue2-foundation.md). It is not human verification. The earlier general declaration does not establish that this implementation has received teammate review or passed M-01. Codex initially misinterpreted the push request as a direct push to `sprint1`; the user clarified the intended feature PR workflow and authorized correcting it with a revert. The feature is submitted for PR review into `sprint1`; Codex does not act as the approving reviewer or merge it.
-
 | Work | What we verified ourselves | Evidence |
 |---|---|---|
-| Documentation (Parts A to E) | `<e.g. checked every AC maps to a T test; reviewed DEC-01 to DEC-12>` | `<review link>` |
-| Implementation | `<e.g. read and ran tests, inspected assertions and stored rows>` | `<test output / PR>` |
+| Documentation (Parts A to E) | Chutipon compared every file against the Issue #1 text and requested fixes before PR #10 was merged. Tell52: `<what you checked in the PR #10 review>` | [PR #10](https://github.com/Tell52/SE_GPRJ3/pull/10) |
+| #2 Foundation | Chutipon set up the project from a fresh clone following the README (env files, Compose databases, migrate, seed) and ran `npm test` successfully. Tell52: `<what you checked in Codex's work before PR #11>` | [issue2-verification.txt](../../evidence/sprint-1/issue2-verification.txt), [PR #11](https://github.com/Tell52/SE_GPRJ3/pull/11) |
+| #3 Authentication | Chutipon ran `npm test` on his own machine: 31 server and 9 client tests passed, 0 failed or skipped. Tell52: `<what you checked in the PR #12 review>` | [issue3-npm-test.txt](../../evidence/sprint-1/issue3-npm-test.txt), [PR #11](https://github.com/Tell52/SE_GPRJ3/pull/11) |
 
-## Limits and rejected suggestions
+## Limits and corrected AI mistakes
 
-`<e.g. AI suggestions we rejected and why>`
+| Issue | What happened | How we handled it |
+|---|---|---|
+| #1 | Claude drafted the documents from an outdated summary of Issue #1, so file names, ID ranges and record files did not match the real issue. | Pasted the full Issue #1 text and had every file restructured to match it before committing. |
+| #2 | Codex misread a push request and pushed directly to `sprint1` (`d111892`) instead of opening a feature PR. | Reverted without rewriting history (`d16684b`) and resubmitted through PR #11. Details in [foundation evidence](../../evidence/sprint-1/issue2-foundation.md). |
+| #3 | Claude's file delivery used duplicate names (`auth.ts`, `api.ts`), and two client test files ended up in the wrong folder, so the first client test run failed. | Placed each file by its full path, moved the tests to `client/tests/` and updated the Vitest config; all tests then passed. |

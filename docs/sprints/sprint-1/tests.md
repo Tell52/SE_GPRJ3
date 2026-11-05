@@ -8,7 +8,7 @@ Fixtures: `org1`, `org2` (Organizers), `p1` to `p12` (Participants) created per 
 |---|---|---|---|---|---|
 | T-01 | AC-01 | API | Seeded p1 | Login with correct password; wrong password; unknown email; `{}` | 200 with id, name, email, role, csrfToken and `sid` cookie containing `HttpOnly` and `SameSite=Lax`; both failures 401 `INVALID_CREDENTIALS` with identical message and no `Set-Cookie`; `{}` 400 `VALIDATION_ERROR` with field details |
 | T-02 | AC-02 | Unit + API | Plain password; p1 session with `expiresAt` set to the past in the database | `hashPassword` / `verifyPassword`; inspect login and me bodies; call me with the expired session | Hash starts with `$2`, differs from plaintext, verifies true and false correctly; no body contains `passwordHash`, token or `tokenHash`; expired session 401 |
-| T-03 | AC-03 | API | org1 draft event; p1 session | Table driven: every protected route without cookie; p1 POST /api/events; org1 publish without and with wrong `X-CSRF-Token`; p1 login body with `role: "ORGANIZER"` then POST /api/events | All anonymous 401 with only `error` in body; role 403; CSRF 403 `CSRF_INVALID`; spoofed role still 403; event and row counts unchanged |
+| T-03 | AC-03 | API | p1 and org1 sessions | Table driven: every protected route without cookie (list extended by #4 to #6); forged cookie; participant on an Organizer only route (#3: probe route mounting the shared `requireRole`; #4 adds the real POST /api/events and publish cases); logout without, with wrong and with another session's `X-CSRF-Token`; login body with `role: "ORGANIZER"` and `userId` | All anonymous 401 with only `error` in body; forged cookie 401; wrong role 403 `FORBIDDEN`; CSRF 403 `CSRF_INVALID` with no session revoked; spoofed role ignored and session belongs to p1 |
 | T-04 | AC-04 | API + UI | p1 agent; saved raw cookie | Logout; then me with the same agent and with the replayed raw cookie. UI: click Logout | Logout 200; session `revokedAt` set; both me calls 401. UI calls the API, shows login page and no previous user data |
 | T-05 | AC-05 | API + UI | org1 | Create valid event; GET mine; publish; GET events. UI: fill create form and publish | 201 DRAFT with organizerId = org1 and row stored; listed in mine; publish 200 PUBLISHED, `publishedAt` stored; listed in events. UI badge changes Draft to Published |
 | T-06 | AC-06 | Unit + API | Capacities 0, -1, 1.5, 1001, missing, 1, 1000; blank title; 121 character title; blank location | `eventInputSchema.safeParse`; POST each via API | Invalid inputs fail on the named field and API returns 400 with Event count unchanged; 1 and 1000 accepted |
@@ -39,7 +39,7 @@ T-11 and T-13 should follow the same red then green pattern where practical.
 
 ## Test locations (planned)
 
-`server/tests/unit/`, `server/tests/api/` (one file per feature, for example `registration.api.test.ts`), `client/src/**/*.test.tsx`, `e2e/tests/sprint1-journey.spec.ts`. Actual file and test names are recorded in Execution Results below.
+`server/tests/unit/`, `server/tests/api/` (one file per feature, for example `registration.api.test.ts`), `client/tests/**/*.test.tsx`, `e2e/tests/sprint1-journey.spec.ts`. Actual file and test names are recorded in Execution Results below.
 
 ## Execution Results
 
@@ -49,29 +49,33 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 
 | Item | Commit | Date | Note |
 |---|---|---|---|
-| Reviewed contracts v1.0 (spec and test design) | `<SHA>` | `<date>` | Before any implementation commit |
+| Reviewed contracts v1.0 (spec and test design) | `96d9a67` (merged in PR #10, `28be4c5`) | 2026-11-03 | Before any implementation commit |
+| First implementation (#2 foundation) | `d111892` (merged in PR #11, `cf7ef4b`) | 2026-11-05 | Implementation followed the spec |
 | T-12 red | `<SHA>` | `<date>` | Failing output below |
 | T-12 green | `<SHA>` | `<date>` | Same assertions, passing |
 
 ### Build and test runs
 
-Issue #2 run on 2026-11-05: uncommitted working tree on `feature/issue2-foundation`, base `28be4c5e6d105d9a24f7851d4ac9e2338b62fdef`. See [actual commands, versions and assertions](../../evidence/sprint-1/issue2-foundation.md) and [captured output](../../evidence/sprint-1/issue2-verification.txt). `npm ci`, `npm run build`, migrate, seed and `npm test` all exited 0. Server: 12 passed; client: 1 passed; 0 failed/skipped. These are foundation checks only; template rows below are reserved for the full sprint release.
-
-| Command | Commit | Exit | Passed | Failed | Skipped |
-|---|---|---|---|---|---|
-| `npm run build` | `<SHA>` | `<>` | | | |
-| `cd server && npm test` | `<SHA>` | `<>` | `<>` | `<>` | `<>` |
-| `cd client && npm test` | `<SHA>` | `<>` | `<>` | `<>` | `<>` |
-| `cd e2e && npx playwright test` | `<SHA>` | `<>` | `<>` | `<>` | `<>` |
+| Run | Command | Commit | Exit | Passed | Failed | Skipped | Output |
+|---|---|---|---|---|---|---|---|
+| #2 foundation (2026-11-05) | `npm ci`, `npm run build`, `npm run db:migrate`, `npm run db:seed` | Uncommitted tree on base `28be4c5`, same files as `d111892` | 0 | n/a | n/a | n/a | [issue2-verification.txt](../../evidence/sprint-1/issue2-verification.txt) |
+| #2 foundation (2026-11-05) | `npm test` (server) | Same as above | 0 | 12 | 0 | 0 | [issue2-verification.txt](../../evidence/sprint-1/issue2-verification.txt) |
+| #2 foundation (2026-11-05) | `npm test` (client) | Same as above | 0 | 1 | 0 | 0 | [issue2-verification.txt](../../evidence/sprint-1/issue2-verification.txt) |
+| #3 auth (2026-11-05) | `npm test` (server) | `<#3 commit SHA>` | 0 | 31 | 0 | 0 | `<link to saved output>` |
+| #3 auth (2026-11-05) | `npm test` (client) | `<#3 commit SHA>` | 0 | 9 | 0 | 0 | `<link to saved output>` |
+| Sprint 1 release | `npm run build` | `<SHA>` | `<>` | | | | `<>` |
+| Sprint 1 release | `npm test` (server) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
+| Sprint 1 release | `npm test` (client) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
+| Sprint 1 release | `npx playwright test` (e2e) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
 
 ### AC results
 
 | AC | Planned test | Actual file and test name | Automated / manual | Result | Commit |
 |---|---|---|---|---|---|
-| AC-01 | T-01 | `<>` | Automated | Not run | |
-| AC-02 | T-02 | `<>` | Automated | Not run | |
-| AC-03 | T-03 | `<>` | Automated | Not run | |
-| AC-04 | T-04 | `<>` | Automated | Not run | |
+| AC-01 | T-01 | `server/tests/api/auth.test.ts` "T-01 / AC-01: login" (3 tests) | Automated | Pass | `<#3 commit SHA>` |
+| AC-02 | T-02 | `server/tests/api/auth.test.ts` "T-02 / AC-02" (3 tests); `server/tests/unit/password.test.ts` (4 tests) | Automated | Pass | `<#3 commit SHA>` |
+| AC-03 | T-03 | `server/tests/api/auth.test.ts` "T-03 / AC-03" (7 tests); `client/tests/App.test.tsx` access denied test | Automated | Pass | `<#3 commit SHA>` |
+| AC-04 | T-04 | `server/tests/api/auth.test.ts` "T-04 / AC-04" (2 tests); `client/tests/App.test.tsx` login and logout tests (8 tests) | Automated | Pass | `<#3 commit SHA>` |
 | AC-05 | T-05 | `<>` | Automated | Not run | |
 | AC-06 | T-06 | `<>` | Automated | Not run | |
 | AC-07 | T-07 | `<>` | Automated | Not run | |
@@ -86,16 +90,15 @@ Issue #2 run on 2026-11-05: uncommitted working tree on `feature/issue2-foundati
 | AC-16 | T-16 | `<>` | Automated | Not run | |
 | AC-17 | T-17 | `<>` | Automated | Not run | |
 | AC-18 | T-18, M-02 | `<>` | Automated + manual | Not run | |
-| AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts` (four named T-19 cases); guard tests in `server/tests/unit/test-database.test.ts` | Automated + manual | T-19 Pass; M-01 on teammate fresh clone not run; review/integration pending | Uncommitted on base `28be4c5` |
+| AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts` (four named T-19 cases); guard tests in `server/tests/unit/test-database.test.ts` | Automated + manual | T-19 Pass; M-01 not run yet | Tested as uncommitted tree matching `d111892`; merged via PR #11 (`cf7ef4b`) |
 
 ## Evidence Index
 
 Actual screenshots and logs are stored under `docs/evidence/sprint-1/` and linked here.
 
-Issue #2: [foundation assertions and results](../../evidence/sprint-1/issue2-foundation.md), [execution output](../../evidence/sprint-1/issue2-verification.txt), [tested file hashes](../../evidence/sprint-1/issue2-file-hashes.txt). This evidence does not cover later feature endpoints or claim human review.
-
 | Evidence | AC / test | Role | Preconditions and steps | Expected | Actual | File | Commit |
 |---|---|---|---|---|---|---|---|
+| #2 foundation: migrate, seed twice, constraints, restart | AC-19 / T-19 | n/a | Empty test database; see evidence file | Seed idempotent, constraints reject bad rows, rows survive restart | As expected | [issue2-foundation.md](../../evidence/sprint-1/issue2-foundation.md), [file hashes](../../evidence/sprint-1/issue2-file-hashes.txt) | `d111892` |
 | Normal journey: publish, register, retrieve saved registration | AC-05, AC-10, AC-15 / T-18 | Organizer, Participant | `<>` | `<>` | `<>` | `docs/evidence/sprint-1/<file>.png` | `<SHA>` |
 | Rule rejection: event full or duplicate | AC-11, AC-12 / T-18 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Login and logout, old session rejected | AC-01, AC-04 / T-04 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
@@ -120,3 +123,5 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 |---|---|---|---|
 | 1.0 | 2026-11-03 | Initial test specification | `<pending>` |
 | 1.1 | 2026-11-05 | Record actual #2/T-19 automated execution and explicit pending M-01/user/peer review. | Pending human review |
+| 1.2 | 2026-11-05 | #3: T-03 role case uses a probe route until #4 adds Organizer routes; AC-01 to AC-04 mapped to actual test files. The #2 client shell smoke test was replaced by the #3 login and routing tests because the placeholder page it checked no longer exists. Client tests and setup live in `client/tests/` (team convention). | Pending teammate review |
+| 1.3 | 2026-11-05 | Moved #2 run and evidence notes into the table rows; recorded #3 test counts. | Pending teammate review |
