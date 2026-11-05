@@ -3,7 +3,7 @@
 | Sprint | Goal | Features | Dependencies | Completion outcome | Checkpoint |
 |---|---|---|---|---|---|
 | 1 | Small working domain slice: an Organizer publishes an event, Participants register under capacity and duplicate rules, and the owner sees the roster, with real sessions, permissions and persistence. | F-01, F-02, F-03, F-04; SYS-FOUND, SYS-UI | SYS-FOUND first; F-01; then F-02; F-03 needs F-02; F-04 needs F-03 | Reviewed release on `main` with recorded tag/commit; AC-01 to AC-19 verified; local setup reproducible. | Deliverable 1, 8 Nov 2026 |
-| 2 | Complete the registration lifecycle under engineering contracts. | F-05, F-06, F-07, F-08 | All build on F-02 and F-03; F-06 uses the edit form from F-07 | Cancellation and re registration, deadlines, safe capacity changes, event cancellation; application Docker packaging, CI/CD and GCP from Lab 5 (local database Compose is in Sprint 1). | Deliverable 2, 29 Nov 2026 |
+| 2 | Complete the registration lifecycle under engineering contracts. | F-05, F-06, F-07, F-08 | All build on F-02 and F-03; F-06 uses the edit form from F-07 | Cancellation and re registration, deadlines, safe capacity changes, event cancellation; Docker, CI/CD and GCP from Lab 5. | Deliverable 2, 29 Nov 2026 |
 | 3 | Attendance, reporting and hardening. | F-09, F-10; SYS-PERF | F-09 needs F-04; F-10 needs F-09 | Check in, attendance report, summary and CSV export; NFR-07 met. | Progress 29 Nov; complete 13 Dec 2026 |
 
 ## Sprint 1 scope
@@ -30,4 +30,3 @@ Workflow: integration branch `sprint1` is created from `main`. Each issue branch
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 2026-11-03 | Initial plan aligned with Issues #1 to #8 |
-| 1.1 | 2026-11-05 | Distinguish approved Sprint 1 local database Compose from later application packaging/deployment. |

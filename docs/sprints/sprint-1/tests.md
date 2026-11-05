@@ -55,8 +55,6 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 
 ### Build and test runs
 
-Issue #2 run on 2026-11-05: uncommitted working tree on `feature/issue2-foundation`, base `28be4c5e6d105d9a24f7851d4ac9e2338b62fdef`. See [actual commands, versions and assertions](../../evidence/sprint-1/issue2-foundation.md) and [captured output](../../evidence/sprint-1/issue2-verification.txt). `npm ci`, `npm run build`, migrate, seed and `npm test` all exited 0. Server: 12 passed; client: 1 passed; 0 failed/skipped. These are foundation checks only; template rows below are reserved for the full sprint release.
-
 | Command | Commit | Exit | Passed | Failed | Skipped |
 |---|---|---|---|---|---|
 | `npm run build` | `<SHA>` | `<>` | | | |
@@ -86,13 +84,11 @@ Issue #2 run on 2026-11-05: uncommitted working tree on `feature/issue2-foundati
 | AC-16 | T-16 | `<>` | Automated | Not run | |
 | AC-17 | T-17 | `<>` | Automated | Not run | |
 | AC-18 | T-18, M-02 | `<>` | Automated + manual | Not run | |
-| AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts` (four named T-19 cases); guard tests in `server/tests/unit/test-database.test.ts` | Automated + manual | T-19 Pass; M-01 on teammate fresh clone not run; review/integration pending | Uncommitted on base `28be4c5` |
+| AC-19 | T-19, M-01 | `<>` | Automated + manual | Not run | |
 
 ## Evidence Index
 
 Actual screenshots and logs are stored under `docs/evidence/sprint-1/` and linked here.
-
-Issue #2: [foundation assertions and results](../../evidence/sprint-1/issue2-foundation.md), [execution output](../../evidence/sprint-1/issue2-verification.txt), [tested file hashes](../../evidence/sprint-1/issue2-file-hashes.txt). This evidence does not cover later feature endpoints or claim human review.
 
 | Evidence | AC / test | Role | Preconditions and steps | Expected | Actual | File | Commit |
 |---|---|---|---|---|---|---|---|
@@ -119,4 +115,3 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 | Version | Date | Change | Reviewed by |
 |---|---|---|---|
 | 1.0 | 2026-11-03 | Initial test specification | `<pending>` |
-| 1.1 | 2026-11-05 | Record actual #2/T-19 automated execution and explicit pending M-01/user/peer review. | Pending human review |

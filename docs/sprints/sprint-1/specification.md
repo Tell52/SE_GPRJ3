@@ -2,7 +2,7 @@
 
 Requirements are defined in [srs.md](../../srs.md), decisions in [srs.md](../../srs.md) section 7, system conventions in [system-sds.md](../../system-sds.md). Endpoint details are in [api-spec.md](api-spec.md), screens in [ui-spec.md](ui-spec.md), tests in [tests.md](tests.md), PR reviews in [reviewer.md](reviewer.md).
 
-Sprint 1 scope: SYS-FOUND (#2), F-01 (#3), F-02 (#4), F-03 (#5), F-04 (#6), SYS-UI (#7). Out of scope: cancellation, deadlines, editing, event cancellation, check in, reports, application Docker packaging, CI and GCP deployment. Docker Compose for local PostgreSQL development/test databases is included in #2, as explicitly approved by the user on 2026-11-05 to resolve the README/System SDS conflict with this scope. The GitHub issue's older blanket Docker exclusion is superseded by this local-database-only decision; deployment scope is unchanged.
+Sprint 1 scope: SYS-FOUND (#2), F-01 (#3), F-02 (#4), F-03 (#5), F-04 (#6), SYS-UI (#7). Out of scope: cancellation, deadlines, editing, event cancellation, check in, reports, Docker, CI and GCP deployment.
 
 ## SYS-FOUND Application foundation (Issue #2)
 
@@ -134,4 +134,3 @@ A feature, issue or release is Done only when every item is true and backed by e
 | Version | Date | Change | Reviewed by |
 |---|---|---|---|
 | 1.0 | 2026-11-03 | Initial Sprint 1 specification | `<pending>` |
-| 1.1 | 2026-11-05 | User approved Docker Compose solely for local PostgreSQL in #2; application packaging/deployment remains excluded. | User scope decision in chat; teammate review pending |

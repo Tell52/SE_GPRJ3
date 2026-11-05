@@ -61,7 +61,6 @@ erDiagram
     datetime publishedAt "nullable"
     datetime createdAt
     datetime updatedAt
-    string seedKey UK "nullable, internal seed identity"
   }
   Registration {
     int id PK
@@ -85,7 +84,7 @@ Later sprints add columns through new migrations (for example `registrationDeadl
 
 Database setup, migrations and seed:
 1. `npx prisma migrate deploy` (or `migrate dev` locally) applies versioned migrations in `server/prisma/migrations/`.
-2. `npm run seed` in `server/` (or root `npm run db:seed`) creates synthetic users: `organizer1@example.test`, `organizer2@example.test`, `participant1@example.test`, `participant2@example.test`, `participant3@example.test`, with password from `SEED_PASSWORD`, plus one draft and one published event owned by organizer1. The seed uses upsert by email with an empty update, so re running it never duplicates rows or overwrites a changed password. Event upserts use a nullable unique internal `seedKey` (`demo-draft`, `demo-published`), not a mutable title, with empty updates. It is not part of an API response. A transaction and advisory lock serialize seed runs. Event dates start 30 days after creation and are preserved on repeats.
+2. `npm run seed` creates synthetic users: `organizer1@example.test`, `organizer2@example.test`, `participant1@example.test`, `participant2@example.test`, `participant3@example.test`, with password from `SEED_PASSWORD`, plus one draft and one published event owned by organizer1. The seed uses upsert by email with an empty update, so re running it never duplicates rows or overwrites a changed password.
 3. The server never migrates, truncates or seeds on startup (NFR-03).
 4. Tests use a separate database from `server/.env.test`, reset by the test setup, never the development database.
 
@@ -195,7 +194,7 @@ Environment variables (`server/.env`; committed example `server/.env.example` wi
 
 Test configuration lives in `server/.env.test` (also ignored; example committed). The client bundle contains no secrets.
 
-Local database: `docker compose up -d --wait db` starts PostgreSQL 16 with a named volume, so data survives restarts. Root `.env` supplies `POSTGRES_PASSWORD`, `POSTGRES_PORT` (default 5433), and `POSTGRES_TEST_PORT` (default 5434). `docker compose --profile test up -d --wait` also starts a separate test container/volume for `event_planner_test`. Both ports bind to loopback. The user approved local database Compose for #2 on 2026-11-05; app containers, CI and deployment remain deferred. Tests require a local URL naming `event_planner_test` with the public schema and reject the development database before resetting. Example: `server/.env.test.example`.
+Local database: `docker compose up -d db` starts PostgreSQL 16 with a named volume, so data survives restarts.
 
 Planned GCP deployment (Lab 5):
 1. Multi stage Dockerfile builds the client and server and runs one Node process serving `/api` and the static client.
@@ -209,4 +208,3 @@ Planned GCP deployment (Lab 5):
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 2026-11-03 | Initial system SDS aligned with Issues #1 to #8 |
-| 1.1 | 2026-11-05 | Record approved local PostgreSQL Compose scope, separate test database and stable internal seed identity for #2. |
