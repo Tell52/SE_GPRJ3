@@ -17,7 +17,7 @@
 
 | ID | Responsibility | Requirements | Established | Verified | Issue |
 |---|---|---|---|---|---|
-| SYS-FOUND | Application foundation: client/server structure, versioned migrations, constraints, idempotent seed, environment configuration, README | NFR-03, NFR-06 | Sprint 1 | Sprint 1 (T-19, M-01); Docker and GCP in Lab 5 | #2 |
+| SYS-FOUND | Application foundation: client/server structure, versioned migrations, constraints, idempotent seed, environment configuration, README, local PostgreSQL Compose | NFR-03, NFR-06 | Sprint 1 | Sprint 1 (T-19, M-01); application Docker packaging and GCP in Lab 5 | #2 |
 | SYS-UI | Shared UI shell and end to end journeys at desktop and mobile viewports, regression and persistence checks | NFR-01, NFR-03, NFR-04, NFR-05, NFR-06 | Sprint 1 | Sprint 1 (T-18, M-02); extended each sprint | #7 |
 | SYS-PERF | Performance hardening | NFR-07 | Sprint 3 | Sprint 3 load script | |
 
@@ -26,3 +26,4 @@
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 2026-11-03 | Initial inventory aligned with Issues #1 to #8 |
+| 1.1 | 2026-11-05 | Reflect user-approved local PostgreSQL Compose in SYS-FOUND; defer application packaging. |
