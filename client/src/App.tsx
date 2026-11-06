@@ -4,8 +4,10 @@ import { AuthProvider, useAuth } from './auth/AuthContext';
 import { AppShell } from './components/AppShell';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { LoginPage } from './pages/LoginPage';
+import { EventsPage, EventDetailPage } from './events/EventPages';
+import { CreateEventPage } from './events/CreateEventPage';
 
-// Placeholders until the feature screens arrive in #4 (events), #5 (registrations) and #6 (roster).
+// Registration screens arrive in #5; unknown routes retain a simple fallback.
 function Placeholder({ title, text }: { title: string; text: string }) {
   return <section><h1>{title}</h1><p>{text}</p></section>;
 }
@@ -22,12 +24,15 @@ export function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppShell />}>
           <Route path="/" element={<RoleHomeRedirect />} />
-          <Route path="/events" element={<Placeholder title="Events" text="No upcoming events" />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:id" element={<EventDetailPage />} />
           <Route element={<ProtectedRoute role="PARTICIPANT" />}>
             <Route path="/registrations" element={<Placeholder title="My registrations" text="You have not registered for any events" />} />
           </Route>
           <Route element={<ProtectedRoute role="ORGANIZER" />}>
-            <Route path="/organizer/events" element={<Placeholder title="My events" text="You have not created any events yet" />} />
+            <Route path="/organizer/events" element={<EventsPage mine />} />
+            <Route path="/organizer/events/new" element={<CreateEventPage />} />
+            <Route path="/organizer/events/:id" element={<EventDetailPage organizer />} />
           </Route>
           <Route path="*" element={<Placeholder title="Page not found" text="This page does not exist." />} />
         </Route>

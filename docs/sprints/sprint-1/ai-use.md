@@ -5,7 +5,7 @@ The single AI use declaration for Deliverable 1, covering AI assisted work and t
 | Member | AI tools used | Purpose |
 |---|---|---|
 | Chutipon Homsuwan | Claude (Anthropic) via claude.ai | Drafting documentation, design and test proposals, implementation assistance (#1, #3) |
-| Napat Tantipibulsap | Codex | Drafting GitHub Issues #1 to #8, implementation assistance (#2) |
+| Napat Tantipibulsap | Codex | Drafting GitHub Issues #1 to #8, implementation assistance (#2, #4) |
 
 How AI was used: drafting documentation from the handout and theme brief, proposing designs and tests, and assisting implementation. All AI output was reviewed and edited by us. Completion is supported by test output, commits and reviews we checked ourselves, never by AI claims. Automated test runs by AI tools are execution evidence (recorded in [tests.md](tests.md)), not human verification. Both members understand the design, tests and released behaviour.
 
@@ -32,3 +32,8 @@ How AI was used: drafting documentation from the handout and theme brief, propos
 | #1 | Claude drafted the documents from an outdated summary of Issue #1, so file names, ID ranges and record files did not match the real issue. | Pasted the full Issue #1 text and had every file restructured to match it before committing. |
 | #2 | Codex misread a push request and pushed directly to `sprint1` (`d111892`) instead of opening a feature PR. | Reverted without rewriting history (`d16684b`) and resubmitted through PR #11. Details in [foundation evidence](../../evidence/sprint-1/issue2-foundation.md). |
 | #3 | Claude's file delivery used duplicate names (`auth.ts`, `api.ts`), and two client test files ended up in the wrong folder, so the first client test run failed. | Placed each file by its full path, moved the tests to `client/tests/` and updated the Vitest config; all tests then passed. |
+## Issue #4 assistance (2026-11-06)
+
+User prompt: pull sprint1, create feature/issue4-events, implement the current docs, ask before conflicting requirements or teammate code changes, and leave commit/push to the user. Codex asked before implementation; the user confirmed the existing field limits, the own-myRegistration exception and changes to app.ts, App.tsx and App.test.tsx. New logic was placed in separate event files. Codex implemented F-02 API/UI/tests and ran the build, real PostgreSQL regression suite and desktop/mobile smoke. The first UI test exposed a disabled-input focus bug; the implementation was corrected and the same assertion passed. GitHub issue description was synchronized through the logged-in browser after the connector returned 403.
+
+Human verification: user decisions above are confirmed; code review, manual verification, commit/push and substantive teammate PR review are pending. Automated results are evidence of execution only, not human approval. Reflection by Tell52: `<to be written by Tell52>`. See [issue4 evidence](../../evidence/sprint-1/issue4-events.md).
