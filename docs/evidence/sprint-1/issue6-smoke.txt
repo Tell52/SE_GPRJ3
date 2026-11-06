@@ -1,0 +1,3 @@
+PASS desktop 1440x900: My events to roster, empty, simulated error/retry, logout, no overflow or page errors.
+PASS mobile 390x844: My events to roster, empty, simulated error/retry, logout, no overflow or page errors.
+PASS real PostgreSQL/API: two saved registrations; owner 200, anonymous 401, participant 403, foreign organizer 404. Sanitized response evidence saved.

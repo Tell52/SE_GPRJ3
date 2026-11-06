@@ -17,6 +17,7 @@ beforeEach(() => {
     'GET /api/events': { status: 200, body: { items: [] } },
     'GET /api/events/mine': { status: 200, body: { items: [] } },
     'GET /api/events/7': { status: 200, body: event },
+    'GET /api/events/7/registrations': { status: 200, body: { event: { id: 7, title: event.title, capacity: 10 }, count: 0, items: [] } },
   };
   vi.stubGlobal('fetch', vi.fn(async (url: string, init: RequestInit = {}) => {
     calls.push({ url, init });

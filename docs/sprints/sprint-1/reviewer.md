@@ -15,8 +15,8 @@ Authors never approve their own PRs. Each review records a specific check, quest
 | #2 Foundation | `feature/issue2-foundation` | [PR #11](https://github.com/Tell52/SE_GPRJ3/pull/11) | Tell52 (Codex) | JeenoXD (merged) | `<what Chutipon checked>` | Accidental direct push reverted (`d16684b`) and resubmitted via PR | [T-19 execution](../../evidence/sprint-1/issue2-foundation.md) | Merged `cf7ef4b` |
 | #3 Authentication | `feature/issue3-auth` | [PR #12](https://github.com/Tell52/SE_GPRJ3/pull/12) | JeenoXD (Claude) | Tell52 (merged) | `<what Tell52 checked>` | `<response>` | T-01 to T-04: server 31, client 9 passed | Merged `3a5f20b` |
 | #4 Events | `feature/issue4-events` | [PR #13](https://github.com/Tell52/SE_GPRJ3/pull/13) | Tell52 (Codex) | JeenoXD (merged) | `<what Chutipon checked>` | `<response>` | [T-05 to T-09, smoke](../../evidence/sprint-1/issue4-events.md) | Merged `345459c` |
-| #5 Registration | `feature/issue5-registration` | `<PR link>` | JeenoXD (Claude) | Tell52 | `<e.g. checked T-12 red then green with unchanged files; read the FOR UPDATE transaction>` | `<response>` | T-10 to T-15 | `<result>` |
-| #6 Roster | `feature/issue6-roster` | `<link>` | `<name>` | `<name>` | `<comment>` | `<response>` | `<T-16, T-17>` | `<result>` |
+| #5 Registration | `feature/issue5-registration` | [PR #14](https://github.com/Tell52/SE_GPRJ3/pull/14) | JeenoXD (Claude) | Tell52 | `<e.g. checked T-12 red then green with unchanged files; read the FOR UPDATE transaction>` | `<response>` | T-10 to T-15 | Merged `d1914a2`; confirmed by Tell52 on 2026-11-06 |
+| #6 Roster | `feature/issue6-roster` | Not created | Tell52 (Codex assistance) | Pending teammate | Pending substantive human review | Pending | T-16/T-17; server 100 and client 46 passed; [evidence](../../evidence/sprint-1/issue6-roster.md) | Local uncommitted implementation on `d1914a2`; not Done |
 | #7 Verification | `feature/issue7-verification` | `<link>` | `<name>` | `<name>` | `<comment>` | `<response>` | `<T-18, M-01, M-02>` | `<result>` |
 
 ## Release PR (Issue #8)
@@ -38,7 +38,7 @@ Record actual work only. An equal number of commits is not required; both member
 | #3 Authentication | Chutipon (with Claude) | Tell52 | No | Sessions, CSRF, role middleware, login, app shell, T-01 to T-04 |
 | #4 Events | Tell52 (with Codex) | Chutipon | No | Event create, publish, discovery API and UI, T-05 to T-09, smoke run |
 | #5 Registration | Chutipon (with Claude) | Tell52 | No | Locked registration transaction, register UI, receipt, My registrations, T-10 to T-15, T-12 TDD |
-| #6 Roster | `<name>` | `<name>` | `<>` | `<>` |
+| #6 Roster | Tell52 (with Codex) | Pending teammate | No | Owner-only roster API, responsive UI, T-16/T-17 and evidence; human review pending |
 | #7 Verification | `<name>` | `<name>` | `<>` | `<>` |
 | #8 Release | `<name>` | `<name>` | `<>` | `<>` |
 
@@ -69,8 +69,8 @@ Screenshots of Issues, PRs, reviews, history and board are stored under `docs/ev
 | #2 | `feature/issue2-foundation` | [PR #11](https://github.com/Tell52/SE_GPRJ3/pull/11) | JeenoXD | Merged into `sprint1` (`cf7ef4b`); M-01 still pending |
 | #3 | `feature/issue3-auth` | [PR #12](https://github.com/Tell52/SE_GPRJ3/pull/12) | Tell52 | Merged into `sprint1` (`3a5f20b`) |
 | #4 | `feature/issue4-events` | [PR #13](https://github.com/Tell52/SE_GPRJ3/pull/13) | JeenoXD | Merged into `sprint1` (`345459c`) |
-| #5 | `feature/issue5-registration` | `<PR link>` | Tell52 | In review |
-| #6 | `feature/issue6-roster` | `<link>` | `<name>` | Backlog |
+| #5 | `feature/issue5-registration` | [PR #14](https://github.com/Tell52/SE_GPRJ3/pull/14) | Tell52 | Merged into `sprint1` (`d1914a2`) |
+| #6 | `feature/issue6-roster` | Not created | Pending teammate | Local implementation ready for user review; uncommitted; GitHub board not changed |
 | #7 | `feature/issue7-verification` | `<link>` | `<name>` | Backlog |
 | #8 | `sprint1` into `main` | `<link>` | `<name>` | Backlog |
 
@@ -89,3 +89,4 @@ Screenshots of Issues, PRs, reviews, history and board are stored under `docs/ev
 | 1.1 | 2026-11-05 | Record #2 local implementation/evidence without claiming human approval, commit, PR or integration. |
 | 1.2 | 2026-11-06 | Record #4 evidence (written by Codex during #4). |
 | 1.3 | 2026-11-06 | Filled PR links, authors, mergers and merge commits for #1 to #4 from git history; review comments left for the reviewers to write; added #5. |
+| 1.4 | 2026-11-06 | Tell52 confirmed #5 merged via PR #14; record #6 local work and checks without claiming human review or integration. |
