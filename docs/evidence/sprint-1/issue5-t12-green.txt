@@ -1,0 +1,12 @@
+PS C:\Users\chuti\Documents\SE_GPRJ3\server> npx vitest run tests/unit/registration-rules.test.ts tests/api/registration-capacity.test.ts
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/server
+
+ ✓ tests/api/registration-capacity.test.ts (1 test) 5688ms
+     ✓ capacity 2 with two ACTIVE registrations: a third participant gets 409 EVENT_FULL and nothing is stored  3321ms
+ ✓ tests/unit/registration-rules.test.ts (6 tests) 14ms
+
+ Test Files  2 passed (2)
+      Tests  7 passed (7)
+   Start at  16:14:15
+   Duration  14.57s (transform 299ms, setup 0ms, import 966ms, tests 5.70s, environment 0ms)

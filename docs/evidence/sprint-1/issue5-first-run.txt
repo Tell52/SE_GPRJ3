@@ -1,0 +1,106 @@
+PS C:\Users\chuti\Documents\SE_GPRJ3> npm test
+
+> event-planner@0.1.0 test
+> npm test --workspace server && npm test --workspace client
+
+
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 169ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/server
+
+stderr | tests/api/registrations.test.ts > T-13 / AC-13: competing requests for the last place > capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row
+Unhandled request error
+
+stderr | tests/api/registrations.test.ts > T-13 / AC-13: competing requests for the last place > capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row
+Unhandled request error
+
+stderr | tests/api/registrations.test.ts > T-13 / AC-13: competing requests for the last place > capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row
+Unhandled request error
+
+ ❯ tests/api/registrations.test.ts (7 tests | 1 failed) 16265ms
+     ✓ 201 ACTIVE for the session participant, row stored, remainingPlaces drops, same id in a new session  591ms
+     ✓ a second attempt returns 409 ALREADY_REGISTERED and the count is unchanged 82ms
+     ✓ five concurrent requests from the same participant store exactly one ACTIVE row  2182ms
+     × capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row 3689ms
+     ✓ draft 404, missing 404, started 409 REGISTRATION_CLOSED, organizer 403; no rows inserted  563ms
+     ✓ registration endpoints require a session, the participant role and a CSRF token  474ms
+     ✓ mine lists only own registrations with event details; another participant gets 404; survives an app restart  2742ms
+ ✓ tests/api/foundation.test.ts (5 tests) 31332ms
+   ✓ T-19: fresh migration, repeat seed, changed passwords and edited events survive  16689ms
+   ✓ T-19: two real API process starts preserve every existing row  5375ms
+ ✓ tests/api/auth.test.ts (15 tests) 13912ms
+     ✓ valid credentials return the stored identity, a CSRF token and an HttpOnly SameSite=Lax sid cookie  3172ms
+     ✓ wrong password and unknown email return the identical 401 with no cookie and no session  1362ms
+     ✓ stored hash differs from the password and no response exposes hashes or tokens  635ms
+     ✓ a session past its absolute expiry is rejected with 401  595ms
+     ✓ expiry is absolute: using the session does not extend expiresAt  604ms
+     ✓ requireRole returns 403 for the wrong role and passes the right role  982ms
+     ✓ a state changing request without or with a wrong X-CSRF-Token returns 403 and changes nothing  987ms
+     ✓ requireCsrf lets safe methods through without a token  581ms
+     ✓ role or userId in the login body is ignored; identity comes from the stored account  558ms
+     ✓ logout revokes the session, clears the cookie and the replayed old cookie is rejected  601ms
+     ✓ logging out one session leaves the user's other sessions working  1039ms
+ ✓ tests/api/events.test.ts (26 tests) 9622ms
+     ✓ T-08 repeated and concurrent publication changes state only once; past start rejected  2224ms
+ ✓ tests/api/registration-capacity.test.ts (1 test) 5541ms
+     ✓ capacity 2 with two ACTIVE registrations: a third participant gets 409 EVENT_FULL and nothing is stored  3186ms
+ ✓ tests/unit/password.test.ts (4 tests) 2098ms
+     ✓ hash is bcrypt cost 12, differs from plaintext and verifies only the right password  1280ms
+     ✓ two hashes of the same password differ (salted)  809ms
+ ✓ tests/unit/events.test.ts (19 tests) 24ms
+ ✓ tests/unit/registration-rules.test.ts (6 tests) 8ms
+ ✓ tests/unit/test-database.test.ts (7 tests) 13ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/api/registrations.test.ts > T-13 / AC-13: competing requests for the last place > capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row
+AssertionError: expected [ …(6) ] to have a length of 9 but got 6
+
+- Expected
++ Received
+
+- 9
++ 6
+
+ ❯ tests/api/registrations.test.ts:102:22
+    100|     expect(responses.filter((r) => r.status === 201)).toHaveLength(1);
+    101|     const rejected = responses.filter((r) => r.status === 409);
+    102|     expect(rejected).toHaveLength(9);
+       |                      ^
+    103|     for (const r of rejected) expect(r.body.error.code).toBe('EVENT_FULL');
+    104|     expect(await activeCount(event.id)).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 89 passed (90)
+   Start at  16:15:23
+   Duration  92.30s (transform 504ms, setup 0ms, import 3.82s, tests 78.82s, environment 2ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error workspace @event-planner/server@0.1.0
+npm error location C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c vitest run

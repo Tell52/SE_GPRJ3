@@ -68,6 +68,7 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | #4 events (2026-11-06) | `npm test` (server) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 76 | 0 | 0 | [issue4-npm-test.txt](../../evidence/sprint-1/issue4-npm-test.txt) |
 | #4 events (2026-11-06) | `npm test` (client) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 22 | 0 | 0 | [issue4-npm-test.txt](../../evidence/sprint-1/issue4-npm-test.txt) |
 | #4 events (2026-11-06) | `node --import tsx e2e/scripts/issue4-smoke.mjs` (desktop and mobile) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 3 checks | 0 | 0 | [issue4-smoke.txt](../../evidence/sprint-1/issue4-smoke.txt) |
+| #5 registration, first full run (2026-11-06) | `npm test` (server) on Chutipon's machine | `<green commit SHA>` before the fix | 1 | 89 | 1 (T-13) | 0 | [issue5-first-run.txt](../../evidence/sprint-1/issue5-first-run.txt): 3 of 10 concurrent requests got 500 (Prisma P2028, 2 s connection wait too short). Nobody overbooked. Fixed with longer transaction limits and a 503 fallback; T-13 unchanged and then passed |
 | #5 T-12 red | `npx vitest run tests/unit/registration-rules.test.ts tests/api/registration-capacity.test.ts` (in `server/`) | `<red commit SHA>` | 1 | 0 | 1 test, plus the unit file fails to load (rule not written yet) | 0 | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt) |
 | #5 T-12 green | Same command | `<green commit SHA>` | 0 | 7 | 0 | 0 | [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) |
 | #5 registration | `npm test` (server) | `<green commit SHA>` | 0 | 90 | 0 | 0 | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) |
@@ -126,6 +127,7 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 | Item | Type (failed test / skipped test / incomplete / limitation) | Impact | Plan |
 |---|---|---|---|
 | T-11 and T-13 were written after the registration code, not red first | Limitation | Only T-12 is TDD evidence. A check that removed the row lock made T-13 fail (7 to 9 of 10 got the last place), so T-13 does detect overbooking. | None; T-12 is the planned TDD test |
+| Registration under heavy load waits up to 15 s for a database transaction, then answers 503 `SERVICE_BUSY` | Limitation | Only matters with many simultaneous registrations; nothing is stored on 503 and the user can retry | Revisit with the load target NFR-07 in Sprint 3 |
 
 ## Version history
 
@@ -136,4 +138,4 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 | 1.2 | 2026-11-05 | #3: T-03 role case uses a probe route until #4 adds Organizer routes; AC-01 to AC-04 mapped to actual test files. The #2 client shell smoke test was replaced by the #3 login and routing tests because the placeholder page it checked no longer exists. Client tests and setup live in `client/tests/` (team convention). | Pending teammate review |
 | 1.3 | 2026-11-05 | Moved #2 run and evidence notes into the table rows; recorded #3 test counts. | Pending teammate review |
 | 1.4 | 2026-11-06 | Record F-02 tests and initial focus failure/fix; align T-07 with approved myRegistration exception; add separate T-03 event coverage. | Tell52 decisions; Chutipon review pending |
-| 1.5 | 2026-11-06 | Moved the #4 execution notes into the tables and linked AC-05 to AC-09 to `8538324`; added #5 results for AC-10 to AC-15, T-12 red/green and evidence rows. | Pending Tell52 review |
+| 1.5 | 2026-11-06 | Moved the #4 execution notes into the tables and linked AC-05 to AC-09 to `8538324`; added #5 results for AC-10 to AC-15, T-12 red/green and evidence rows; recorded the first #5 run failure (T-13, P2028) and its fix. | Pending Tell52 review |

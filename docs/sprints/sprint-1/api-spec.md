@@ -86,6 +86,7 @@ No body.
 | 403 | `FORBIDDEN` for Organizers |
 | 404 | `NOT_FOUND` missing or draft event |
 | 409 | `REGISTRATION_CLOSED`, `ALREADY_REGISTERED` or `EVENT_FULL` |
+| 503 | `SERVICE_BUSY` if the server is too busy to start the transaction within 15 s; nothing is stored |
 
 Checks run in this order inside the locked transaction: missing or draft (404), started (`REGISTRATION_CLOSED`), duplicate (`ALREADY_REGISTERED`), capacity (`EVENT_FULL`). So a participant who is already registered for a full event gets `ALREADY_REGISTERED`, not `EVENT_FULL`.
 
@@ -160,4 +161,4 @@ Unknown body fields (including `role`, `userId`, `organizerId`, `participantId`)
 |---|---|---|---|
 | 1.0 | 2026-11-03 | Initial API specification | `<pending>` |
 | 1.1 | 2026-11-06 | #4: own-registration exception in event detail (DEC-13); validation limits unchanged. | Tell52 decision; Chutipon review pending |
-| 1.2 | 2026-11-06 | #5: registration object includes event `endsAt`; documented the 409 check order. | Pending Tell52 review |
+| 1.2 | 2026-11-06 | #5: registration object includes event `endsAt`; documented the 409 check order; added 503 `SERVICE_BUSY`. | Pending Tell52 review |

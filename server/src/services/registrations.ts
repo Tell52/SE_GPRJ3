@@ -17,6 +17,11 @@ const rejections: Record<Exclude<RegistrationDecision, 'OK'>, () => AppError> = 
 
 type LockedEvent = { status: 'DRAFT' | 'PUBLISHED'; startsAt: Date; capacity: number };
 
+// Requests for the same event queue behind the row lock. Prisma's defaults (2 s to get a connection,
+// 5 s per transaction) are too short when many people register at once, so queued requests failed with
+// P2028 instead of a clean answer. These limits let them wait their turn.
+const TRANSACTION_LIMITS = { maxWait: 15000, timeout: 15000 };
+
 /**
  * Registers the session participant (BR-02 to BR-04) in one transaction.
  * SELECT ... FOR UPDATE locks the event row, so concurrent registrations for the same event
@@ -36,10 +41,12 @@ export async function registerForEvent(eventId: number, participantId: number) {
       if (decision !== 'OK') throw rejections[decision]();
 
       return tx.registration.create({ data: { eventId, participantId, status: 'ACTIVE' }, select: registrationSelect });
-    });
+    }, TRANSACTION_LIMITS);
   } catch (error) {
     // Backstop: the partial unique index registration_one_active rejects a second ACTIVE row.
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') throw rejections.ALREADY_REGISTERED();
+    // Overloaded beyond the limits above: answer clearly instead of a 500. Nothing was stored.
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2028') throw new AppError(503, 'SERVICE_BUSY', 'The server is busy. Please try again.');
     throw error;
   }
 }

@@ -22,7 +22,8 @@ export function createApp() {
     if (error instanceof AppError) return sendError(res, error);
     const invalidJson = error instanceof SyntaxError && 'body' in error;
     if (invalidJson) return sendError(res, new AppError(400, 'VALIDATION_ERROR', 'Request body must be valid JSON.'));
-    console.error('Unhandled request error');
+    // Log only the error type and code, never request data or stack details in responses.
+    console.error('Unhandled request error', (error as { code?: string })?.code ?? (error as Error)?.name ?? 'unknown');
     sendError(res, new AppError(500, 'INTERNAL_ERROR', 'An unexpected error occurred.'));
   };
   app.use(handleError);
