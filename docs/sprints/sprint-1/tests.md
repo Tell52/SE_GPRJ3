@@ -12,7 +12,7 @@ Fixtures: `org1`, `org2` (Organizers), `p1` to `p12` (Participants) created per 
 | T-04 | AC-04 | API + UI | p1 agent; saved raw cookie | Logout; then me with the same agent and with the replayed raw cookie. UI: click Logout | Logout 200; session `revokedAt` set; both me calls 401. UI calls the API, shows login page and no previous user data |
 | T-05 | AC-05 | API + UI | org1 | Create valid event; GET mine; publish; GET events. UI: fill create form and publish | 201 DRAFT with organizerId = org1 and row stored; listed in mine; publish 200 PUBLISHED, `publishedAt` stored; listed in events. UI badge changes Draft to Published |
 | T-06 | AC-06 | Unit + API | Capacities 0, -1, 1.5, 1001, missing, 1, 1000; blank title; 121 character title; blank location | `eventInputSchema.safeParse`; POST each via API | Invalid inputs fail on the named field and API returns 400 with Event count unchanged; 1 and 1000 accepted |
-| T-07 | AC-07 | API | Published upcoming E1 (2 registrations), org1 draft D1, published event with past start | p1 GET events; p1 GET D1; org1 GET D1 | Only E1 listed with `remainingPlaces` = capacity minus 2; p1 gets 404 for D1, owner gets 200; no response contains registration or participant fields |
+| T-07 | AC-07 | API | Published upcoming E1 (2 registrations), org1 draft D1, published event with past start | p1 GET events; p1 GET D1; org1 GET D1 | Only E1 listed with `remainingPlaces` = capacity minus 2; p1 gets 404 for D1, owner gets 200; no response contains roster or other participants' fields; Participant detail contains only own `myRegistration: { id, status }` or null |
 | T-08 | AC-08 | API | org1 published event | Publish again | 409 `INVALID_STATE`; row (including `publishedAt`) identical to before |
 | T-09 | AC-09 | API | org1 draft D1 | p1 POST /api/events; p1 publish D1; org2 publish D1 | 403, 403, 404; Event count unchanged; D1 still DRAFT with `publishedAt` null |
 | T-10 | AC-10 | API | Published E1 capacity 3 | p1 registers; query DB; GET event; log in again as p1 and GET registration by id | 201 ACTIVE, participantId = p1; one ACTIVE row; `remainingPlaces` 2; new session returns the same id |
@@ -76,11 +76,11 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | AC-02 | T-02 | `server/tests/api/auth.test.ts` "T-02 / AC-02" (3 tests); `server/tests/unit/password.test.ts` (4 tests) | Automated | Pass | `296cc54` |
 | AC-03 | T-03 | `server/tests/api/auth.test.ts` "T-03 / AC-03" (7 tests); `client/tests/App.test.tsx` access denied test | Automated | Pass | `296cc54` |
 | AC-04 | T-04 | `server/tests/api/auth.test.ts` "T-04 / AC-04" (2 tests); `client/tests/App.test.tsx` login and logout tests (8 tests) | Automated | Pass | `296cc54` |
-| AC-05 | T-05 | `<>` | Automated | Not run | |
-| AC-06 | T-06 | `<>` | Automated | Not run | |
-| AC-07 | T-07 | `<>` | Automated | Not run | |
-| AC-08 | T-08 | `<>` | Automated | Not run | |
-| AC-09 | T-09 | `<>` | Automated | Not run | |
+| AC-05 | T-05 | `server/tests/api/events.test.ts` T-05; `client/tests/Events.test.tsx` create/publish journey | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
+| AC-06 | T-06 | `server/tests/unit/events.test.ts`; `server/tests/api/events.test.ts` T-06; client validation | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
+| AC-07 | T-07 | `server/tests/api/events.test.ts` T-07 filtering, privacy and own registration | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
+| AC-08 | T-08 | `server/tests/api/events.test.ts` T-08 repeated/concurrent publish and past start | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
+| AC-09 | T-09 | `server/tests/api/events.test.ts` T-09 role/ownership rejections | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
 | AC-10 | T-10 | `<>` | Automated | Not run | |
 | AC-11 | T-11 | `<>` | Automated | Not run | |
 | AC-12 | T-12 | `<>` | Automated | Not run | |
@@ -91,6 +91,15 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | AC-17 | T-17 | `<>` | Automated | Not run | |
 | AC-18 | T-18, M-02 | `<>` | Automated + manual | Not run | |
 | AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts` (four named T-19 cases); guard tests in `server/tests/unit/test-database.test.ts` | Automated + manual | T-19 Pass; M-01 not run yet | Tested as uncommitted tree matching `d111892`; merged via PR #11 (`cf7ef4b`) |
+
+### Issue #4 execution (2026-11-06)
+
+- `npm run build`: exit 0, [output](../../evidence/sprint-1/issue4-build.txt).
+- `npm test`: exit 0; server 76 passed, client 22 passed; 0 failed/skipped. [Output](../../evidence/sprint-1/issue4-npm-test.txt). Includes the unchanged auth assertions; App UI mocks now provide event lists.
+- T-03 event endpoint/CSRF coverage is added in `server/tests/api/events.test.ts`, leaving the teammate's auth test file unchanged.
+- `node --import tsx e2e/scripts/issue4-smoke.mjs`: desktop/mobile create-publish-discover smoke passes against guarded real PostgreSQL; [output](../../evidence/sprint-1/issue4-smoke.txt), [screenshots and scope](../../evidence/sprint-1/issue4-events.md). This is F-02 smoke coverage, not full T-18/M-02.
+- Initial run: server 76 passed; client 21 passed, 1 failed (server field-error focus happened while input was disabled). Focus now runs after inputs are enabled; unchanged assertion passes. [Initial output](../../evidence/sprint-1/issue4-initial-test.txt).
+- All results are for the uncommitted working tree based on `3a5f20b`; user commit/push and teammate review remain pending.
 
 ## Evidence Index
 
@@ -125,3 +134,5 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 | 1.1 | 2026-11-05 | Record actual #2/T-19 automated execution and explicit pending M-01/user/peer review. | Pending human review |
 | 1.2 | 2026-11-05 | #3: T-03 role case uses a probe route until #4 adds Organizer routes; AC-01 to AC-04 mapped to actual test files. The #2 client shell smoke test was replaced by the #3 login and routing tests because the placeholder page it checked no longer exists. Client tests and setup live in `client/tests/` (team convention). | Pending teammate review |
 | 1.3 | 2026-11-05 | Moved #2 run and evidence notes into the table rows; recorded #3 test counts. | Pending teammate review |
+
+| 1.4 | 2026-11-06 | Record F-02 tests and initial focus failure/fix; align T-07 with approved myRegistration exception; add separate T-03 event coverage. | User decisions confirmed; teammate implementation review pending |

@@ -15,7 +15,11 @@ let routes: Record<string, Reply | (() => Reply | Promise<Reply>)>;
 
 beforeEach(() => {
   calls = [];
-  routes = { 'GET /api/auth/me': unauthenticated };
+  routes = {
+    'GET /api/auth/me': unauthenticated,
+    'GET /api/events': { status: 200, body: { items: [] } },
+    'GET /api/events/mine': { status: 200, body: { items: [] } },
+  };
   vi.stubGlobal('fetch', vi.fn(async (url: string, init: RequestInit = {}) => {
     const method = init.method ?? 'GET';
     calls.push({ url, method, headers: (init.headers ?? {}) as Record<string, string>, body: init.body as string | undefined });

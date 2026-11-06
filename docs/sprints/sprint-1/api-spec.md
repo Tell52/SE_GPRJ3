@@ -65,7 +65,7 @@ Request: `{ "title", "description"?, "location", "startsAt", "endsAt", "capacity
 
 ### GET /api/events/:id (any session)
 
-200 event object, plus `"myRegistration": { "id", "status" } | null` for Participants. 404 for missing, or a draft not owned by the caller.
+200 event object, plus `"myRegistration": { "id", "status" } | null` for Participants, scoped to the caller's ACTIVE registration. This is the only registration-data exception to AC-07; no roster or other participants' data is returned (user clarification, 2026-11-06). 404 for missing, or a draft not owned by the caller.
 
 ## F-03 Registrations
 
@@ -157,3 +157,5 @@ Unknown body fields (including `role`, `userId`, `organizerId`, `participantId`)
 | Version | Date | Change | Reviewed by |
 |---|---|---|---|
 | 1.0 | 2026-11-03 | Initial API specification | `<pending>` |
+
+| 1.1 | 2026-11-06 | Clarify the user-approved own-registration exception in event detail; current validation limits confirmed. | User decision in chat; teammate review pending |

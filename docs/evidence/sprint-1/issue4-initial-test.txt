@@ -1,0 +1,281 @@
+
+> event-planner@0.1.0 test
+> npm test --workspace server && npm test --workspace client
+
+
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.30                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 58ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 E:/SE Group/SE_GPRJ3/server
+
+
+ Test Files  6 passed (6)
+      Tests  76 passed (76)
+   Start at  14:27:50
+   Duration  51.16s (transform 184ms, setup 0ms, import 3.40s, tests 41.37s, environment 0ms)
+
+
+> @event-planner/client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 E:/SE Group/SE_GPRJ3/client
+
+ ❯ tests/Events.test.tsx (13 tests | 1 failed) 370ms
+     × server field errors appear and preserve input 29ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/Events.test.tsx > T-05 events UI and states > server field errors appear and preserve input
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <input
+  aria-describedby="startsAt-error"
+  aria-invalid="true"
+  id="startsAt"
+  name="startsAt"
+  type="datetime-local"
+  value="2099-11-20T14:00"
+/>
+Received element with focus:
+  <body>
+  <div>
+    <header
+      class="app-header"
+    >
+      <span
+        class="brand"
+      >
+        Event Planner
+      </span>
+      <nav
+        aria-label="Main"
+      >
+        <a
+          class=""
+          data-discover="true"
+          href="/organizer/events"
+        >
+          My events
+        </a>
+        <a
+          class=""
+          data-discover="true"
+          href="/events"
+        >
+          Events
+        </a>
+      </nav>
+      <div
+        class="account"
+      >
+        <span
+          class="user-name"
+        >
+          Organizer One
+        </span>
+        <span
+          class="role-badge"
+        >
+          Organizer
+        </span>
+        <button
+          class="secondary"
+          type="button"
+        >
+          Logout
+        </button>
+      </div>
+    </header>
+    <main
+      class="page"
+    >
+      <section
+        class="events-page"
+      >
+        <h1>
+          Create event
+        </h1>
+        <p>
+          Enter start and end in Bangkok time (UTC+7).
+        </p>
+        <form
+          class="form"
+          novalidate=""
+        >
+          <p
+            class="alert"
+            role="alert"
+          >
+            Some fields are invalid.
+          </p>
+          <div
+            class="field"
+          >
+            <label
+              for="title"
+            >
+              Title
+            </label>
+            <input
+              aria-invalid="false"
+              id="title"
+              name="title"
+              type="text"
+              value="Git workshop"
+            />
+          </div>
+          <div
+            class="field"
+          >
+            <label
+              for="description"
+            >
+              Description
+            </label>
+            <textarea
+              aria-invalid="false"
+              id="description"
+              name="description"
+              rows="5"
+            />
+          </div>
+          <div
+            class="field"
+          >
+            <label
+              for="location"
+            >
+              Location
+            </label>
+            <input
+              aria-invalid="false"
+              id="location"
+              name="location"
+              type="text"
+              value="Room 1"
+            />
+          </div>
+          <div
+            class="field"
+          >
+            <label
+              for="startsAt"
+            >
+              Start
+            </label>
+            <input
+              aria-describedby="startsAt-error"
+              aria-invalid="true"
+              id="startsAt"
+              name="startsAt"
+              type="datetime-local"
+              value="2099-11-20T14:00"
+            />
+            <p
+              class="field-error"
+              id="startsAt-error"
+            >
+              Start must be in the future.
+            </p>
+          </div>
+          <div
+            class="field"
+          >
+            <label
+              for="endsAt"
+            >
+              End
+            </label>
+            <input
+              aria-invalid="false"
+              id="endsAt"
+              name="endsAt"
+              type="datetime-local"
+              value="2099-11-20T16:00"
+            />
+          </div>
+          <div
+            class="field"
+          >
+            <label
+              for="capacity"
+            >
+              Capacity
+            </label>
+            <input
+              aria-invalid="false"
+              id="capacity"
+              name="capacity"
+              step="1"
+              type="number"
+              value="10"
+            />
+          </div>
+          <button>
+            Save
+          </button>
+        </form>
+        <a
+          class="event-action"
+          data-discover="true"
+          href="/organizer/events"
+        >
+          Back to My events
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ tests/Events.test.tsx:95:44
+     93|     renderAt('/organizer/events/new'); await fillForm(); fireEvent.cli…
+     94|     expect(await screen.findByRole('alert')).toHaveTextContent('Some f…
+     95|     expect(screen.getByLabelText('Start')).toHaveFocus();
+       |                                            ^
+     96|     expect(screen.getByLabelText('Title')).toHaveValue('Git workshop');
+     97|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 21 passed (22)
+   Start at  14:28:42
+   Duration  3.46s (transform 289ms, setup 1.79s, import 374ms, tests 646ms, environment 3.74s)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path E:\SE Group\SE_GPRJ3\client
+npm error workspace @event-planner/client@0.1.0
+npm error location E:\SE Group\SE_GPRJ3\client
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vitest run

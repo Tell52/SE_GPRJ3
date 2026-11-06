@@ -14,7 +14,7 @@ Authors never approve their own PRs. Each review records a specific check, quest
 | #1 Documentation baseline | `feature/issue1-docs` | `<link>` | `<name>` | `<name>` | `<e.g. checked every AC-01 to AC-19 maps to a T test; questioned capacity cap DEC-03>` | `<response>` | `<ID consistency check>` | `<Approved / changes requested then approved>` |
 | #2 Foundation | `feature/issue2-foundation` | Feature PR into sprint1 | User authorized Codex commit | Pending teammate | Review not performed | Corrected accidental direct push with revert; feature submitted for PR review | [T-19 execution](../../evidence/sprint-1/issue2-foundation.md) | Automated results recorded; peer review, M-01 and merge pending |
 | #3 Authentication | `feature/issue3-auth` | `<link>` | `<name>` | `<name>` | `<e.g. replayed old cookie after logout; checked no hash in responses>` | `<response>` | `<T-01 to T-04>` | `<result>` |
-| #4 Events | `feature/issue4-events` | `<link>` | `<name>` | `<name>` | `<comment>` | `<response>` | `<T-05 to T-09>` | `<result>` |
+| #4 Events | `feature/issue4-events` | Not opened | Tell52 with Codex assistance | Pending teammate | User approved limits, own-registration exception and three existing integration/test file changes before implementation | New event logic in separate files; no commit/push | [Build, T-05–09, regression and smoke evidence](../../evidence/sprint-1/issue4-events.md) | Local review ready; no peer approval or integration claimed |
 | #5 Registration | `feature/issue5-registration` | `<link>` | `<name>` | `<name>` | `<e.g. verified T-12 red then green with unchanged assertions; asked about lock vs serializable>` | `<response>` | `<T-10 to T-15>` | `<result>` |
 | #6 Roster | `feature/issue6-roster` | `<link>` | `<name>` | `<name>` | `<comment>` | `<response>` | `<T-16, T-17>` | `<result>` |
 | #7 Verification | `feature/issue7-verification` | `<link>` | `<name>` | `<name>` | `<comment>` | `<response>` | `<T-18, M-01, M-02>` | `<result>` |
@@ -68,7 +68,7 @@ Screenshots of Issues, PRs, reviews, history and board are stored under `docs/ev
 | #1 | `feature/issue1-docs` | `<link>` | `<name>` | Backlog |
 | #2 | `feature/issue2-foundation` | Feature PR into sprint1 | Pending teammate | Not Done: peer review, M-01 and merge pending. GitHub board was not changed. |
 | #3 | `feature/issue3-auth` | `<link>` | `<name>` | Backlog |
-| #4 | `feature/issue4-events` | `<link>` | `<name>` | Backlog |
+| #4 | `feature/issue4-events` | Not opened | Pending teammate | Local implementation ready for user review; GitHub Project still Specified (status not changed). Description synchronized with approved contract. |
 | #5 | `feature/issue5-registration` | `<link>` | `<name>` | Backlog |
 | #6 | `feature/issue6-roster` | `<link>` | `<name>` | Backlog |
 | #7 | `feature/issue7-verification` | `<link>` | `<name>` | Backlog |
@@ -87,3 +87,5 @@ Screenshots of Issues, PRs, reviews, history and board are stored under `docs/ev
 |---|---|---|
 | 1.0 | 2026-11-03 | Review, contributions and process evidence templates |
 | 1.1 | 2026-11-05 | Record #2 local implementation/evidence without claiming human approval, commit, PR or integration. |
+
+| 1.2 | 2026-11-06 | Record #4 local evidence and pending human review; GitHub description updated, no commit/push/PR/merge. |

@@ -99,6 +99,10 @@ Status: **Proposed** (drafted, awaiting review by both members), **Accepted** (b
 | DEC-11 | Does browsing require login? | Yes. All endpoints except login require a session. | Simplifies Sprint 1 access control. | FR-03 | Proposed |
 | DEC-12 | Time zone? | Stored in UTC; displayed in Asia/Bangkok. | Single campus. | UI | Proposed |
 
+### Issue #4 implementation clarification (2026-11-06)
+
+The user confirmed using the current Sprint 1 docs, including BR-01/DEC-03 limits, for issue #4. The user also clarified that AC-07 permits only the caller's own `myRegistration: { id, status }` or null in participant event detail; roster and other participants' data remain private. This is an implementation authorization, not a claim that both members completed the decision-review table below.
+
 ### Decision review record
 
 | Date | Reviewer | Decisions reviewed | Outcome / changes |
@@ -111,3 +115,5 @@ Status: **Proposed** (drafted, awaiting review by both members), **Accepted** (b
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 2026-11-03 | Initial SRS aligned with Issues #1 to #8; assumptions and decisions kept in section 7 |
+
+| 1.1 | 2026-11-06 | Record user confirmation of current F-02 limits and own-registration privacy exception; preserve pending team review status. |

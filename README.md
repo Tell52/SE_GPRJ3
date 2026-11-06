@@ -2,7 +2,7 @@
 
 Event Registration and Attendance System for CPE 334 (Theme 3). Organizers publish events with limited places; Participants register; Organizers view the roster.
 
-Status: Issue #2 foundation is ready for local review. Login, event management, registration and roster are separate issues (#3–7) and are not implemented yet. The client currently shows a placeholder page; API feature routes return JSON 404.
+Status: Foundation (#2) and authentication (#3) are integrated in `sprint1`. Issue #4 event creation, publication and discovery is implemented locally on `feature/issue4-events`, awaiting user review/commit/push and teammate PR review. Registration, roster and the complete Sprint 1 journey remain in #5–7. See [event implementation evidence](docs/evidence/sprint-1/issue4-events.md).
 
 ## Stack
 
@@ -62,14 +62,14 @@ For the compiled API: `npm run build` then `npm start`. To inspect the client pr
 ## Test
 
 ```bash
-npm test                         # foundation server tests, then client shell test
-npm test --workspace server       # builds API, checks guard, runs T-19
-npm test --workspace client       # client shell smoke test
+npm test                         # server foundation/auth/events, then client tests
+npm test --workspace server       # builds API; guarded real PostgreSQL tests
+npm test --workspace client       # auth and event UI tests
 ```
 
 Server tests explicitly read `server/.env.test`; they reset **only the dedicated test database** before the integration suite. T-19 runs migrations and seed through the CLI, changes a password and an event, repeats seed, checks raw-SQL constraint failures, and starts/stops the compiled API twice while comparing all four tables. No disabled tests are used. Run test suites serially against a given test database.
 
-`npm test` does not claim AC-01–18 or E2E coverage. The `e2e/` workspace currently has configuration only; `npm test --workspace e2e` will report no tests until #7. A teammate's fresh-clone manual check M-01 is still pending.
+`npm test` covers the implemented foundation, authentication and event acceptance criteria (AC-01–09 and automated AC-19), not AC-10–18. The full Playwright journey in `e2e/tests/` remains #7 work; `npm test --workspace e2e` will report no tests until then. A separate F-02 smoke runner is available after `npm run build` and `npm test`: `node --import tsx e2e/scripts/issue4-smoke.mjs`. It requires Chrome installed and free ports 3000/5173, starts/stops its own API/Vite servers, and resets only the guarded dedicated test database. Run it serially with other database tests. It saves desktop/mobile screenshots under `docs/evidence/sprint-1/` and does not claim full T-18 or human M-02 coverage.
 
 ## Build
 

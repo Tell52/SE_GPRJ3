@@ -72,10 +72,12 @@ None for the baseline. Every FR, BR and NFR is allocated to a feature or respons
 
 | Date | Change | Reason | Approved by |
 |---|---|---|---|
-| none yet | | | |
+| 2026-11-06 | AC-07/T-07 permit only caller-owned myRegistration summary in participant detail; field limits remain as documented. | Resolve wording conflict with API contract for F-02. | User in chat; no teammate approval claimed |
 
 ## Version history
 
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 2026-11-03 | Initial traceability aligned with Issues #1 to #8 |
+
+| 1.1 | 2026-11-06 | Record approved F-02 clarification; AC-05 to AC-09 execution links are in tests.md and issue4-events.md. |
