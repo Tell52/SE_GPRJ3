@@ -1,0 +1,78 @@
+PS C:\Users\chuti\Documents\SE_GPRJ3> npm test
+
+> event-planner@0.1.0 test
+> npm test --workspace server && npm test --workspace client
+
+
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 150ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/server
+
+ ✓ tests/api/foundation.test.ts (5 tests) 31281ms
+   ✓ T-19: fresh migration, repeat seed, changed passwords and edited events survive  16396ms
+   ✓ T-19: two real API process starts preserve every existing row  5376ms
+ ✓ tests/api/auth.test.ts (15 tests) 13849ms
+     ✓ valid credentials return the stored identity, a CSRF token and an HttpOnly SameSite=Lax sid cookie  3043ms
+     ✓ wrong password and unknown email return the identical 401 with no cookie and no session  1274ms
+     ✓ stored hash differs from the password and no response exposes hashes or tokens  517ms
+     ✓ a session past its absolute expiry is rejected with 401  625ms
+     ✓ expiry is absolute: using the session does not extend expiresAt  675ms
+     ✓ requireRole returns 403 for the wrong role and passes the right role  1048ms
+     ✓ a state changing request without or with a wrong X-CSRF-Token returns 403 and changes nothing  1062ms
+     ✓ requireCsrf lets safe methods through without a token  563ms
+     ✓ role or userId in the login body is ignored; identity comes from the stored account  591ms
+     ✓ logout revokes the session, clears the cookie and the replayed old cookie is rejected  600ms
+     ✓ logging out one session leaves the user's other sessions working  1027ms
+ ✓ tests/unit/password.test.ts (4 tests) 2462ms
+     ✓ hash is bcrypt cost 12, differs from plaintext and verifies only the right password  1497ms
+     ✓ two hashes of the same password differ (salted)  957ms
+ ✓ tests/unit/test-database.test.ts (7 tests) 14ms
+
+ Test Files  4 passed (4)
+      Tests  31 passed (31)
+   Start at  22:21:38
+   Duration  57.76s (transform 321ms, setup 0ms, import 1.81s, tests 47.61s, environment 1ms)
+
+
+> @event-planner/client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/client
+
+ ✓ tests/App.test.tsx (9 tests) 614ms
+   ✓ T-04 (UI) / AC-01, AC-04: login screen (6)
+     ✓ an unauthenticated visit to a protected route shows the login page 166ms
+     ✓ empty submit shows field messages, focuses email and sends no login request 74ms
+     ✓ wrong credentials show the API message in an alert and stay on the login page 61ms
+     ✓ a network failure shows the standard message 58ms
+     ✓ successful participant login shows a busy button, then the participant home with name and role 88ms
+     ✓ successful organizer login lands on My events 54ms
+   ✓ T-04 (UI) / AC-03, AC-04: protected routes and logout (3)
+     ✓ a participant opening an organizer page sees access denied 14ms
+     ✓ logout sends the CSRF token, returns to login and no longer shows the previous user 47ms
+     ✓ a failed logout keeps the user signed in and shows the error 48ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  22:22:38
+   Duration  4.33s (transform 250ms, setup 839ms, import 401ms, tests 614ms, environment 2.11s)
