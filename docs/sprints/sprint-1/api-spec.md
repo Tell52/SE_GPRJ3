@@ -65,7 +65,7 @@ Request: `{ "title", "description"?, "location", "startsAt", "endsAt", "capacity
 
 ### GET /api/events/:id (any session)
 
-200 event object, plus `"myRegistration": { "id", "status" } | null` for Participants, scoped to the caller's ACTIVE registration. This is the only registration-data exception to AC-07; no roster or other participants' data is returned (user clarification, 2026-11-06). 404 for missing, or a draft not owned by the caller.
+200 event object, plus `"myRegistration": { "id", "status" } | null` for Participants, scoped to the caller's ACTIVE registration. This is the only registration-data exception to AC-07; no roster or other participants' data is returned (DEC-13). 404 for missing, or a draft not owned by the caller.
 
 ## F-03 Registrations
 
@@ -73,7 +73,7 @@ Registration object:
 
 ```json
 { "id": 15, "status": "ACTIVE", "registeredAt": "...",
-  "event": { "id": 7, "title": "Intro to Git", "startsAt": "...", "location": "CB2301" } }
+  "event": { "id": 7, "title": "Intro to Git", "startsAt": "...", "endsAt": "...", "location": "CB2301" } }
 ```
 
 ### POST /api/events/:id/registrations (Participant, CSRF)
@@ -86,6 +86,8 @@ No body.
 | 403 | `FORBIDDEN` for Organizers |
 | 404 | `NOT_FOUND` missing or draft event |
 | 409 | `REGISTRATION_CLOSED`, `ALREADY_REGISTERED` or `EVENT_FULL` |
+
+Checks run in this order inside the locked transaction: missing or draft (404), started (`REGISTRATION_CLOSED`), duplicate (`ALREADY_REGISTERED`), capacity (`EVENT_FULL`). So a participant who is already registered for a full event gets `ALREADY_REGISTERED`, not `EVENT_FULL`.
 
 ### GET /api/registrations/mine (Participant)
 
@@ -157,5 +159,5 @@ Unknown body fields (including `role`, `userId`, `organizerId`, `participantId`)
 | Version | Date | Change | Reviewed by |
 |---|---|---|---|
 | 1.0 | 2026-11-03 | Initial API specification | `<pending>` |
-
-| 1.1 | 2026-11-06 | Clarify the user-approved own-registration exception in event detail; current validation limits confirmed. | User decision in chat; teammate review pending |
+| 1.1 | 2026-11-06 | #4: own-registration exception in event detail (DEC-13); validation limits unchanged. | Tell52 decision; Chutipon review pending |
+| 1.2 | 2026-11-06 | #5: registration object includes event `endsAt`; documented the 409 check order. | Pending Tell52 review |

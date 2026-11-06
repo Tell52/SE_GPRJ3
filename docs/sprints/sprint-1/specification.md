@@ -59,7 +59,7 @@ Data: Event (from SYS-FOUND). No new migration.
 |---|---|
 | AC-05 | An Organizer's valid create returns 201 with status DRAFT owned by the session user and the event appears in `GET /api/events/mine`. Publishing it returns 200 with status PUBLISHED and `publishedAt` stored, and it then appears in `GET /api/events`. |
 | AC-06 | Capacity 0, -1, 1.5, 1001 or missing, or a blank or oversized title or location, returns 400 `VALIDATION_ERROR` naming the field and inserts nothing; capacity 1 and 1000 are accepted. |
-| AC-07 | `GET /api/events` returns only PUBLISHED events that have not started, with correct `remainingPlaces`. `GET /api/events/:id` for a draft returns 404 to anyone but its owner. No event response includes the roster or other participants' data. Participant detail may include only the caller's `myRegistration: { id, status }` or null (user clarification, 2026-11-06). |
+| AC-07 | `GET /api/events` returns only PUBLISHED events that have not started, with correct `remainingPlaces`. `GET /api/events/:id` for a draft returns 404 to anyone but its owner. No event response includes the roster or other participants' data. Participant detail may include only the caller's `myRegistration: { id, status }` or null (DEC-13). |
 | AC-08 | Publishing an already PUBLISHED event returns 409 `INVALID_STATE`; `publishedAt` and all other fields are unchanged. |
 | AC-09 | A Participant's create or publish returns 403 and creates or changes nothing. Another Organizer publishing the owner's draft returns 404 and the event stays DRAFT. |
 
@@ -76,7 +76,7 @@ Behaviour and workflow:
    4. ACTIVE count >= capacity gives 409 `EVENT_FULL` (BR-04).
    5. Insert ACTIVE registration; 201 is returned only after commit.
 3. Backstop: a violation of the partial unique index is mapped to 409 `ALREADY_REGISTERED`.
-4. The pure rule `decideRegistration(event, existingActive, activeCount, now)` returns OK or the error code, so it can be unit tested.
+4. The pure rule `decideRegistration({ event, hasActiveRegistration, activeCount, now })` in `server/src/services/registration-rules.ts` returns `OK` or the error code, so it can be unit tested.
 5. The Participant sees a saved receipt and the registration in My registrations; it is retrievable after logging in again or after a server restart.
 
 Permissions: only Participants register (Organizer 403). A registration is visible only to its holder; another Participant gets 404 and never sees it in their list.
@@ -134,6 +134,6 @@ A feature, issue or release is Done only when every item is true and backed by e
 | Version | Date | Change | Reviewed by |
 |---|---|---|---|
 | 1.0 | 2026-11-03 | Initial Sprint 1 specification | `<pending>` |
-| 1.1 | 2026-11-05 | User approved Docker Compose solely for local PostgreSQL in #2; application packaging/deployment remains excluded. | User scope decision in chat; teammate review pending |
-
-| 1.2 | 2026-11-06 | User confirmed current F-02 limits and clarified AC-07: own myRegistration summary is allowed; roster and other participants remain private. | User decision in chat; teammate implementation review pending |
+| 1.1 | 2026-11-05 | Tell52 approved Docker Compose solely for local PostgreSQL in #2; application packaging/deployment remains excluded. | Tell52 scope decision in chat; teammate review pending |
+| 1.2 | 2026-11-06 | Tell52 confirmed current F-02 limits and clarified AC-07 (DEC-13): own myRegistration summary is allowed; roster and other participants remain private. | Tell52 decision; Chutipon review pending |
+| 1.3 | 2026-11-06 | #5: `decideRegistration` takes one object argument and lives in `registration-rules.ts`; behaviour unchanged. | Pending Tell52 review |

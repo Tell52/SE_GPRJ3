@@ -98,10 +98,7 @@ Status: **Proposed** (drafted, awaiting review by both members), **Accepted** (b
 | DEC-10 | Status code for resources the user may not see? | 404 for another Organizer's event (publish, roster), another Participant's registration, and drafts not owned. 403 when the role itself is not allowed. | Avoids revealing that private records exist. | NFR-01, AC-07, AC-09, AC-15, AC-17 | Proposed |
 | DEC-11 | Does browsing require login? | Yes. All endpoints except login require a session. | Simplifies Sprint 1 access control. | FR-03 | Proposed |
 | DEC-12 | Time zone? | Stored in UTC; displayed in Asia/Bangkok. | Single campus. | UI | Proposed |
-
-### Issue #4 implementation clarification (2026-11-06)
-
-The user confirmed using the current Sprint 1 docs, including BR-01/DEC-03 limits, for issue #4. The user also clarified that AC-07 permits only the caller's own `myRegistration: { id, status }` or null in participant event detail; roster and other participants' data remain private. This is an implementation authorization, not a claim that both members completed the decision-review table below.
+| DEC-13 | May a participant's event detail show their own registration? | Yes: only the caller's own `myRegistration: { id, status }` or null. No roster or other participants' data in any event response. | Lets the event page show "You are registered" (F-03 UI) without exposing others. | AC-07, T-07, F-02, F-03 | Accepted by Tell52 during #4 (2026-11-06); Chutipon review pending |
 
 ### Decision review record
 
@@ -115,5 +112,4 @@ The user confirmed using the current Sprint 1 docs, including BR-01/DEC-03 limit
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | 2026-11-03 | Initial SRS aligned with Issues #1 to #8; assumptions and decisions kept in section 7 |
-
-| 1.1 | 2026-11-06 | Record user confirmation of current F-02 limits and own-registration privacy exception; preserve pending team review status. |
+| 1.1 | 2026-11-06 | #4: added DEC-13 (own registration summary in event detail); confirmed BR-01/DEC-03 limits unchanged. |
