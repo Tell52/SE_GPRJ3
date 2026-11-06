@@ -131,7 +131,8 @@ Shared behaviour:
 | 403 | `FORBIDDEN` (role not allowed), `CSRF_INVALID` |
 | 404 | `NOT_FOUND` (missing, or not visible to this user; DEC-10) |
 | 409 | `ALREADY_REGISTERED`, `EVENT_FULL`, `REGISTRATION_CLOSED`, `INVALID_STATE` |
-| 500 | `INTERNAL_ERROR` (generic message; details only in server log) |
+| 500 | `INTERNAL_ERROR` (generic message; only the error code is logged on the server) |
+| 503 | `SERVICE_BUSY` (registration could not get a database transaction in time; nothing stored, try again) |
 
 Sprint 1 endpoints (details in [api-spec.md](sprints/sprint-1/api-spec.md)):
 
@@ -210,3 +211,4 @@ Planned GCP deployment (Lab 5):
 |---|---|---|
 | 1.0 | 2026-11-03 | Initial system SDS aligned with Issues #1 to #8 |
 | 1.1 | 2026-11-05 | Record approved local PostgreSQL Compose scope, separate test database and stable internal seed identity for #2. |
+| 1.2 | 2026-11-06 | #5: added 503 `SERVICE_BUSY` for an overloaded registration transaction; server log records the error code. | Pending Tell52 review |

@@ -51,8 +51,8 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 |---|---|---|---|
 | Reviewed contracts v1.0 (spec and test design) | `96d9a67` (merged in PR #10, `28be4c5`) | 2026-11-03 | Before any implementation commit |
 | First implementation (#2 foundation) | `d111892` (merged in PR #11, `cf7ef4b`) | 2026-11-05 | Implementation followed the spec |
-| T-12 red | `<SHA>` | `<date>` | Failing output below |
-| T-12 green | `<SHA>` | `<date>` | Same assertions, passing |
+| T-12 red (#5) | `5e373f0` | 2026-11-06 | Only `server/tests/unit/registration-rules.test.ts` and `server/tests/api/registration-capacity.test.ts` committed; [failing output](../../evidence/sprint-1/issue5-t12-red.txt) |
+| T-12 green (#5) | `d3d1c4a` | 2026-11-06 | Implementation added; both T-12 files unchanged; [passing output](../../evidence/sprint-1/issue5-t12-green.txt) |
 
 ### Build and test runs
 
@@ -63,6 +63,16 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | #2 foundation (2026-11-05) | `npm test` (client) | Same as above | 0 | 1 | 0 | 0 | [issue2-verification.txt](../../evidence/sprint-1/issue2-verification.txt) |
 | #3 auth (2026-11-05) | `npm test` (server) | `296cc54` | 0 | 31 | 0 | 0 | [issue3-npm-test.txt](../../evidence/sprint-1/issue3-npm-test.txt) |
 | #3 auth (2026-11-05) | `npm test` (client) | `296cc54` | 0 | 9 | 0 | 0 | [issue3-npm-test.txt](../../evidence/sprint-1/issue3-npm-test.txt) |
+| #4 events (2026-11-06), first run | `npm test` | Uncommitted tree on `3a5f20b`, committed as `8538324` | 1 | server 76, client 21 | 1 | 0 | [issue4-initial-test.txt](../../evidence/sprint-1/issue4-initial-test.txt): field focus attempted while input was disabled; fixed, same assertion then passed |
+| #4 events (2026-11-06) | `npm run build` | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | n/a | n/a | n/a | [issue4-build.txt](../../evidence/sprint-1/issue4-build.txt) |
+| #4 events (2026-11-06) | `npm test` (server) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 76 | 0 | 0 | [issue4-npm-test.txt](../../evidence/sprint-1/issue4-npm-test.txt) |
+| #4 events (2026-11-06) | `npm test` (client) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 22 | 0 | 0 | [issue4-npm-test.txt](../../evidence/sprint-1/issue4-npm-test.txt) |
+| #4 events (2026-11-06) | `node --import tsx e2e/scripts/issue4-smoke.mjs` (desktop and mobile) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 3 checks | 0 | 0 | [issue4-smoke.txt](../../evidence/sprint-1/issue4-smoke.txt) |
+| #5 registration, first full run (2026-11-06) | `npm test` (server) on Chutipon's machine | `d3d1c4a` before the fix | 1 | 89 | 1 (T-13) | 0 | [issue5-first-run.txt](../../evidence/sprint-1/issue5-first-run.txt): 3 of 10 concurrent requests got 500 (Prisma P2028, 2 s connection wait too short). Nobody overbooked. Fixed with longer transaction limits and a 503 fallback; T-13 unchanged and then passed |
+| #5 T-12 red | `npx vitest run tests/unit/registration-rules.test.ts tests/api/registration-capacity.test.ts` (in `server/`) | `5e373f0` | 1 | 0 | 1 test, plus the unit file fails to load (rule not written yet) | 0 | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt) |
+| #5 T-12 green | Same command | `d3d1c4a` | 0 | 7 | 0 | 0 | [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) |
+| #5 registration | `npm test` (server) | `7582113` | 0 | 90 | 0 | 0 | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) |
+| #5 registration | `npm test` (client) | `7582113` | 0 | 35 | 0 | 0 | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) |
 | Sprint 1 release | `npm run build` | `<SHA>` | `<>` | | | | `<>` |
 | Sprint 1 release | `npm test` (server) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
 | Sprint 1 release | `npm test` (client) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
@@ -76,30 +86,21 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | AC-02 | T-02 | `server/tests/api/auth.test.ts` "T-02 / AC-02" (3 tests); `server/tests/unit/password.test.ts` (4 tests) | Automated | Pass | `296cc54` |
 | AC-03 | T-03 | `server/tests/api/auth.test.ts` "T-03 / AC-03" (7 tests); `client/tests/App.test.tsx` access denied test | Automated | Pass | `296cc54` |
 | AC-04 | T-04 | `server/tests/api/auth.test.ts` "T-04 / AC-04" (2 tests); `client/tests/App.test.tsx` login and logout tests (8 tests) | Automated | Pass | `296cc54` |
-| AC-05 | T-05 | `server/tests/api/events.test.ts` T-05; `client/tests/Events.test.tsx` create/publish journey | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
-| AC-06 | T-06 | `server/tests/unit/events.test.ts`; `server/tests/api/events.test.ts` T-06; client validation | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
-| AC-07 | T-07 | `server/tests/api/events.test.ts` T-07 filtering, privacy and own registration | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
-| AC-08 | T-08 | `server/tests/api/events.test.ts` T-08 repeated/concurrent publish and past start | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
-| AC-09 | T-09 | `server/tests/api/events.test.ts` T-09 role/ownership rejections | Automated | Pass | Uncommitted tree on `3a5f20b`; see issue4 evidence |
-| AC-10 | T-10 | `<>` | Automated | Not run | |
-| AC-11 | T-11 | `<>` | Automated | Not run | |
-| AC-12 | T-12 | `<>` | Automated | Not run | |
-| AC-13 | T-13 | `<>` | Automated | Not run | |
-| AC-14 | T-14 | `<>` | Automated | Not run | |
-| AC-15 | T-15 | `<>` | Automated | Not run | |
+| AC-05 | T-05 | `server/tests/api/events.test.ts` T-05; `client/tests/Events.test.tsx` create/publish journey | Automated | Pass | `8538324` |
+| AC-06 | T-06 | `server/tests/unit/events.test.ts`; `server/tests/api/events.test.ts` T-06; client validation | Automated | Pass | `8538324` |
+| AC-07 | T-07 | `server/tests/api/events.test.ts` T-07 filtering, privacy and own registration | Automated | Pass | `8538324` |
+| AC-08 | T-08 | `server/tests/api/events.test.ts` T-08 repeated/concurrent publish and past start | Automated | Pass | `8538324` |
+| AC-09 | T-09 | `server/tests/api/events.test.ts` T-09 role/ownership rejections | Automated | Pass | `8538324` |
+| AC-10 | T-10 | `server/tests/api/registrations.test.ts` "T-10"; `client/tests/Registrations.test.tsx` register and receipt | Automated | Pass | `d3d1c4a` |
+| AC-11 | T-11 | `server/tests/api/registrations.test.ts` "T-11" (repeat and 5 concurrent same-participant requests); UI duplicate message | Automated | Pass | `d3d1c4a` |
+| AC-12 | T-12 | `server/tests/unit/registration-rules.test.ts` "T-12"; `server/tests/api/registration-capacity.test.ts` (TDD red then green); UI full message | Automated | Pass | `d3d1c4a` |
+| AC-13 | T-13 | `server/tests/api/registrations.test.ts` "T-13" (10 concurrent participants, capacity 1) | Automated | Pass | `d3d1c4a` |
+| AC-14 | T-14 | `server/tests/api/registrations.test.ts` "T-14" (draft, missing, started, organizer, session and CSRF); UI closed message | Automated | Pass | `d3d1c4a` |
+| AC-15 | T-15 | `server/tests/api/registrations.test.ts` "T-15" (privacy, mine, new app instance); `client/tests/Registrations.test.tsx` My registrations and receipt | Automated | Pass | `d3d1c4a` |
 | AC-16 | T-16 | `<>` | Automated | Not run | |
 | AC-17 | T-17 | `<>` | Automated | Not run | |
 | AC-18 | T-18, M-02 | `<>` | Automated + manual | Not run | |
 | AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts` (four named T-19 cases); guard tests in `server/tests/unit/test-database.test.ts` | Automated + manual | T-19 Pass; M-01 not run yet | Tested as uncommitted tree matching `d111892`; merged via PR #11 (`cf7ef4b`) |
-
-### Issue #4 execution (2026-11-06)
-
-- `npm run build`: exit 0, [output](../../evidence/sprint-1/issue4-build.txt).
-- `npm test`: exit 0; server 76 passed, client 22 passed; 0 failed/skipped. [Output](../../evidence/sprint-1/issue4-npm-test.txt). Includes the unchanged auth assertions; App UI mocks now provide event lists.
-- T-03 event endpoint/CSRF coverage is added in `server/tests/api/events.test.ts`, leaving the teammate's auth test file unchanged.
-- `node --import tsx e2e/scripts/issue4-smoke.mjs`: desktop/mobile create-publish-discover smoke passes against guarded real PostgreSQL; [output](../../evidence/sprint-1/issue4-smoke.txt), [screenshots and scope](../../evidence/sprint-1/issue4-events.md). This is F-02 smoke coverage, not full T-18/M-02.
-- Initial run: server 76 passed; client 21 passed, 1 failed (server field-error focus happened while input was disabled). Focus now runs after inputs are enabled; unchanged assertion passes. [Initial output](../../evidence/sprint-1/issue4-initial-test.txt).
-- All results are for the uncommitted working tree based on `3a5f20b`; user commit/push and teammate review remain pending.
 
 ## Evidence Index
 
@@ -108,12 +109,13 @@ Actual screenshots and logs are stored under `docs/evidence/sprint-1/` and linke
 | Evidence | AC / test | Role | Preconditions and steps | Expected | Actual | File | Commit |
 |---|---|---|---|---|---|---|---|
 | #2 foundation: migrate, seed twice, constraints, restart | AC-19 / T-19 | n/a | Empty test database; see evidence file | Seed idempotent, constraints reject bad rows, rows survive restart | As expected | [issue2-foundation.md](../../evidence/sprint-1/issue2-foundation.md), [file hashes](../../evidence/sprint-1/issue2-file-hashes.txt) | `d111892` |
+| #4 create, publish and discover at desktop and mobile | AC-05 to AC-07 | Organizer, Participant | Smoke runner on the test database | Draft, publish, My events, discovery and detail work at both viewports | As expected; no overflow | [issue4-events.md](../../evidence/sprint-1/issue4-events.md) (12 screenshots), [issue4-smoke.txt](../../evidence/sprint-1/issue4-smoke.txt) | `8538324` |
 | Normal journey: publish, register, retrieve saved registration | AC-05, AC-10, AC-15 / T-18 | Organizer, Participant | `<>` | `<>` | `<>` | `docs/evidence/sprint-1/<file>.png` | `<SHA>` |
 | Rule rejection: event full or duplicate | AC-11, AC-12 / T-18 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Login and logout, old session rejected | AC-01, AC-04 / T-04 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Forbidden role / foreign owner (API output) | AC-09, AC-17 / T-09, T-17 | Participant, Organizer | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
-| Concurrency: last place | AC-13 / T-13 | 10 Participants | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
-| TDD red and green | AC-12 / T-12 | n/a | `<>` | `<>` | `<>` | `<file>.log` | `<SHA red>`, `<SHA green>` |
+| Concurrency: last place | AC-13 / T-13 | 10 Participants | Capacity 1; 10 registrations at once | One 201, nine 409 `EVENT_FULL`, one ACTIVE row | As expected | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) | `7582113` |
+| TDD red and green | AC-12 / T-12 | n/a | Commit the two T-12 files alone, run; then add the implementation, run again | Red fails on the capacity rule; green passes with unchanged files | As expected | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt), [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) | `5e373f0`, `d3d1c4a` |
 | Restart persistence | AC-15, AC-18 / T-15, T-18 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Desktop and mobile viewports | AC-18 / T-18, M-02 | all | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Fresh clone setup | AC-19 / M-01 | n/a | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
@@ -124,15 +126,16 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 
 | Item | Type (failed test / skipped test / incomplete / limitation) | Impact | Plan |
 |---|---|---|---|
-| `<item or "none">` | `<>` | `<>` | `<>` |
+| T-11 and T-13 were written after the registration code, not red first | Limitation | Only T-12 is TDD evidence. A check that removed the row lock made T-13 fail (7 to 9 of 10 got the last place), so T-13 does detect overbooking. | None; T-12 is the planned TDD test |
+| Registration under heavy load waits up to 15 s for a database transaction, then answers 503 `SERVICE_BUSY` | Limitation | Only matters with many simultaneous registrations; nothing is stored on 503 and the user can retry | Revisit with the load target NFR-07 in Sprint 3 |
 
 ## Version history
 
 | Version | Date | Change | Reviewed by |
 |---|---|---|---|
-| 1.0 | 2026-11-03 | Initial test specification | `<pending>` |
-| 1.1 | 2026-11-05 | Record actual #2/T-19 automated execution and explicit pending M-01/user/peer review. | Pending human review |
-| 1.2 | 2026-11-05 | #3: T-03 role case uses a probe route until #4 adds Organizer routes; AC-01 to AC-04 mapped to actual test files. The #2 client shell smoke test was replaced by the #3 login and routing tests because the placeholder page it checked no longer exists. Client tests and setup live in `client/tests/` (team convention). | Pending teammate review |
-| 1.3 | 2026-11-05 | Moved #2 run and evidence notes into the table rows; recorded #3 test counts. | Pending teammate review |
-
-| 1.4 | 2026-11-06 | Record F-02 tests and initial focus failure/fix; align T-07 with approved myRegistration exception; add separate T-03 event coverage. | User decisions confirmed; teammate implementation review pending |
+| 1.0 | 2026-11-03 | Initial test specification | `Tell52` |
+| 1.1 | 2026-11-05 | Record actual #2/T-19 automated execution and explicit pending M-01/user/peer review. | `JeenoXD` |
+| 1.2 | 2026-11-05 | #3: T-03 role case uses a probe route until #4 adds Organizer routes; AC-01 to AC-04 mapped to actual test files. The #2 client shell smoke test was replaced by the #3 login and routing tests because the placeholder page it checked no longer exists. Client tests and setup live in `client/tests/` (team convention). | `Tell52` |
+| 1.3 | 2026-11-05 | Moved #2 run and evidence notes into the table rows; recorded #3 test counts. | `Tell52` |
+| 1.4 | 2026-11-06 | Record F-02 tests and initial focus failure/fix; align T-07 with approved myRegistration exception; add separate T-03 event coverage. | `JeenoXD` |
+| 1.5 | 2026-11-06 | Moved the #4 execution notes into the tables and linked AC-05 to AC-09 to `8538324`; added #5 results for AC-10 to AC-15, T-12 red/green and evidence rows; recorded the first #5 run failure (T-13, P2028) and its fix. | `Tell52` |

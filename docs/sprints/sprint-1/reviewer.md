@@ -4,18 +4,18 @@ Authors never approve their own PRs. Each review records a specific check, quest
 
 | Member | GitHub | Role in reviews |
 |---|---|---|
-| Chutipon Homsuwan | JeenoXD | `<author of / reviewer of>` |
-| `<teammate name>` | Tell52 | `<author of / reviewer of>` |
+| Chutipon Homsuwan | JeenoXD | Author of #1, #3, #5; merged PR #11 and #13 |
+| Napat Tantipibulsap | Tell52 | Author of #2, #4; merged PR #10 and #12 |
 
 ## Feature PRs into `sprint1`
 
 | Issue | Branch | PR | Author | Reviewer | Review comment (specific check or finding) | Author response | Checks rerun | Result |
 |---|---|---|---|---|---|---|---|---|
-| #1 Documentation baseline | `feature/issue1-docs` | `<link>` | `<name>` | `<name>` | `<e.g. checked every AC-01 to AC-19 maps to a T test; questioned capacity cap DEC-03>` | `<response>` | `<ID consistency check>` | `<Approved / changes requested then approved>` |
-| #2 Foundation | `feature/issue2-foundation` | Feature PR into sprint1 | User authorized Codex commit | Pending teammate | Review not performed | Corrected accidental direct push with revert; feature submitted for PR review | [T-19 execution](../../evidence/sprint-1/issue2-foundation.md) | Automated results recorded; peer review, M-01 and merge pending |
-| #3 Authentication | `feature/issue3-auth` | `<link>` | `<name>` | `<name>` | `<e.g. replayed old cookie after logout; checked no hash in responses>` | `<response>` | `<T-01 to T-04>` | `<result>` |
-| #4 Events | `feature/issue4-events` | Not opened | Tell52 with Codex assistance | Pending teammate | User approved limits, own-registration exception and three existing integration/test file changes before implementation | New event logic in separate files; no commit/push | [Build, T-05–09, regression and smoke evidence](../../evidence/sprint-1/issue4-events.md) | Local review ready; no peer approval or integration claimed |
-| #5 Registration | `feature/issue5-registration` | `<link>` | `<name>` | `<name>` | `<e.g. verified T-12 red then green with unchanged assertions; asked about lock vs serializable>` | `<response>` | `<T-10 to T-15>` | `<result>` |
+| #1 Documentation baseline | `feature/issue1-docs` | [PR #10](https://github.com/Tell52/SE_GPRJ3/pull/10) | JeenoXD | Tell52(merged) | `<what Tell52 checked>` | `<response>` | ID consistency check | Merged `28be4c5` |
+| #2 Foundation | `feature/issue2-foundation` | [PR #11](https://github.com/Tell52/SE_GPRJ3/pull/11) | Tell52 (Codex) | JeenoXD (merged) | `<what Chutipon checked>` | Accidental direct push reverted (`d16684b`) and resubmitted via PR | [T-19 execution](../../evidence/sprint-1/issue2-foundation.md) | Merged `cf7ef4b` |
+| #3 Authentication | `feature/issue3-auth` | [PR #12](https://github.com/Tell52/SE_GPRJ3/pull/12) | JeenoXD (Claude) | Tell52 (merged) | `<what Tell52 checked>` | `<response>` | T-01 to T-04: server 31, client 9 passed | Merged `3a5f20b` |
+| #4 Events | `feature/issue4-events` | [PR #13](https://github.com/Tell52/SE_GPRJ3/pull/13) | Tell52 (Codex) | JeenoXD (merged) | `<what Chutipon checked>` | `<response>` | [T-05 to T-09, smoke](../../evidence/sprint-1/issue4-events.md) | Merged `345459c` |
+| #5 Registration | `feature/issue5-registration` | `<PR link>` | JeenoXD (Claude) | Tell52 | `<e.g. checked T-12 red then green with unchanged files; read the FOR UPDATE transaction>` | `<response>` | T-10 to T-15 | `<result>` |
 | #6 Roster | `feature/issue6-roster` | `<link>` | `<name>` | `<name>` | `<comment>` | `<response>` | `<T-16, T-17>` | `<result>` |
 | #7 Verification | `feature/issue7-verification` | `<link>` | `<name>` | `<name>` | `<comment>` | `<response>` | `<T-18, M-01, M-02>` | `<result>` |
 
@@ -33,11 +33,11 @@ Record actual work only. An equal number of commits is not required; both member
 
 | Issue | Author(s) | Reviewer | Pair work | Main contribution |
 |---|---|---|---|---|
-| #1 Documentation baseline | `<name>` | `<name>` | `<yes/no, what>` | `<e.g. drafted SRS and contracts; reviewed decisions>` |
-| #2 Foundation | `<name>` | `<name>` | `<>` | `<>` |
-| #3 Authentication | `<name>` | `<name>` | `<>` | `<>` |
-| #4 Events | `<name>` | `<name>` | `<>` | `<>` |
-| #5 Registration | `<name>` | `<name>` | `<>` | `<>` |
+| #1 Documentation baseline | Chutipon (with Claude) | Tell52 | No | Parts A to E and sprint records, matched to Issues #1 to #8; Tell52 wrote the Issues (with Codex) |
+| #2 Foundation | Tell52 (with Codex) | Chutipon | No | Project structure, schema, migration, seed, local PostgreSQL, T-19 |
+| #3 Authentication | Chutipon (with Claude) | Tell52 | No | Sessions, CSRF, role middleware, login, app shell, T-01 to T-04 |
+| #4 Events | Tell52 (with Codex) | Chutipon | No | Event create, publish, discovery API and UI, T-05 to T-09, smoke run |
+| #5 Registration | Chutipon (with Claude) | Tell52 | No | Locked registration transaction, register UI, receipt, My registrations, T-10 to T-15, T-12 TDD |
 | #6 Roster | `<name>` | `<name>` | `<>` | `<>` |
 | #7 Verification | `<name>` | `<name>` | `<>` | `<>` |
 | #8 Release | `<name>` | `<name>` | `<>` | `<>` |
@@ -47,7 +47,7 @@ Record actual work only. An equal number of commits is not required; both member
 | Member | Approximate share | Areas |
 |---|---|---|
 | Chutipon Homsuwan | `<%>` | `<>` |
-| `<teammate name>` | `<%>` | `<>` |
+| Napat Tantipibulsap | `<%>` | `<>` |
 
 ## Process Evidence Index
 
@@ -65,11 +65,11 @@ Screenshots of Issues, PRs, reviews, history and board are stored under `docs/ev
 
 | Issue | Branch | PR into `sprint1` | Reviewer | Status |
 |---|---|---|---|---|
-| #1 | `feature/issue1-docs` | `<link>` | `<name>` | Backlog |
-| #2 | `feature/issue2-foundation` | Feature PR into sprint1 | Pending teammate | Not Done: peer review, M-01 and merge pending. GitHub board was not changed. |
-| #3 | `feature/issue3-auth` | `<link>` | `<name>` | Backlog |
-| #4 | `feature/issue4-events` | Not opened | Pending teammate | Local implementation ready for user review; GitHub Project still Specified (status not changed). Description synchronized with approved contract. |
-| #5 | `feature/issue5-registration` | `<link>` | `<name>` | Backlog |
+| #1 | `feature/issue1-docs` | [PR #10](https://github.com/Tell52/SE_GPRJ3/pull/10) | Tell52 | Merged into `sprint1` (`28be4c5`) |
+| #2 | `feature/issue2-foundation` | [PR #11](https://github.com/Tell52/SE_GPRJ3/pull/11) | JeenoXD | Merged into `sprint1` (`cf7ef4b`); M-01 still pending |
+| #3 | `feature/issue3-auth` | [PR #12](https://github.com/Tell52/SE_GPRJ3/pull/12) | Tell52 | Merged into `sprint1` (`3a5f20b`) |
+| #4 | `feature/issue4-events` | [PR #13](https://github.com/Tell52/SE_GPRJ3/pull/13) | JeenoXD | Merged into `sprint1` (`345459c`) |
+| #5 | `feature/issue5-registration` | `<PR link>` | Tell52 | In review |
 | #6 | `feature/issue6-roster` | `<link>` | `<name>` | Backlog |
 | #7 | `feature/issue7-verification` | `<link>` | `<name>` | Backlog |
 | #8 | `sprint1` into `main` | `<link>` | `<name>` | Backlog |
@@ -87,5 +87,5 @@ Screenshots of Issues, PRs, reviews, history and board are stored under `docs/ev
 |---|---|---|
 | 1.0 | 2026-11-03 | Review, contributions and process evidence templates |
 | 1.1 | 2026-11-05 | Record #2 local implementation/evidence without claiming human approval, commit, PR or integration. |
-
-| 1.2 | 2026-11-06 | Record #4 local evidence and pending human review; GitHub description updated, no commit/push/PR/merge. |
+| 1.2 | 2026-11-06 | Record #4 evidence (written by Codex during #4). |
+| 1.3 | 2026-11-06 | Filled PR links, authors, mergers and merge commits for #1 to #4 from git history; review comments left for the reviewers to write; added #5. |

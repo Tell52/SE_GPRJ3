@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { ApiError, apiFetch } from '../api';
 import { useAuth } from '../auth/AuthContext';
 import { errorMessage, formatTime, type EventRecord } from './model';
+import { RegisterPanel } from '../registrations/RegisterPanel';
 import './events.css';
 
 export function EventsPage({ mine = false }: { mine?: boolean }) {
@@ -36,7 +37,7 @@ export function EventsPage({ mine = false }: { mine?: boolean }) {
 }
 
 function Status({ event }: { event: EventRecord }) { return <span className="role-badge">{event.status === 'DRAFT' ? 'Draft' : 'Published'}</span>; }
-function Places({ event }: { event: EventRecord }) { return <p>{event.remainingPlaces > 0 ? `${event.remainingPlaces} places left` : 'Full'}</p>; }
+function Places({ event }: { event: EventRecord }) { return <p>{event.remainingPlaces > 0 ? `${event.remainingPlaces} ${event.remainingPlaces === 1 ? 'place' : 'places'} left` : 'Full'}</p>; }
 
 export function EventDetailPage({ organizer = false }: { organizer?: boolean }) {
   const { id } = useParams();
@@ -78,6 +79,7 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
       <p className="event-description">{event.description}</p><p>{event.location}</p>
       <p>Start: {formatTime(event.startsAt)} (Bangkok)</p><p>End: {formatTime(event.endsAt)} (Bangkok)</p>
       <p>Organizer: {event.organizer.name}</p><Places event={event} />
+      {!organizer && user?.role === 'PARTICIPANT' && event.status === 'PUBLISHED' && <RegisterPanel event={event} onFull={() => setEvent({ ...event, remainingPlaces: 0 })} />}
       {organizer && event.organizer.id === user?.id && event.status === 'DRAFT' &&
         (confirm ? <div role="group" aria-label="Confirm publication">
           <p>Publish this event? Participants will be able to register.</p>

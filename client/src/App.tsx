@@ -6,8 +6,9 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { LoginPage } from './pages/LoginPage';
 import { EventsPage, EventDetailPage } from './events/EventPages';
 import { CreateEventPage } from './events/CreateEventPage';
+import { MyRegistrationsPage, RegistrationReceiptPage } from './registrations/RegistrationPages';
 
-// Registration screens arrive in #5; unknown routes retain a simple fallback.
+// The roster arrives in #6; unknown routes retain a simple fallback.
 function Placeholder({ title, text }: { title: string; text: string }) {
   return <section><h1>{title}</h1><p>{text}</p></section>;
 }
@@ -27,7 +28,8 @@ export function AppRoutes() {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:id" element={<EventDetailPage />} />
           <Route element={<ProtectedRoute role="PARTICIPANT" />}>
-            <Route path="/registrations" element={<Placeholder title="My registrations" text="You have not registered for any events" />} />
+            <Route path="/registrations" element={<MyRegistrationsPage />} />
+            <Route path="/registrations/:id" element={<RegistrationReceiptPage />} />
           </Route>
           <Route element={<ProtectedRoute role="ORGANIZER" />}>
             <Route path="/organizer/events" element={<EventsPage mine />} />
