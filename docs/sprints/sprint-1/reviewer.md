@@ -5,15 +5,15 @@ Authors never approve their own PRs. Each review records a specific check, quest
 | Member | GitHub | Role in reviews |
 |---|---|---|
 | Chutipon Homsuwan | JeenoXD | Author of #1, #3, #5; merged PR #11 and #13 |
-| Napat Tantipibulsap | Tell52 (also TellMe2) | Author of #2, #4; merged PR #10 and #12 |
+| Napat Tantipibulsap | Tell52 | Author of #2, #4; merged PR #10 and #12 |
 
 ## Feature PRs into `sprint1`
 
 | Issue | Branch | PR | Author | Reviewer | Review comment (specific check or finding) | Author response | Checks rerun | Result |
 |---|---|---|---|---|---|---|---|---|
-| #1 Documentation baseline | `feature/issue1-docs` | [PR #10](https://github.com/Tell52/SE_GPRJ3/pull/10) | JeenoXD | Tell52 (merged as TellMe2) | `<what Tell52 checked>` | `<response>` | ID consistency check | Merged `28be4c5` |
+| #1 Documentation baseline | `feature/issue1-docs` | [PR #10](https://github.com/Tell52/SE_GPRJ3/pull/10) | JeenoXD | Tell52(merged) | `<what Tell52 checked>` | `<response>` | ID consistency check | Merged `28be4c5` |
 | #2 Foundation | `feature/issue2-foundation` | [PR #11](https://github.com/Tell52/SE_GPRJ3/pull/11) | Tell52 (Codex) | JeenoXD (merged) | `<what Chutipon checked>` | Accidental direct push reverted (`d16684b`) and resubmitted via PR | [T-19 execution](../../evidence/sprint-1/issue2-foundation.md) | Merged `cf7ef4b` |
-| #3 Authentication | `feature/issue3-auth` | [PR #12](https://github.com/Tell52/SE_GPRJ3/pull/12) | JeenoXD (Claude) | Tell52 (merged as TellMe2) | `<what Tell52 checked>` | `<response>` | T-01 to T-04: server 31, client 9 passed | Merged `3a5f20b` |
+| #3 Authentication | `feature/issue3-auth` | [PR #12](https://github.com/Tell52/SE_GPRJ3/pull/12) | JeenoXD (Claude) | Tell52 (merged) | `<what Tell52 checked>` | `<response>` | T-01 to T-04: server 31, client 9 passed | Merged `3a5f20b` |
 | #4 Events | `feature/issue4-events` | [PR #13](https://github.com/Tell52/SE_GPRJ3/pull/13) | Tell52 (Codex) | JeenoXD (merged) | `<what Chutipon checked>` | `<response>` | [T-05 to T-09, smoke](../../evidence/sprint-1/issue4-events.md) | Merged `345459c` |
 | #5 Registration | `feature/issue5-registration` | `<PR link>` | JeenoXD (Claude) | Tell52 | `<e.g. checked T-12 red then green with unchanged files; read the FOR UPDATE transaction>` | `<response>` | T-10 to T-15 | `<result>` |
 | #6 Roster | `feature/issue6-roster` | `<link>` | `<name>` | `<name>` | `<comment>` | `<response>` | `<T-16, T-17>` | `<result>` |

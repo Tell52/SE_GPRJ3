@@ -51,8 +51,8 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 |---|---|---|---|
 | Reviewed contracts v1.0 (spec and test design) | `96d9a67` (merged in PR #10, `28be4c5`) | 2026-11-03 | Before any implementation commit |
 | First implementation (#2 foundation) | `d111892` (merged in PR #11, `cf7ef4b`) | 2026-11-05 | Implementation followed the spec |
-| T-12 red (#5) | `<red commit SHA>` | `<date>` | Only `server/tests/unit/registration-rules.test.ts` and `server/tests/api/registration-capacity.test.ts` committed; [failing output](../../evidence/sprint-1/issue5-t12-red.txt) |
-| T-12 green (#5) | `<green commit SHA>` | `<date>` | Implementation added; both T-12 files unchanged (`git diff <red> <green> -- <the two files>` is empty); [passing output](../../evidence/sprint-1/issue5-t12-green.txt) |
+| T-12 red (#5) | `5e373f0` | 2026-11-06 | Only `server/tests/unit/registration-rules.test.ts` and `server/tests/api/registration-capacity.test.ts` committed; [failing output](../../evidence/sprint-1/issue5-t12-red.txt) |
+| T-12 green (#5) | `d3d1c4a` | 2026-11-06 | Implementation added; both T-12 files unchanged; [passing output](../../evidence/sprint-1/issue5-t12-green.txt) |
 
 ### Build and test runs
 
@@ -68,11 +68,11 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | #4 events (2026-11-06) | `npm test` (server) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 76 | 0 | 0 | [issue4-npm-test.txt](../../evidence/sprint-1/issue4-npm-test.txt) |
 | #4 events (2026-11-06) | `npm test` (client) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 22 | 0 | 0 | [issue4-npm-test.txt](../../evidence/sprint-1/issue4-npm-test.txt) |
 | #4 events (2026-11-06) | `node --import tsx e2e/scripts/issue4-smoke.mjs` (desktop and mobile) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 3 checks | 0 | 0 | [issue4-smoke.txt](../../evidence/sprint-1/issue4-smoke.txt) |
-| #5 registration, first full run (2026-11-06) | `npm test` (server) on Chutipon's machine | `<green commit SHA>` before the fix | 1 | 89 | 1 (T-13) | 0 | [issue5-first-run.txt](../../evidence/sprint-1/issue5-first-run.txt): 3 of 10 concurrent requests got 500 (Prisma P2028, 2 s connection wait too short). Nobody overbooked. Fixed with longer transaction limits and a 503 fallback; T-13 unchanged and then passed |
-| #5 T-12 red | `npx vitest run tests/unit/registration-rules.test.ts tests/api/registration-capacity.test.ts` (in `server/`) | `<red commit SHA>` | 1 | 0 | 1 test, plus the unit file fails to load (rule not written yet) | 0 | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt) |
-| #5 T-12 green | Same command | `<green commit SHA>` | 0 | 7 | 0 | 0 | [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) |
-| #5 registration | `npm test` (server) | `<green commit SHA>` | 0 | 90 | 0 | 0 | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) |
-| #5 registration | `npm test` (client) | `<green commit SHA>` | 0 | 35 | 0 | 0 | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) |
+| #5 registration, first full run (2026-11-06) | `npm test` (server) on Chutipon's machine | `d3d1c4a` before the fix | 1 | 89 | 1 (T-13) | 0 | [issue5-first-run.txt](../../evidence/sprint-1/issue5-first-run.txt): 3 of 10 concurrent requests got 500 (Prisma P2028, 2 s connection wait too short). Nobody overbooked. Fixed with longer transaction limits and a 503 fallback; T-13 unchanged and then passed |
+| #5 T-12 red | `npx vitest run tests/unit/registration-rules.test.ts tests/api/registration-capacity.test.ts` (in `server/`) | `5e373f0` | 1 | 0 | 1 test, plus the unit file fails to load (rule not written yet) | 0 | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt) |
+| #5 T-12 green | Same command | `d3d1c4a` | 0 | 7 | 0 | 0 | [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) |
+| #5 registration | `npm test` (server) | `7582113` | 0 | 90 | 0 | 0 | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) |
+| #5 registration | `npm test` (client) | `7582113` | 0 | 35 | 0 | 0 | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) |
 | Sprint 1 release | `npm run build` | `<SHA>` | `<>` | | | | `<>` |
 | Sprint 1 release | `npm test` (server) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
 | Sprint 1 release | `npm test` (client) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
@@ -91,12 +91,12 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | AC-07 | T-07 | `server/tests/api/events.test.ts` T-07 filtering, privacy and own registration | Automated | Pass | `8538324` |
 | AC-08 | T-08 | `server/tests/api/events.test.ts` T-08 repeated/concurrent publish and past start | Automated | Pass | `8538324` |
 | AC-09 | T-09 | `server/tests/api/events.test.ts` T-09 role/ownership rejections | Automated | Pass | `8538324` |
-| AC-10 | T-10 | `server/tests/api/registrations.test.ts` "T-10"; `client/tests/Registrations.test.tsx` register and receipt | Automated | Pass | `<green commit SHA>` |
-| AC-11 | T-11 | `server/tests/api/registrations.test.ts` "T-11" (repeat and 5 concurrent same-participant requests); UI duplicate message | Automated | Pass | `<green commit SHA>` |
-| AC-12 | T-12 | `server/tests/unit/registration-rules.test.ts` "T-12"; `server/tests/api/registration-capacity.test.ts` (TDD red then green); UI full message | Automated | Pass | `<green commit SHA>` |
-| AC-13 | T-13 | `server/tests/api/registrations.test.ts` "T-13" (10 concurrent participants, capacity 1) | Automated | Pass | `<green commit SHA>` |
-| AC-14 | T-14 | `server/tests/api/registrations.test.ts` "T-14" (draft, missing, started, organizer, session and CSRF); UI closed message | Automated | Pass | `<green commit SHA>` |
-| AC-15 | T-15 | `server/tests/api/registrations.test.ts` "T-15" (privacy, mine, new app instance); `client/tests/Registrations.test.tsx` My registrations and receipt | Automated | Pass | `<green commit SHA>` |
+| AC-10 | T-10 | `server/tests/api/registrations.test.ts` "T-10"; `client/tests/Registrations.test.tsx` register and receipt | Automated | Pass | `d3d1c4a` |
+| AC-11 | T-11 | `server/tests/api/registrations.test.ts` "T-11" (repeat and 5 concurrent same-participant requests); UI duplicate message | Automated | Pass | `d3d1c4a` |
+| AC-12 | T-12 | `server/tests/unit/registration-rules.test.ts` "T-12"; `server/tests/api/registration-capacity.test.ts` (TDD red then green); UI full message | Automated | Pass | `d3d1c4a` |
+| AC-13 | T-13 | `server/tests/api/registrations.test.ts` "T-13" (10 concurrent participants, capacity 1) | Automated | Pass | `d3d1c4a` |
+| AC-14 | T-14 | `server/tests/api/registrations.test.ts` "T-14" (draft, missing, started, organizer, session and CSRF); UI closed message | Automated | Pass | `d3d1c4a` |
+| AC-15 | T-15 | `server/tests/api/registrations.test.ts` "T-15" (privacy, mine, new app instance); `client/tests/Registrations.test.tsx` My registrations and receipt | Automated | Pass | `d3d1c4a` |
 | AC-16 | T-16 | `<>` | Automated | Not run | |
 | AC-17 | T-17 | `<>` | Automated | Not run | |
 | AC-18 | T-18, M-02 | `<>` | Automated + manual | Not run | |
@@ -114,8 +114,8 @@ Actual screenshots and logs are stored under `docs/evidence/sprint-1/` and linke
 | Rule rejection: event full or duplicate | AC-11, AC-12 / T-18 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Login and logout, old session rejected | AC-01, AC-04 / T-04 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Forbidden role / foreign owner (API output) | AC-09, AC-17 / T-09, T-17 | Participant, Organizer | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
-| Concurrency: last place | AC-13 / T-13 | 10 Participants | Capacity 1; 10 registrations at once | One 201, nine 409 `EVENT_FULL`, one ACTIVE row | `<fill after your run>` | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) | `<green SHA>` |
-| TDD red and green | AC-12 / T-12 | n/a | Commit the two T-12 files alone, run; then add the implementation, run again | Red fails on the capacity rule; green passes with unchanged files | `<fill after your run>` | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt), [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) | `<red SHA>`, `<green SHA>` |
+| Concurrency: last place | AC-13 / T-13 | 10 Participants | Capacity 1; 10 registrations at once | One 201, nine 409 `EVENT_FULL`, one ACTIVE row | As expected | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) | `7582113` |
+| TDD red and green | AC-12 / T-12 | n/a | Commit the two T-12 files alone, run; then add the implementation, run again | Red fails on the capacity rule; green passes with unchanged files | As expected | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt), [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) | `5e373f0`, `d3d1c4a` |
 | Restart persistence | AC-15, AC-18 / T-15, T-18 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Desktop and mobile viewports | AC-18 / T-18, M-02 | all | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Fresh clone setup | AC-19 / M-01 | n/a | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
@@ -133,9 +133,9 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 
 | Version | Date | Change | Reviewed by |
 |---|---|---|---|
-| 1.0 | 2026-11-03 | Initial test specification | `<pending>` |
-| 1.1 | 2026-11-05 | Record actual #2/T-19 automated execution and explicit pending M-01/user/peer review. | Pending human review |
-| 1.2 | 2026-11-05 | #3: T-03 role case uses a probe route until #4 adds Organizer routes; AC-01 to AC-04 mapped to actual test files. The #2 client shell smoke test was replaced by the #3 login and routing tests because the placeholder page it checked no longer exists. Client tests and setup live in `client/tests/` (team convention). | Pending teammate review |
-| 1.3 | 2026-11-05 | Moved #2 run and evidence notes into the table rows; recorded #3 test counts. | Pending teammate review |
-| 1.4 | 2026-11-06 | Record F-02 tests and initial focus failure/fix; align T-07 with approved myRegistration exception; add separate T-03 event coverage. | Tell52 decisions; Chutipon review pending |
-| 1.5 | 2026-11-06 | Moved the #4 execution notes into the tables and linked AC-05 to AC-09 to `8538324`; added #5 results for AC-10 to AC-15, T-12 red/green and evidence rows; recorded the first #5 run failure (T-13, P2028) and its fix. | Pending Tell52 review |
+| 1.0 | 2026-11-03 | Initial test specification | `Tell52` |
+| 1.1 | 2026-11-05 | Record actual #2/T-19 automated execution and explicit pending M-01/user/peer review. | `JeenoXD` |
+| 1.2 | 2026-11-05 | #3: T-03 role case uses a probe route until #4 adds Organizer routes; AC-01 to AC-04 mapped to actual test files. The #2 client shell smoke test was replaced by the #3 login and routing tests because the placeholder page it checked no longer exists. Client tests and setup live in `client/tests/` (team convention). | `Tell52` |
+| 1.3 | 2026-11-05 | Moved #2 run and evidence notes into the table rows; recorded #3 test counts. | `Tell52` |
+| 1.4 | 2026-11-06 | Record F-02 tests and initial focus failure/fix; align T-07 with approved myRegistration exception; add separate T-03 event coverage. | `JeenoXD` |
+| 1.5 | 2026-11-06 | Moved the #4 execution notes into the tables and linked AC-05 to AC-09 to `8538324`; added #5 results for AC-10 to AC-15, T-12 red/green and evidence rows; recorded the first #5 run failure (T-13, P2028) and its fix. | `Tell52` |
