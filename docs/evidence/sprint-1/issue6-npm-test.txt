@@ -1,0 +1,47 @@
+
+> event-planner@0.1.0 test
+> npm test --workspace server && npm test --workspace client
+
+
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 57ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 E:/SE Group/SE_GPRJ3/server
+
+
+ Test Files  10 passed (10)
+      Tests  100 passed (100)
+   Start at  23:17:07
+   Duration  82.53s (transform 430ms, setup 0ms, import 4.86s, tests 69.90s, environment 1ms)
+
+
+> @event-planner/client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 E:/SE Group/SE_GPRJ3/client
+
+
+ Test Files  4 passed (4)
+      Tests  46 passed (46)
+   Start at  23:18:30
+   Duration  5.68s (transform 1.30s, setup 5.93s, import 1.80s, tests 2.29s, environment 11.00s)
+

@@ -4,6 +4,7 @@ import { ApiError, apiFetch } from '../api';
 import { useAuth } from '../auth/AuthContext';
 import { errorMessage, formatTime, type EventRecord } from './model';
 import { RegisterPanel } from '../registrations/RegisterPanel';
+import { RosterPanel } from '../roster/RosterPanel';
 import './events.css';
 
 export function EventsPage({ mine = false }: { mine?: boolean }) {
@@ -86,6 +87,7 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
           <div className="event-actions"><button disabled={busy} onClick={publish}>{busy ? 'Publishing...' : 'Confirm publish'}</button>
             <button className="secondary" disabled={busy} onClick={() => setConfirm(false)}>Cancel</button></div>
         </div> : <button onClick={() => setConfirm(true)}>Publish</button>)}
+      {organizer && event.organizer.id === user?.id && <RosterPanel key={event.id} eventId={event.id} />}
     </article>}
   </section>;
 }
