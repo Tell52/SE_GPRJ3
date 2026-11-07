@@ -5,13 +5,14 @@ import type { EventRecord } from '../events/model';
 import { registerErrorMessage, type RegistrationRecord } from './model';
 
 /** Register area on a participant's event detail (F-03). The API enforces every rule; this only reflects them. */
-export function RegisterPanel({ event, onFull }: { event: EventRecord; onFull?: () => void }) {
+export function RegisterPanel({ event, onFull, onRefresh }: { event: EventRecord; onFull?: () => void; onRefresh?: () => void }) {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
   if (event.myRegistration) {
     return <div className="register-panel">
+      {error && <p role="alert" className="alert">{error}</p>}
       <p role="status"><strong>You are registered</strong></p>
       <Link className="event-action" to={`/registrations/${event.myRegistration.id}`}>View registration</Link>
     </div>;
@@ -26,6 +27,8 @@ export function RegisterPanel({ event, onFull }: { event: EventRecord; onFull?: 
     } catch (e) {
       setError(registerErrorMessage(e));
       if (e instanceof ApiError && e.code === 'EVENT_FULL') onFull?.();
+      // Registered in another tab: reload so the page shows the registration instead of a Register button.
+      if (e instanceof ApiError && e.code === 'ALREADY_REGISTERED') onRefresh?.();
       setBusy(false);
     }
   }

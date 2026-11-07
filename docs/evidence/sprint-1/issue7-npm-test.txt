@@ -1,0 +1,87 @@
+PS C:\Users\chuti\Documents\SE_GPRJ3> npm test
+
+> event-planner@0.1.0 test
+> npm test --workspace server && npm test --workspace client
+
+
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 160ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/server
+
+ ✓ tests/api/foundation.test.ts (5 tests) 33431ms
+   ✓ T-19: fresh migration, repeat seed, changed passwords and edited events survive  17883ms
+   ✓ T-19: two real API process starts preserve every existing row  5562ms
+ ✓ tests/api/registrations.test.ts (7 tests) 16073ms
+     ✓ 201 ACTIVE for the session participant, row stored, remainingPlaces drops, same id in a new session  567ms
+     ✓ five concurrent requests from the same participant store exactly one ACTIVE row  2180ms
+     ✓ capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row  3674ms
+     ✓ draft 404, missing 404, started 409 REGISTRATION_CLOSED, organizer 403; no rows inserted  567ms
+     ✓ registration endpoints require a session, the participant role and a CSRF token  508ms
+     ✓ mine lists only own registrations with event details; another participant gets 404; survives an app restart  2652ms
+ ✓ tests/api/auth.test.ts (15 tests) 14382ms
+     ✓ valid credentials return the stored identity, a CSRF token and an HttpOnly SameSite=Lax sid cookie  3199ms
+     ✓ wrong password and unknown email return the identical 401 with no cookie and no session  1329ms
+     ✓ stored hash differs from the password and no response exposes hashes or tokens  612ms
+     ✓ a session past its absolute expiry is rejected with 401  584ms
+     ✓ expiry is absolute: using the session does not extend expiresAt  563ms
+     ✓ requireRole returns 403 for the wrong role and passes the right role  1092ms
+     ✓ a state changing request without or with a wrong X-CSRF-Token returns 403 and changes nothing  1114ms
+     ✓ requireCsrf lets safe methods through without a token  707ms
+     ✓ role or userId in the login body is ignored; identity comes from the stored account  630ms
+     ✓ logout revokes the session, clears the cookie and the replayed old cookie is rejected  663ms
+     ✓ logging out one session leaves the user's other sessions working  1079ms
+ ✓ tests/api/events.test.ts (26 tests) 9695ms
+     ✓ T-08 repeated and concurrent publication changes state only once; past start rejected  2227ms
+ ✓ tests/api/roster.test.ts (10 tests) 6567ms
+ ✓ tests/api/registration-capacity.test.ts (1 test) 5458ms
+     ✓ capacity 2 with two ACTIVE registrations: a third participant gets 409 EVENT_FULL and nothing is stored  3065ms
+ ✓ tests/unit/password.test.ts (4 tests) 1965ms
+     ✓ hash is bcrypt cost 12, differs from plaintext and verifies only the right password  1146ms
+     ✓ two hashes of the same password differ (salted)  811ms
+ ✓ tests/unit/events.test.ts (19 tests) 29ms
+ ✓ tests/unit/registration-rules.test.ts (6 tests) 7ms
+ ✓ tests/unit/test-database.test.ts (7 tests) 10ms
+
+ Test Files  10 passed (10)
+      Tests  100 passed (100)
+   Start at  17:46:16
+   Duration  105.28s (transform 628ms, setup 0ms, import 6.26s, tests 87.62s, environment 2ms)
+
+
+> @event-planner/client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/client
+
+ ✓ tests/Roster.test.tsx (11 tests) 773ms
+   ✓ T-16: My events links to the owner roster with ordered stored fields and count  470ms
+ ✓ tests/App.test.tsx (9 tests) 881ms
+ ✓ tests/Registrations.test.tsx (13 tests) 1085ms
+     ✓ Register shows a busy state, sends the CSRF token, then opens the receipt  465ms
+ ✓ tests/Events.test.tsx (13 tests) 1212ms
+     ✓ create saves Bangkok time as UTC, navigates to draft and confirms publication  655ms
+
+ Test Files  4 passed (4)
+      Tests  46 passed (46)
+   Start at  17:48:03
+   Duration  8.24s (transform 2.15s, setup 7.49s, import 2.89s, tests 3.95s, environment 15.79s)

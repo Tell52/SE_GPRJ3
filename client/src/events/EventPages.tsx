@@ -63,6 +63,10 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
     return () => { active = false; };
   }, [id, organizer, user?.id, location.key]);
 
+  async function refreshEvent() {
+    try { setEvent(await apiFetch<EventRecord>(`/api/events/${id}`)); } catch { /* keep the current view */ }
+  }
+
   async function publish() {
     setBusy(true); setError(''); setSuccess('');
     try {
@@ -80,7 +84,7 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
       <p className="event-description">{event.description}</p><p>{event.location}</p>
       <p>Start: {formatTime(event.startsAt)} (Bangkok)</p><p>End: {formatTime(event.endsAt)} (Bangkok)</p>
       <p>Organizer: {event.organizer.name}</p><Places event={event} />
-      {!organizer && user?.role === 'PARTICIPANT' && event.status === 'PUBLISHED' && <RegisterPanel event={event} onFull={() => setEvent({ ...event, remainingPlaces: 0 })} />}
+      {!organizer && user?.role === 'PARTICIPANT' && event.status === 'PUBLISHED' && <RegisterPanel event={event} onFull={() => setEvent({ ...event, remainingPlaces: 0 })} onRefresh={refreshEvent} />}
       {organizer && event.organizer.id === user?.id && event.status === 'DRAFT' &&
         (confirm ? <div role="group" aria-label="Confirm publication">
           <p>Publish this event? Participants will be able to register.</p>
