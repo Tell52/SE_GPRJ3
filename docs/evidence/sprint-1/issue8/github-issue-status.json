@@ -1,0 +1,70 @@
+{
+  "capturedOn": "2026-11-08",
+  "note": "Issue states are not Project board column values.",
+  "issues": [
+    {
+      "number": 1,
+      "url": "https://github.com/Tell52/SE_GPRJ3/issues/1",
+      "title": "[Sprint 1] issue1 : Create project documentation and the Sprint 1 engineering baseline",
+      "state": "closed",
+      "updatedAt": "2026-11-02T18:39:48Z",
+      "closedAt": "2026-11-02T18:39:48Z"
+    },
+    {
+      "number": 2,
+      "url": "https://github.com/Tell52/SE_GPRJ3/issues/2",
+      "title": "[Sprint 1] issue2 : Set up the application foundation, PostgreSQL schema and reproducible seed",
+      "state": "closed",
+      "updatedAt": "2026-11-05T14:21:12Z",
+      "closedAt": "2026-11-05T14:21:12Z"
+    },
+    {
+      "number": 3,
+      "url": "https://github.com/Tell52/SE_GPRJ3/issues/3",
+      "title": "[Sprint 1] issue3 : Implement authentication, sessions and server-side access control",
+      "state": "closed",
+      "updatedAt": "2026-11-06T07:09:28Z",
+      "closedAt": "2026-11-06T07:09:28Z"
+    },
+    {
+      "number": 4,
+      "url": "https://github.com/Tell52/SE_GPRJ3/issues/4",
+      "title": "[Sprint 1] issue4 : Implement event creation, publication and discovery",
+      "state": "closed",
+      "updatedAt": "2026-11-06T08:11:20Z",
+      "closedAt": "2026-11-06T08:11:20Z"
+    },
+    {
+      "number": 5,
+      "url": "https://github.com/Tell52/SE_GPRJ3/issues/5",
+      "title": "[Sprint 1] issue5 : Implement atomic registration and persisted personal registrations",
+      "state": "closed",
+      "updatedAt": "2026-11-06T11:59:36Z",
+      "closedAt": "2026-11-06T11:59:36Z"
+    },
+    {
+      "number": 6,
+      "url": "https://github.com/Tell52/SE_GPRJ3/issues/6",
+      "title": "[Sprint 1] issue6 : Implement the Organizer private event registration roster",
+      "state": "closed",
+      "updatedAt": "2026-11-06T19:21:05Z",
+      "closedAt": "2026-11-06T19:21:05Z"
+    },
+    {
+      "number": 7,
+      "url": "https://github.com/Tell52/SE_GPRJ3/issues/7",
+      "title": "[Sprint 1] issue7 : Verify end-to-end journeys, persistence and regression coverage",
+      "state": "closed",
+      "updatedAt": "2026-11-07T19:39:23Z",
+      "closedAt": "2026-11-07T19:39:23Z"
+    },
+    {
+      "number": 8,
+      "url": "https://github.com/Tell52/SE_GPRJ3/issues/8",
+      "title": "[Sprint 1] issue8 : Complete peer-reviewed integration and record the accepted release",
+      "state": "open",
+      "updatedAt": "2026-11-07T19:39:35Z",
+      "closedAt": null
+    }
+  ]
+}

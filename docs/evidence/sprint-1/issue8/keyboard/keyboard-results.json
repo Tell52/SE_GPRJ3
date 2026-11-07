@@ -1,0 +1,466 @@
+{
+  "operator": "Codex",
+  "method": "Playwright keyboard input with visual evidence; not a human attestation",
+  "records": [
+    {
+      "viewport": "desktop",
+      "size": {
+        "width": 1440,
+        "height": 900
+      },
+      "steps": [
+        "01-login-focus",
+        "02-required-error",
+        "date-Start",
+        "Start entered: 2027-01-01T00:01",
+        "date-End",
+        "End entered: 2027-01-01T01:01",
+        "03-form",
+        "03b-busy",
+        "04-draft-empty",
+        "05-published",
+        "06-receipt",
+        "07a-roster-loading",
+        "07b-roster-error",
+        "07-roster"
+      ],
+      "focus": [
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Create event",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Title",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "TEXTAREA",
+          "label": "Description",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Location",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Start",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "End",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Capacity",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Save",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Publish",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Cancel",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Publish",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Confirm publish",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Logout",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Keyboard desktop 1794081539850",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Register",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Back to My registrations",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Keyboard desktop 1794081539850",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Logout",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Keyboard desktop 1794081539850",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Retry roster",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Logout",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        }
+      ],
+      "result": "pass"
+    },
+    {
+      "viewport": "mobile",
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "steps": [
+        "01-login-focus",
+        "02-required-error",
+        "date-Start",
+        "Start entered: 2027-01-01T00:01",
+        "date-End",
+        "End entered: 2027-01-01T01:01",
+        "03-form",
+        "03b-busy",
+        "04-draft-empty",
+        "05-published",
+        "06-receipt",
+        "07a-roster-loading",
+        "07b-roster-error",
+        "07-roster"
+      ],
+      "focus": [
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Create event",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Title",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "TEXTAREA",
+          "label": "Description",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Location",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Start",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "End",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Capacity",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Save",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Publish",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Cancel",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Publish",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Confirm publish",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Logout",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Keyboard mobile 1794081546621",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Register",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Back to My registrations",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Keyboard mobile 1794081546621",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Logout",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Keyboard mobile 1794081546621",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Retry roster",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Logout",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        }
+      ],
+      "result": "pass"
+    }
+  ]
+}

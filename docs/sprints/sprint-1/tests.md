@@ -43,7 +43,7 @@ T-11 and T-13 should follow the same red then green pattern where practical.
 
 ## Execution Results
 
-Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as work happens; an empty or "Not run" row is not evidence. Do not mark a row Pass without execution output. Automated and manual checks are listed separately.
+The table retains historical runs and adds the integrated candidate verification performed on 2026-11-08. The candidate is bc8b6ba8457dd51211ea93e68ef6d6c2ab803dd4. M-01/M-02 were executed by Codex at Tell52's request and are identified as assistant-operated checks, not human attestations. Release acceptance and verification of an accepted main commit remain pending.
 
 ### Specification and test design history
 
@@ -76,16 +76,20 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | #6 roster (2026-11-06) | `npm run build` | Uncommitted tree on `d1914a2`, committed as `55b4a15` | 0 | n/a | n/a | n/a | [issue6-build.txt](../../evidence/sprint-1/issue6-build.txt) |
 | #6 roster (2026-11-06) | `npm test` | Uncommitted tree on `d1914a2`, committed as `55b4a15` | 0 | server 100, client 46 | 0 | 0 | [issue6-npm-test.txt](../../evidence/sprint-1/issue6-npm-test.txt) |
 | #6 roster (2026-11-06) | `node --import tsx e2e/scripts/issue6-smoke.mjs` | Uncommitted tree on `d1914a2`, committed as `55b4a15` | 0 | desktop/mobile and API checks | 0 | 0 | [issue6-smoke.txt](../../evidence/sprint-1/issue6-smoke.txt); [details and initial failure](../../evidence/sprint-1/issue6-roster.md) |
-| #7 verification (2026-11-07) | `npm run test:e2e` (desktop and mobile) | `8849c36` | `<>` | `<2>` | `<>` | `<>` | [issue7-e2e.txt](../../evidence/sprint-1/issue7-e2e.txt); screenshots in [issue7/](../../evidence/sprint-1/issue7/) |
-| #7 verification (2026-11-07) | `npm test` (server, client) | `8849c36` | `<>` | `<server 100, client 46>` | `<>` | `<>` | [issue7-npm-test.txt](../../evidence/sprint-1/issue7-npm-test.txt) |
-| #7 M-01 fresh clone (Tell52) | README steps from a fresh clone | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<time taken, README gaps found>` |
-| #7 M-02 keyboard walkthrough | Manual, desktop and 390 px | `<SHA>` | n/a | `<>` | `<>` | n/a | `<findings>` |
-| Sprint 1 release | `npm run build` | `<SHA>` | `<>` | | | | `<>` |
-| Sprint 1 release | `npm test` (server) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
-| Sprint 1 release | `npm test` (client) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
-| Sprint 1 release | `npm run test:e2e` | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
+| #7 verification (2026-11-07) | `npm run test:e2e` (desktop and mobile) | `8849c36` | Not printed in historical log; passing summary | 2 | 0 | 0 | [issue7-e2e.txt](../../evidence/sprint-1/issue7-e2e.txt); screenshots in [issue7/](../../evidence/sprint-1/issue7/) |
+| #7 verification (2026-11-07) | `npm test` (server, client) | `8849c36` | Not printed in historical log; passing summary | server 100, client 46 | 0 | 0 | [issue7-npm-test.txt](../../evidence/sprint-1/issue7-npm-test.txt) |
+| #8 M-01 fresh clone (2026-11-08; Codex on Tell52's machine) | README setup, build, npm test and npm run test:e2e; isolated Compose project/ports | `bc8b6ba` | 0 for every command | Setup in 180.779 s; server 100, client 46, E2E 2 | 0 | 0 | [timing and exits](../../evidence/sprint-1/issue8/m01-results.json); [scope and README gaps](../../evidence/sprint-1/issue8/verification.md) |
+| #8 M-02 keyboard walkthrough (2026-11-08; Codex) | Assistant-operated Tab/Shift+Tab, Enter/Space, typing and native date-field arrow keys; desktop and 390 px | `bc8b6ba` | 0 | 2 viewport journeys; loading, busy, empty, error/retry and success | 0 application failures; initial harness issue corrected | 0 planned walkthroughs | [keyboard results](../../evidence/sprint-1/issue8/keyboard/keyboard-results.json), [scope/screenshots](../../evidence/sprint-1/issue8/verification.md); human acceptance pending |
+| Sprint 1 release candidate | `npm run build` | `bc8b6ba` | 0 | n/a (build) | 0 | n/a | [build output](../../evidence/sprint-1/issue8/m01-npm.cmd-run-build.txt) |
+| Sprint 1 release candidate | `npm test` (server) | `bc8b6ba` | 0 | 100 | 0 | 0 | [regression output](../../evidence/sprint-1/issue8/m01-npm.cmd-test.txt) |
+| Sprint 1 release candidate | `npm test` (client) | `bc8b6ba` | 0 | 46 | 0 | 0 | [regression output](../../evidence/sprint-1/issue8/m01-npm.cmd-test.txt) |
+| Sprint 1 release candidate | `npm run test:e2e` | `bc8b6ba` | 0 | 2 | 0 | 0 | [E2E output](../../evidence/sprint-1/issue8/m01-npm.cmd-run-test-e2e.txt), [candidate screenshots](../../evidence/sprint-1/issue8/journey/) |
+
+The accepted-main build/test run is **not yet available** because the release PR has not been created or merged. The rows above verify the staging candidate only.
 
 ### AC results
+
+AC-01–17 rows retain the original feature evidence below; all their automated checks passed again at `bc8b6ba` in the candidate regression log. AC-18/19 include the new explicitly attributed walkthroughs.
 
 | AC | Planned test | Actual file and test name | Automated / manual | Result | Commit |
 |---|---|---|---|---|---|
@@ -106,8 +110,8 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | AC-15 | T-15 | `server/tests/api/registrations.test.ts` "T-15" (privacy, mine, new app instance); `client/tests/Registrations.test.tsx` My registrations and receipt | Automated | Pass | `d3d1c4a` |
 | AC-16 | T-16 | `server/tests/api/roster.test.ts` owner/empty; `client/tests/Roster.test.tsx` table/count/empty and states | Automated | Pass | `55b4a15`; [evidence](../../evidence/sprint-1/issue6-roster.md) |
 | AC-17 | T-17 | `server/tests/api/roster.test.ts` rejection/no-query; smoke direct API responses | Automated | Pass | `55b4a15`; [API evidence](../../evidence/sprint-1/issue6-api.json) |
-| AC-18 | T-18, M-02 | `e2e/tests/sprint1-journey.spec.ts` "T-18 / AC-18" (desktop and mobile projects); M-02 manual | Automated + manual | T-18 Pass ; M-02 As Expected | `8849c36` |
-| AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts` (four named T-19 cases); guard tests in `server/tests/unit/test-database.test.ts` | Automated + manual | T-19 Pass; M-01 As Expected | Tested as uncommitted tree matching `d111892`; merged via PR #11 (`cf7ef4b`) |
+| AC-18 | T-18, M-02 | `e2e/tests/sprint1-journey.spec.ts`, desktop/mobile; #8 keyboard walkthrough | Automated + assistant-operated keyboard verification | T-18 Pass; M-02 assistant check Pass; human acceptance pending | `bc8b6ba` |
+| AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts`; `server/tests/unit/test-database.test.ts`; #8 fresh-clone setup | Automated + assistant-operated setup verification | T-19 Pass; M-01 Pass in 180.779 s with prerequisites installed and isolated DB configuration; human acceptance pending | `bc8b6ba` |
 
 ## Evidence Index
 
@@ -118,24 +122,28 @@ Actual screenshots and logs are stored under `docs/evidence/sprint-1/` and linke
 | #2 foundation: migrate, seed twice, constraints, restart | AC-19 / T-19 | n/a | Empty test database; see evidence file | Seed idempotent, constraints reject bad rows, rows survive restart | As expected | [issue2-foundation.md](../../evidence/sprint-1/issue2-foundation.md), [file hashes](../../evidence/sprint-1/issue2-file-hashes.txt) | `d111892` |
 | #4 create, publish and discover at desktop and mobile | AC-05 to AC-07 | Organizer, Participant | Smoke runner on the test database | Draft, publish, My events, discovery and detail work at both viewports | As expected; no overflow | [issue4-events.md](../../evidence/sprint-1/issue4-events.md) (12 screenshots), [issue4-smoke.txt](../../evidence/sprint-1/issue4-smoke.txt) | `8538324` |
 | #6 authorized roster and API rejections | AC-16/17, T-16/17 | Owner, foreign Organizer, Participant, anonymous | Two saved registrations; owner opens My events; direct requests by each role | Owner sees rows/count; denied roles receive 401/403/404 without participant data | Pass; desktop/mobile empty/error/retry also checked | [roster evidence](../../evidence/sprint-1/issue6-roster.md), [API bodies](../../evidence/sprint-1/issue6-api.json) | Uncommitted on `d1914a2` |
-| Normal journey: publish, register, retrieve saved registration | AC-05, AC-10, AC-15 / T-18 | Organizer, Participant | T-18 steps 1 and 3 | Event published; receipt and My registrations show the registration | `<from your run>` | [01](../../evidence/sprint-1/issue7/desktop/01-create-form.png), [02](../../evidence/sprint-1/issue7/desktop/02-published.png), [03](../../evidence/sprint-1/issue7/desktop/03-receipt.png), [04](../../evidence/sprint-1/issue7/desktop/04-my-registrations.png) (same names under `mobile/`) | `<#7 commit SHA>` |
-| Rule rejection: event full or duplicate | AC-11, AC-12 / T-18 | Participant | T-18: duplicate from a stale tab; last place taken while participant2's page was open | Duplicate and full messages; page then shows the registration or Full | `<from your run>` | [05](../../evidence/sprint-1/issue7/desktop/05-duplicate.png), [06](../../evidence/sprint-1/issue7/desktop/06-full-message.png) | `<#7 commit SHA>` |
-| Login and logout, old session rejected | AC-01, AC-04 / T-04 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
-| Forbidden role / foreign owner (API output) | AC-09, AC-17 / T-09, T-17 | Participant, Organizer | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
+| Normal journey: publish, register, retrieve saved registration | AC-05, AC-10, AC-15 / T-18 | Organizer, Participant | T-18 steps 1 and 3 | Event published; receipt and My registrations show the registration | Pass in the historical #7 E2E output; repeated successfully in #8 | [01](../../evidence/sprint-1/issue7/desktop/01-create-form.png), [02](../../evidence/sprint-1/issue7/desktop/02-published.png), [03](../../evidence/sprint-1/issue7/desktop/03-receipt.png), [04](../../evidence/sprint-1/issue7/desktop/04-my-registrations.png) (same names under `mobile/`) | `8849c36`; repeated at `bc8b6ba` |
+| Rule rejection: event full or duplicate | AC-11, AC-12 / T-18 | Participant | T-18: duplicate from a stale tab; last place taken while participant2's page was open | Duplicate and full messages; page then shows the registration or Full | Pass in the historical #7 E2E output; repeated successfully in #8 | [05](../../evidence/sprint-1/issue7/desktop/05-duplicate.png), [06](../../evidence/sprint-1/issue7/desktop/06-full-message.png) | `8849c36`; repeated at `bc8b6ba` |
+| Login and logout, old session rejected | AC-01, AC-04 / T-01, T-04 | Participant | Seeded API fixtures; login, logout, replay previous session cookie | Login succeeds; logout revokes session; replay returns 401 | Pass as part of all 100 server tests | [candidate regression log](../../evidence/sprint-1/issue8/m01-npm.cmd-test.txt), `server/tests/api/auth.test.ts` | `bc8b6ba` |
+| Forbidden role / foreign owner | AC-09, AC-17 / T-09, T-17 | Participant, foreign Organizer, anonymous | API tests attempt event publication and owner roster access with the wrong identity | Role/ownership rejection; roster responses 401/403/404 without participant data | Pass as part of all 100 server tests; historical direct API responses retained | [candidate regression log](../../evidence/sprint-1/issue8/m01-npm.cmd-test.txt), [historical API responses](../../evidence/sprint-1/issue6-api.json) | `bc8b6ba` regression; API response artifact belongs to #6 |
 | Concurrency: last place | AC-13 / T-13 | 10 Participants | Capacity 1; 10 registrations at once | One 201, nine 409 `EVENT_FULL`, one ACTIVE row | As expected | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) | `7582113` |
 | TDD red and green | AC-12 / T-12 | n/a | Commit the two T-12 files alone, run; then add the implementation, run again | Red fails on the capacity rule; green passes with unchanged files | As expected | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt), [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) | `5e373f0`, `d3d1c4a` |
 | Restart persistence | AC-15, AC-18 / T-15, T-18 | Participant | T-18 final step: API process stopped and started (new process id), then log in | Registration still listed and its receipt opens | As expected | [08](../../evidence/sprint-1/issue7/desktop/08-after-restart.png) | `8849c36` |
-| Desktop and mobile viewports | AC-18 / T-18, M-02 | all | Every T-18 screenshot checks `scrollWidth <= innerWidth` | No horizontal overflow at 1440x900 and 390x844 | As expected | [issue7/mobile/](../../evidence/sprint-1/issue7/mobile/) | `8849c36` |
-| Fresh clone setup | AC-19 / M-01 | n/a | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
+| Desktop and mobile viewports | AC-18 / T-18, M-02 | All roles | T-18 at 1440x900 and 390x844; keyboard-only action sequence and focus checks at both widths | No horizontal overflow; labelled fields, reachable controls and visible focus | Pass in #8; assistant-operated verification, human acceptance pending | [journey screenshots](../../evidence/sprint-1/issue8/journey/), [keyboard results](../../evidence/sprint-1/issue8/keyboard/keyboard-results.json) | `bc8b6ba` |
+| Fresh clone setup | AC-19 / M-01 | Codex on Tell52's machine | New remote clone of sprint1; new isolated DB volumes; README setup and full checks | Setup and checks within 15 min after prerequisites | Pass in 180.779 s; isolation overrides and README gaps documented | [verification](../../evidence/sprint-1/issue8/verification.md), [timing](../../evidence/sprint-1/issue8/m01-results.json) | `bc8b6ba` |
+| Keyboard state and recovery checks | AC-18 / M-02 | Organizer, Participant | Keyboard journey; hold a real save request to expose busy state; delay/abort one roster request, then retry | Visible loading/busy/error, successful retry, keyboard-only normal journey | Pass at desktop and mobile; no application-code edits | [verification](../../evidence/sprint-1/issue8/verification.md), [keyboard results](../../evidence/sprint-1/issue8/keyboard/keyboard-results.json) | `bc8b6ba` |
 
 ## Known Limitations
 
-Failed or skipped tests, incomplete work and accepted limitations. Fill in at release.
+Known limitations and incomplete release gates as of 2026-11-08. These are observations, not a claim of release acceptance.
 
 | Item | Type (failed test / skipped test / incomplete / limitation) | Impact | Plan |
 |---|---|---|---|
 | T-11 and T-13 were written after the registration code, not red first | Limitation | Only T-12 is TDD evidence. A check that removed the row lock made T-13 fail (7 to 9 of 10 got the last place), so T-13 does detect overbooking. | None; T-12 is the planned TDD test |
 | Registration under heavy load waits up to 15 s for a database transaction, then answers 503 `SERVICE_BUSY` | Limitation | Only matters with many simultaneous registrations; nothing is stored on 503 and the user can retry | Revisit with the load target NFR-07 in Sprint 3 |
+| M-01/M-02 were executed with AI tooling, not personally by a student | Verification scope | They provide repeatable technical evidence but do not establish a student-run manual test or teammate approval | Tell52/JeenoXD review the results and perform any course-required personal walkthrough |
+| Release PR, accepted main commit/tag and final board capture are pending | Incomplete release | Issue #8 cannot be marked Done; candidate checks do not prove an accepted release | Complete substantive review, authorized publication and final evidence capture |
+| Native date-field entry in the first #8 keyboard harness attempt was incomplete | Harness issue, corrected | The first run stopped before saving; no application defect established | Arrow-key entry used in successful reruns; initial result retained under issue8/keyboard |
 
 ## Version history
 
@@ -149,3 +157,4 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 | 1.5 | 2026-11-06 | Moved the #4 execution notes into the tables and linked AC-05 to AC-09 to `8538324`; added #5 results for AC-10 to AC-15, T-12 red/green and evidence rows; recorded the first #5 run failure (T-13, P2028) and its fix. | `Tell52` |
 | 1.6 | 2026-11-06 | Record #6 T-16/T-17 and regression results. Existing Events UI fixture supplies an empty roster for the newly mounted section; existing assertions unchanged. | `JeenoXD` |
 | 1.7 | 2026-11-07 | #7: T-18 rewritten as implemented (stale page and stale tab give the real full and duplicate attempts; restart uses a new API process); M-01 and M-02 steps made concrete; #6 rows linked to `55b4a15`; #7 run, AC-18 and evidence rows added. | Pending Tell52 review |
+| 1.8 | 2026-11-08 | Filled execution/evidence cells; verified integrated candidate in fresh clone; corrected manual-check attribution; recorded remaining release gates. | Pending human review of #8 evidence |

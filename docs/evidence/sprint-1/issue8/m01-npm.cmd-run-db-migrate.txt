@@ -1,0 +1,33 @@
+
+> event-planner@0.1.0 db:migrate
+> npm run db:migrate --workspace server
+
+
+> @event-planner/server@0.1.0 db:migrate
+> prisma migrate deploy
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": PostgreSQL database "event_planner", schema "public" at "localhost:5543"
+
+1 migration found in prisma/migrations
+
+Applying migration `20261105000100_init`
+
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.33                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20261105000100_init/
+    └─ migration.sql
+      
+All migrations have been successfully applied.
