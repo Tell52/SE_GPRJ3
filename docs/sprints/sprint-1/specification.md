@@ -109,7 +109,7 @@ Permissions: anonymous 401; Participant 403; non owning Organizer 404 (DEC-10). 
 
 Linked: NFR-01, NFR-03, NFR-04, NFR-05, NFR-06 | Depends on: #2 to #6
 
-Behaviour: the complete Sprint 1 journey runs through the real UI against real PostgreSQL at desktop 1440x900 and mobile 390x844, followed by a restart persistence check. Direct backend rejections are tested at the API level (T-03, T-09, T-17).
+Behaviour: the complete Sprint 1 journey runs through the real UI against real PostgreSQL at desktop 1440x900 and mobile 390x844, followed by a restart persistence check (`npm run test:e2e`, `e2e/tests/sprint1-journey.spec.ts`). The UI hides Register once a participant is registered or the event is full, so the full and duplicate attempts use pages that were opened before the place was taken: participant2's page and a second participant1 tab. The restart stops the API process and starts a new one. Direct backend rejections are tested at the API level (T-03, T-09, T-17).
 
 | ID | Acceptance criterion |
 |---|---|
@@ -135,5 +135,6 @@ A feature, issue or release is Done only when every item is true and backed by e
 |---|---|---|---|
 | 1.0 | 2026-11-03 | Initial Sprint 1 specification | `<pending>` |
 | 1.1 | 2026-11-05 | Tell52 approved Docker Compose solely for local PostgreSQL in #2; application packaging/deployment remains excluded. | Tell52 scope decision in chat; teammate review pending |
-| 1.2 | 2026-11-06 | Tell52 confirmed current F-02 limits and clarified AC-07 (DEC-13): own myRegistration summary is allowed; roster and other participants remain private. | Tell52 decision; Chutipon review pending |
+| 1.2 | 2026-11-06 | Tell52 confirmed current F-02 limits and clarified AC-07 (DEC-13): own myRegistration summary is allowed; roster and other participants remain private. | Tell52 decision; JeenoXD review pending |
 | 1.3 | 2026-11-06 | #5: `decideRegistration` takes one object argument and lives in `registration-rules.ts`; behaviour unchanged. | Pending Tell52 review |
+| 1.4 | 2026-11-07 | #7: described how the full and duplicate attempts and the restart are carried out in T-18; no change to AC-18. | Pending Tell52 review |

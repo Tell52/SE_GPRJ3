@@ -81,15 +81,28 @@ describe('T-11 to T-14 (UI): rejections show the matching message', () => {
     expect(screen.queryByText(/places? left/)).not.toBeInTheDocument();
   });
 
-  test.each([
-    ['ALREADY_REGISTERED', 'You are already registered for this event.'],
-    ['REGISTRATION_CLOSED', 'Registration for this event is closed.'],
-  ])('%s shows "%s"', async (code, message) => {
-    routes['POST /api/events/7/registrations'] = apiError(409, code, 'server text');
+  test('REGISTRATION_CLOSED shows the closed message and keeps the button for a retry', async () => {
+    routes['POST /api/events/7/registrations'] = apiError(409, 'REGISTRATION_CLOSED', 'server text');
     renderAt('/events/7');
     fireEvent.click(await registerButton());
-    expect(await screen.findByRole('alert')).toHaveTextContent(message);
+    expect(await screen.findByRole('alert')).toHaveTextContent('Registration for this event is closed.');
     expect(screen.getByRole('button', { name: 'Register' })).toBeEnabled();
+  });
+
+  test('ALREADY_REGISTERED (registered in another tab) shows the message, then the saved registration', async () => {
+    let detailCalls = 0;
+    routes['GET /api/events/7'] = async () => {
+      detailCalls += 1;
+      return { status: 200, body: detailCalls === 1 ? event : { ...event, activeCount: 4, remainingPlaces: 6, myRegistration: { id: 15, status: 'ACTIVE' } } };
+    };
+    routes['POST /api/events/7/registrations'] = apiError(409, 'ALREADY_REGISTERED', 'server text');
+    renderAt('/events/7');
+    fireEvent.click(await registerButton());
+    expect(await screen.findByRole('alert')).toHaveTextContent('You are already registered for this event.');
+    expect(await screen.findByText('You are registered')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'View registration' })).toHaveAttribute('href', '/registrations/15');
+    expect(screen.queryByRole('button', { name: 'Register' })).not.toBeInTheDocument();
+    expect(screen.getByText('6 places left')).toBeInTheDocument();
   });
 
   test('a network failure shows the standard message and allows retry', async () => {

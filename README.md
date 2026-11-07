@@ -2,11 +2,11 @@
 
 Event Registration and Attendance System for CPE 334 (Theme 3). Organizers publish events with limited places; Participants register; Organizers view the roster.
 
-Status: Foundation (#2), authentication (#3), events (#4) and registration (#5, PR #14, `d1914a2`) are merged into `sprint1`. Organizer roster (#6) is implemented locally on `feature/issue6-roster`, pending user/teammate review, commit and integration. The full Sprint 1 journey (#7) is still to do.
+Status: Foundation (#2), authentication (#3), events (#4), registration (#5) and the organizer roster (#6, PR #15) are merged into `sprint1`. The end to end journey (#7) is on `feature/issue7-verification` for review. The reviewed release to `main` (#8) is next.
 
 ## Stack
 
-React 18 + TypeScript + Vite (`client/`), Node + Express + TypeScript (`server/`), PostgreSQL 16 with Prisma 6, Vitest, Supertest, React Testing Library. Playwright configuration is prepared in `e2e/`; journey tests belong to #7.
+React 18 + TypeScript + Vite (`client/`), Node + Express + TypeScript (`server/`), PostgreSQL 16 with Prisma 6, Vitest, Supertest, React Testing Library. Playwright end to end tests in `e2e/`.
 
 This is an npm workspaces monorepo with one root `package-lock.json`. Run `npm ci` at the repository root. Dependency versions are pinned. Prisma 6 is retained for the documented schema/migration workflow; the root override pins its `deepmerge-ts` dependency to 8.0.2 to address GHSA-ggr8-5vv4-36mx.
 
@@ -64,12 +64,13 @@ For the compiled API: `npm run build` then `npm start`. To inspect the client pr
 ```bash
 npm test                         # server foundation/auth/events/registration, then client tests
 npm test --workspace server       # builds API; guarded real PostgreSQL tests
-npm test --workspace client       # auth, event and registration UI tests
+npm test --workspace client       # auth, event, registration and roster UI tests
+npm run test:e2e                 # builds the API, then the T-18 journey in Chrome at desktop and mobile
 ```
 
 Server tests explicitly read `server/.env.test`; they reset **only the dedicated test database** before the integration suite. T-19 runs migrations and seed through the CLI, changes a password and an event, repeats seed, checks raw-SQL constraint failures, and starts/stops the compiled API twice while comparing all four tables. No disabled tests are used. Run test suites serially against a given test database.
 
-`npm test` covers the implemented foundation, authentication, event, registration and roster acceptance criteria (AC-01 to AC-17 and automated AC-19), not AC-18. The full Playwright journey in `e2e/tests/` remains #7 work; `npm test --workspace e2e` will report no tests until then. A separate F-02 smoke runner is available after `npm run build` and `npm test`: `node --import tsx e2e/scripts/issue4-smoke.mjs`. It requires Chrome installed and free ports 3000/5173, starts/stops its own API/Vite servers, and resets only the guarded dedicated test database. Run it serially with other database tests. It saves desktop/mobile screenshots under `docs/evidence/sprint-1/` and does not claim full T-18 or human M-02 coverage.
+`npm test` covers AC-01 to AC-17 and the automated part of AC-19. `npm run test:e2e` covers AC-18 (T-18): it resets and seeds **only the guarded test database**, starts the client on 5173, starts the real built API on 3000 itself, runs the whole Sprint 1 journey at 1440x900 and 390x844, restarts the API mid-test to prove data survives, and saves screenshots to `docs/evidence/sprint-1/issue7/`. Before running it, start the test database (`docker compose --profile test up -d --wait`) and stop `npm run dev:server`, because the test needs port 3000. It uses installed Google Chrome; without Chrome, run `npx playwright install chromium` once and set `PW_CHANNEL=chromium`. Manual checks M-01 (fresh clone) and M-02 (keyboard only) are in `docs/sprints/sprint-1/tests.md`. A separate F-02 smoke runner is available after `npm run build` and `npm test`: `node --import tsx e2e/scripts/issue4-smoke.mjs`. It requires Chrome installed and free ports 3000/5173, starts/stops its own API/Vite servers, and resets only the guarded dedicated test database. Run it serially with other database tests. It saves desktop/mobile screenshots under `docs/evidence/sprint-1/` and does not claim full T-18 or human M-02 coverage.
 
 For F-04, run `node --import tsx e2e/scripts/issue6-smoke.mjs` after build and tests, serially with other database tests. It uses the same Chrome, ports and guarded test database requirements as the F-02 runner, saves desktop/mobile screenshots and direct API responses, and does not claim T-18 or human M-02 coverage. See [roster evidence](docs/evidence/sprint-1/issue6-roster.md).
 

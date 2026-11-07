@@ -72,7 +72,7 @@ None for the baseline. Every FR, BR and NFR is allocated to a feature or respons
 
 | Date | Change | Reason | Approved by |
 |---|---|---|---|
-| 2026-11-06 | AC-07/T-07 permit only caller-owned myRegistration summary in participant detail; field limits remain as documented. | Resolve wording conflict with API contract for F-02. | Tell52 during #4 (DEC-13); Chutipon review pending |
+| 2026-11-06 | AC-07/T-07 permit only caller-owned myRegistration summary in participant detail; field limits remain as documented. | Resolve wording conflict with API contract for F-02. | Tell52 during #4 (DEC-13); JeenoXD review pending |
 
 ## Version history
 

@@ -160,5 +160,5 @@ Unknown body fields (including `role`, `userId`, `organizerId`, `participantId`)
 | Version | Date | Change | Reviewed by |
 |---|---|---|---|
 | 1.0 | 2026-11-03 | Initial API specification | `<pending>` |
-| 1.1 | 2026-11-06 | #4: own-registration exception in event detail (DEC-13); validation limits unchanged. | Tell52 decision; Chutipon review pending |
+| 1.1 | 2026-11-06 | #4: own-registration exception in event detail (DEC-13); validation limits unchanged. | Tell52 decision; JeenoXD review pending |
 | 1.2 | 2026-11-06 | #5: registration object includes event `endsAt`; documented the 409 check order; added 503 `SERVICE_BUSY`. | Pending Tell52 review |
