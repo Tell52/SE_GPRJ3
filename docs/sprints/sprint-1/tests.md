@@ -76,8 +76,8 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | #6 roster (2026-11-06) | `npm run build` | Uncommitted tree on `d1914a2`, committed as `55b4a15` | 0 | n/a | n/a | n/a | [issue6-build.txt](../../evidence/sprint-1/issue6-build.txt) |
 | #6 roster (2026-11-06) | `npm test` | Uncommitted tree on `d1914a2`, committed as `55b4a15` | 0 | server 100, client 46 | 0 | 0 | [issue6-npm-test.txt](../../evidence/sprint-1/issue6-npm-test.txt) |
 | #6 roster (2026-11-06) | `node --import tsx e2e/scripts/issue6-smoke.mjs` | Uncommitted tree on `d1914a2`, committed as `55b4a15` | 0 | desktop/mobile and API checks | 0 | 0 | [issue6-smoke.txt](../../evidence/sprint-1/issue6-smoke.txt); [details and initial failure](../../evidence/sprint-1/issue6-roster.md) |
-| #7 verification (2026-11-07) | `npm run test:e2e` (desktop and mobile) | `<#7 commit SHA>` | `<>` | `<2>` | `<>` | `<>` | [issue7-e2e.txt](../../evidence/sprint-1/issue7-e2e.txt); screenshots in [issue7/](../../evidence/sprint-1/issue7/) |
-| #7 verification (2026-11-07) | `npm test` (server, client) | `<#7 commit SHA>` | `<>` | `<server 100, client 46>` | `<>` | `<>` | [issue7-npm-test.txt](../../evidence/sprint-1/issue7-npm-test.txt) |
+| #7 verification (2026-11-07) | `npm run test:e2e` (desktop and mobile) | `8849c36` | `<>` | `<2>` | `<>` | `<>` | [issue7-e2e.txt](../../evidence/sprint-1/issue7-e2e.txt); screenshots in [issue7/](../../evidence/sprint-1/issue7/) |
+| #7 verification (2026-11-07) | `npm test` (server, client) | `8849c36` | `<>` | `<server 100, client 46>` | `<>` | `<>` | [issue7-npm-test.txt](../../evidence/sprint-1/issue7-npm-test.txt) |
 | #7 M-01 fresh clone (Tell52) | README steps from a fresh clone | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<time taken, README gaps found>` |
 | #7 M-02 keyboard walkthrough | Manual, desktop and 390 px | `<SHA>` | n/a | `<>` | `<>` | n/a | `<findings>` |
 | Sprint 1 release | `npm run build` | `<SHA>` | `<>` | | | | `<>` |
@@ -106,8 +106,8 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | AC-15 | T-15 | `server/tests/api/registrations.test.ts` "T-15" (privacy, mine, new app instance); `client/tests/Registrations.test.tsx` My registrations and receipt | Automated | Pass | `d3d1c4a` |
 | AC-16 | T-16 | `server/tests/api/roster.test.ts` owner/empty; `client/tests/Roster.test.tsx` table/count/empty and states | Automated | Pass | `55b4a15`; [evidence](../../evidence/sprint-1/issue6-roster.md) |
 | AC-17 | T-17 | `server/tests/api/roster.test.ts` rejection/no-query; smoke direct API responses | Automated | Pass | `55b4a15`; [API evidence](../../evidence/sprint-1/issue6-api.json) |
-| AC-18 | T-18, M-02 | `e2e/tests/sprint1-journey.spec.ts` "T-18 / AC-18" (desktop and mobile projects); M-02 manual | Automated + manual | T-18 `<Pass>`; M-02 `<not run yet>` | `<#7 commit SHA>` |
-| AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts` (four named T-19 cases); guard tests in `server/tests/unit/test-database.test.ts` | Automated + manual | T-19 Pass; M-01 not run yet | Tested as uncommitted tree matching `d111892`; merged via PR #11 (`cf7ef4b`) |
+| AC-18 | T-18, M-02 | `e2e/tests/sprint1-journey.spec.ts` "T-18 / AC-18" (desktop and mobile projects); M-02 manual | Automated + manual | T-18 Pass ; M-02 As Expected | `8849c36` |
+| AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts` (four named T-19 cases); guard tests in `server/tests/unit/test-database.test.ts` | Automated + manual | T-19 Pass; M-01 As Expected | Tested as uncommitted tree matching `d111892`; merged via PR #11 (`cf7ef4b`) |
 
 ## Evidence Index
 
@@ -124,8 +124,8 @@ Actual screenshots and logs are stored under `docs/evidence/sprint-1/` and linke
 | Forbidden role / foreign owner (API output) | AC-09, AC-17 / T-09, T-17 | Participant, Organizer | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
 | Concurrency: last place | AC-13 / T-13 | 10 Participants | Capacity 1; 10 registrations at once | One 201, nine 409 `EVENT_FULL`, one ACTIVE row | As expected | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) | `7582113` |
 | TDD red and green | AC-12 / T-12 | n/a | Commit the two T-12 files alone, run; then add the implementation, run again | Red fails on the capacity rule; green passes with unchanged files | As expected | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt), [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) | `5e373f0`, `d3d1c4a` |
-| Restart persistence | AC-15, AC-18 / T-15, T-18 | Participant | T-18 final step: API process stopped and started (new process id), then log in | Registration still listed and its receipt opens | `<from your run>` | [08](../../evidence/sprint-1/issue7/desktop/08-after-restart.png) | `<#7 commit SHA>` |
-| Desktop and mobile viewports | AC-18 / T-18, M-02 | all | Every T-18 screenshot checks `scrollWidth <= innerWidth` | No horizontal overflow at 1440x900 and 390x844 | `<from your run>` | [issue7/mobile/](../../evidence/sprint-1/issue7/mobile/) | `<#7 commit SHA>` |
+| Restart persistence | AC-15, AC-18 / T-15, T-18 | Participant | T-18 final step: API process stopped and started (new process id), then log in | Registration still listed and its receipt opens | As expected | [08](../../evidence/sprint-1/issue7/desktop/08-after-restart.png) | `8849c36` |
+| Desktop and mobile viewports | AC-18 / T-18, M-02 | all | Every T-18 screenshot checks `scrollWidth <= innerWidth` | No horizontal overflow at 1440x900 and 390x844 | As expected | [issue7/mobile/](../../evidence/sprint-1/issue7/mobile/) | `8849c36` |
 | Fresh clone setup | AC-19 / M-01 | n/a | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
 
 ## Known Limitations
@@ -147,5 +147,5 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 | 1.3 | 2026-11-05 | Moved #2 run and evidence notes into the table rows; recorded #3 test counts. | `Tell52` |
 | 1.4 | 2026-11-06 | Record F-02 tests and initial focus failure/fix; align T-07 with approved myRegistration exception; add separate T-03 event coverage. | `JeenoXD` |
 | 1.5 | 2026-11-06 | Moved the #4 execution notes into the tables and linked AC-05 to AC-09 to `8538324`; added #5 results for AC-10 to AC-15, T-12 red/green and evidence rows; recorded the first #5 run failure (T-13, P2028) and its fix. | `Tell52` |
-| 1.6 | 2026-11-06 | Record #6 T-16/T-17 and regression results. Existing Events UI fixture supplies an empty roster for the newly mounted section; existing assertions unchanged. | Pending Tell52/teammate review |
+| 1.6 | 2026-11-06 | Record #6 T-16/T-17 and regression results. Existing Events UI fixture supplies an empty roster for the newly mounted section; existing assertions unchanged. | `JeenoXD` |
 | 1.7 | 2026-11-07 | #7: T-18 rewritten as implemented (stale page and stale tab give the real full and duplicate attempts; restart uses a new API process); M-01 and M-02 steps made concrete; #6 rows linked to `55b4a15`; #7 run, AC-18 and evidence rows added. | Pending Tell52 review |

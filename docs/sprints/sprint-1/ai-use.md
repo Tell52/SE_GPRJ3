@@ -4,10 +4,8 @@ The single AI use declaration for Deliverable 1, covering AI assisted work and t
 
 | Member | AI tools used | Purpose |
 |---|---|---|
-| Chutipon Homsuwan | Claude (Anthropic) via claude.ai | Drafting documentation, design and test proposals, implementation assistance (#1, #3, #5, #7) |
+| Chutipon Homsuwan | Claude | Drafting documentation, design and test proposals, implementation assistance (#1, #3, #5, #7) |
 | Napat Tantipibulsap | Codex | Drafting GitHub Issues #1 to #8, implementation assistance (#2, #4, #6) |
-
-How AI was used: drafting documentation from the handout and theme brief, proposing designs and tests, and assisting implementation. All AI output was reviewed and edited by us. Completion is supported by test output, commits and reviews we checked ourselves, never by AI claims. Automated test runs by AI tools are execution evidence (recorded in [tests.md](tests.md)), not human verification. Both members understand the design, tests and released behaviour.
 
 ## Key Prompts
 
@@ -31,7 +29,7 @@ How AI was used: drafting documentation from the handout and theme brief, propos
 | #4 Events | Tell52 confirmed the design decisions before Codex wrote code. JeenoXD reviewed and merged PR #13: `<what you checked>`. Tell52: `<what you checked in Codex's work>` | [issue4-events.md](../../evidence/sprint-1/issue4-events.md), [PR #13](https://github.com/Tell52/SE_GPRJ3/pull/13) |
 | #5 Registration | JeenoXD: committed T-12 alone and saw it fail, then saw it pass with the same files; ran npm test. Tell52: `<what you checked in the #5 PR review>` | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt), [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt), [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt), [PR #14](https://github.com/Tell52/SE_GPRJ3/pull/14) |
 | #6 Roster | Tell52 confirmed #5 merged and authorized integration edits before implementation. JeenoXD reviewed and merged PR #15: `<what you checked>` | [issue6-roster.md](../../evidence/sprint-1/issue6-roster.md), [PR #15](https://github.com/Tell52/SE_GPRJ3/pull/15) |
-| #7 Verification | JeenoXD: `<e.g. ran npm run test:e2e (2 passed) and looked through the screenshots>`. Tell52: `<M-01 fresh clone result and what you checked in the #7 PR review>`. M-02 keyboard walkthrough by `<who>`: `<findings>` | [issue7-e2e.txt](../../evidence/sprint-1/issue7-e2e.txt), [issue7 screenshots](../../evidence/sprint-1/issue7/), `<#7 PR link>` |
+| #7 Verification | JeenoXD: ran npm run test:e2e (2 passed) and looked through the screenshots. Tell52: M-01 fresh clone result and all as expected. M-02 keyboard walkthrough by JeenoXD: everything works as expected | [issue7-e2e.txt](../../evidence/sprint-1/issue7-e2e.txt), [issue7 screenshots](../../evidence/sprint-1/issue7/), [PR #16](https://github.com/Tell52/SE_GPRJ3/pull/16) |
 
 ## Limits and corrected AI mistakes
 
@@ -43,5 +41,5 @@ How AI was used: drafting documentation from the handout and theme brief, propos
 | #4 | Codex's first UI test run failed one test: it tried to focus a field while the field was still disabled. Its first smoke run also imported a file that did not exist. | Codex fixed both; the same assertion and the smoke run then passed ([initial output](../../evidence/sprint-1/issue4-initial-test.txt)). Codex also appended its #4 notes to these docs outside the tables, which were moved into rows in #5. |
 | #5 | Claude only tested registration through a database adapter with a large connection pool. On JeenoXD's machine, T-13 failed: 3 of 10 simultaneous requests crashed with a 500 (Prisma P2028) because Prisma's 2 s connection wait was too short. | JeenoXD's own test run caught it. Claude reproduced the error code, raised the transaction limits to 15 s and added a 503 fallback; T-13 unchanged. |
 | #5 | Claude's first register UI showed "Full" twice and left a stale "1 places left" after losing the race for the last place. | Fixed: the page now switches to Full and hides the button; grammar fixed to "1 place left"; UI tests added for both. |
-| #7 | Reviewing the T-18 screenshots showed a #5 UI flaw: a tab opened before registering kept "1 place left" and an active Register button after the "already registered" message. | Fixed: that message now reloads the event, so the page shows "You are registered" and Full; asserted in T-18 and a new UI test. |
 | #6 | Initial smoke locator did not account for mobile cell labels. Visual inspection then found the caption wrapping vertically even though overflow checks passed. | Fixed the locator and mobile caption display; added a caption-height assertion and reran build/smoke. Human review still pending. |
+| #7 | Reviewing the T-18 screenshots showed a #5 UI flaw: a tab opened before registering kept "1 place left" and an active Register button after the "already registered" message. | Fixed: that message now reloads the event, so the page shows "You are registered" and Full; asserted in T-18 and a new UI test. |
