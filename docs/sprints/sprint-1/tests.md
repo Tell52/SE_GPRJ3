@@ -23,10 +23,10 @@ Fixtures: `org1`, `org2` (Organizers), `p1` to `p12` (Participants) created per 
 | T-15 | AC-15 | API | p1 in E1, p2 in E2 | p1 GET mine; p2 GET p1's registration; p2 GET mine; close the app, build a new app instance on the same database, log in as p1, GET by id | p1 sees only own with event title, start, location; p2 gets 404 and p1's registration absent from p2's list; after restart p1 gets the same registration |
 | T-16 | AC-16 | API + UI | org1 E1 with p1 then p2; org1 E2 with none | org1 GET E1 roster; org1 GET E2 roster. UI: render roster with 2 rows and with none | E1: 200, count 2, p1 then p2 with id, status, registeredAt, name, email, no password or session fields; E2: empty items. UI shows table and "No registrations yet" |
 | T-17 | AC-17 | API | org1 E1 with p1 registered | GET roster anonymous; as p1; as org2 | 401, 403, 404; none of the bodies contain participant data |
-| T-18 | AC-18 | E2E | Fresh seed; projects `desktop` 1440x900 and `mobile` 390x844 | Full AC-18 journey through the UI, then restart the server and log in as participant1 | Each step visible; duplicate and full messages shown; roster shows participant1; registration present after restart; `document.documentElement.scrollWidth <= window.innerWidth` on every page |
+| T-18 | AC-18 | E2E | Fresh test database with the normal demo seed (global setup); projects `desktop` 1440x900 and `mobile` 390x844; the test starts the real built API as its own process | organizer1 creates and publishes a capacity 1 event; participant2 opens it (1 place left) and keeps the page open; participant1 opens it in a second tab, registers in the first and opens the receipt and My registrations; participant1 clicks Register in the stale tab; participant2 clicks Register on the stale page; organizer1 opens the roster; the API process is stopped and started again and participant1 logs in | Receipt and My registrations show the registration; stale tab shows "You are already registered for this event." then "You are registered"; participant2 sees "Sorry, this event just filled up.", then Full with no Register button (also after reload) and no registrations of their own; roster shows only Participant One, "1 of 1 places taken"; after restart (new process id) the registration is still there; no horizontal overflow on any page |
 | T-19 | AC-19 | Integration | Empty test database | `migrate reset`, seed, change p1 password, seed again; raw SQL insert capacity 0; raw SQL second ACTIVE row for same pair; restart server | Seed twice leaves counts unchanged and changed password still works; both inserts rejected by constraints; rows intact after restart |
-| M-01 | AC-19 (NFR-06) | Manual | Teammate's machine, fresh clone of the release commit | Follow README only | Install, migrate, seed, build and all tests succeed within 15 minutes; any README gap recorded |
-| M-02 | AC-18 (NFR-05) | Manual | Running app at both viewports | Keyboard only walk through login, create, publish, register, roster | Every field labelled, logical focus order, visible focus, pending, empty and error states correct; findings recorded |
+| M-01 | AC-19 (NFR-06) | Manual | Tell52's machine, fresh clone of the `sprint1` commit under review | Follow README only: env files, `docker compose --profile test up -d --wait`, `npm ci`, migrate, seed, `npm test`, `npm run test:e2e`; time it | Everything succeeds within 15 minutes; every README gap is written down |
+| M-02 | AC-18 (NFR-05) | Manual | `npm run dev:server` and `npm run dev:client` with seed data; browser at desktop width and at 390 px wide (DevTools device mode) | Keyboard only (Tab, Shift+Tab, Enter, Space): log in, create and publish an event, log out, log in as a participant, register, open the receipt, log in as the organizer and open the roster | Every field has a visible label; focus order follows the page; focus outline always visible; busy, empty, error and success messages appear; nothing needs a mouse |
 
 ## TDD plan
 
@@ -37,9 +37,9 @@ T-12 (capacity rule) is the planned TDD evidence:
 
 T-11 and T-13 should follow the same red then green pattern where practical.
 
-## Test locations (planned)
+## Test locations
 
-`server/tests/unit/`, `server/tests/api/` (one file per feature, for example `registration.api.test.ts`), `client/tests/**/*.test.tsx`, `e2e/tests/sprint1-journey.spec.ts`. Actual file and test names are recorded in Execution Results below.
+`server/tests/unit/`, `server/tests/api/`, `client/tests/`, `e2e/tests/sprint1-journey.spec.ts` (run with `npm run test:e2e`; it builds the server, starts the client, and starts and restarts the API itself). Actual file and test names are recorded in Execution Results below.
 
 ## Execution Results
 
@@ -68,18 +68,22 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | #4 events (2026-11-06) | `npm test` (server) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 76 | 0 | 0 | [issue4-npm-test.txt](../../evidence/sprint-1/issue4-npm-test.txt) |
 | #4 events (2026-11-06) | `npm test` (client) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 22 | 0 | 0 | [issue4-npm-test.txt](../../evidence/sprint-1/issue4-npm-test.txt) |
 | #4 events (2026-11-06) | `node --import tsx e2e/scripts/issue4-smoke.mjs` (desktop and mobile) | Uncommitted tree on `3a5f20b`, committed as `8538324` | 0 | 3 checks | 0 | 0 | [issue4-smoke.txt](../../evidence/sprint-1/issue4-smoke.txt) |
-| #5 registration, first full run (2026-11-06) | `npm test` (server) on Chutipon's machine | `d3d1c4a` before the fix | 1 | 89 | 1 (T-13) | 0 | [issue5-first-run.txt](../../evidence/sprint-1/issue5-first-run.txt): 3 of 10 concurrent requests got 500 (Prisma P2028, 2 s connection wait too short). Nobody overbooked. Fixed with longer transaction limits and a 503 fallback; T-13 unchanged and then passed |
+| #5 registration, first full run (2026-11-06) | `npm test` (server) on JeenoXD's machine | `d3d1c4a` before the fix | 1 | 89 | 1 (T-13) | 0 | [issue5-first-run.txt](../../evidence/sprint-1/issue5-first-run.txt): 3 of 10 concurrent requests got 500 (Prisma P2028, 2 s connection wait too short). Nobody overbooked. Fixed with longer transaction limits and a 503 fallback; T-13 unchanged and then passed |
 | #5 T-12 red | `npx vitest run tests/unit/registration-rules.test.ts tests/api/registration-capacity.test.ts` (in `server/`) | `5e373f0` | 1 | 0 | 1 test, plus the unit file fails to load (rule not written yet) | 0 | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt) |
 | #5 T-12 green | Same command | `d3d1c4a` | 0 | 7 | 0 | 0 | [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) |
 | #5 registration | `npm test` (server) | `7582113` | 0 | 90 | 0 | 0 | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) |
 | #5 registration | `npm test` (client) | `7582113` | 0 | 35 | 0 | 0 | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) |
-| #6 roster (2026-11-06) | `npm run build` | Uncommitted tree on `d1914a2` | 0 | n/a | n/a | n/a | [issue6-build.txt](../../evidence/sprint-1/issue6-build.txt) |
-| #6 roster (2026-11-06) | `npm test` | Uncommitted tree on `d1914a2` | 0 | server 100, client 46 | 0 | 0 | [issue6-npm-test.txt](../../evidence/sprint-1/issue6-npm-test.txt) |
-| #6 roster (2026-11-06) | `node --import tsx e2e/scripts/issue6-smoke.mjs` | Uncommitted tree on `d1914a2` | 0 | desktop/mobile and API checks | 0 | 0 | [issue6-smoke.txt](../../evidence/sprint-1/issue6-smoke.txt); [details and initial failure](../../evidence/sprint-1/issue6-roster.md) |
+| #6 roster (2026-11-06) | `npm run build` | Uncommitted tree on `d1914a2`, committed as `55b4a15` | 0 | n/a | n/a | n/a | [issue6-build.txt](../../evidence/sprint-1/issue6-build.txt) |
+| #6 roster (2026-11-06) | `npm test` | Uncommitted tree on `d1914a2`, committed as `55b4a15` | 0 | server 100, client 46 | 0 | 0 | [issue6-npm-test.txt](../../evidence/sprint-1/issue6-npm-test.txt) |
+| #6 roster (2026-11-06) | `node --import tsx e2e/scripts/issue6-smoke.mjs` | Uncommitted tree on `d1914a2`, committed as `55b4a15` | 0 | desktop/mobile and API checks | 0 | 0 | [issue6-smoke.txt](../../evidence/sprint-1/issue6-smoke.txt); [details and initial failure](../../evidence/sprint-1/issue6-roster.md) |
+| #7 verification (2026-11-07) | `npm run test:e2e` (desktop and mobile) | `<#7 commit SHA>` | `<>` | `<2>` | `<>` | `<>` | [issue7-e2e.txt](../../evidence/sprint-1/issue7-e2e.txt); screenshots in [issue7/](../../evidence/sprint-1/issue7/) |
+| #7 verification (2026-11-07) | `npm test` (server, client) | `<#7 commit SHA>` | `<>` | `<server 100, client 46>` | `<>` | `<>` | [issue7-npm-test.txt](../../evidence/sprint-1/issue7-npm-test.txt) |
+| #7 M-01 fresh clone (Tell52) | README steps from a fresh clone | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<time taken, README gaps found>` |
+| #7 M-02 keyboard walkthrough | Manual, desktop and 390 px | `<SHA>` | n/a | `<>` | `<>` | n/a | `<findings>` |
 | Sprint 1 release | `npm run build` | `<SHA>` | `<>` | | | | `<>` |
 | Sprint 1 release | `npm test` (server) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
 | Sprint 1 release | `npm test` (client) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
-| Sprint 1 release | `npx playwright test` (e2e) | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
+| Sprint 1 release | `npm run test:e2e` | `<SHA>` | `<>` | `<>` | `<>` | `<>` | `<>` |
 
 ### AC results
 
@@ -100,9 +104,9 @@ Template prepared in Issue #1. Fill in real commands, outputs and commit IDs as 
 | AC-13 | T-13 | `server/tests/api/registrations.test.ts` "T-13" (10 concurrent participants, capacity 1) | Automated | Pass | `d3d1c4a` |
 | AC-14 | T-14 | `server/tests/api/registrations.test.ts` "T-14" (draft, missing, started, organizer, session and CSRF); UI closed message | Automated | Pass | `d3d1c4a` |
 | AC-15 | T-15 | `server/tests/api/registrations.test.ts` "T-15" (privacy, mine, new app instance); `client/tests/Registrations.test.tsx` My registrations and receipt | Automated | Pass | `d3d1c4a` |
-| AC-16 | T-16 | `server/tests/api/roster.test.ts` owner/empty; `client/tests/Roster.test.tsx` table/count/empty and states | Automated | Pass | Uncommitted tree on `d1914a2`; [evidence](../../evidence/sprint-1/issue6-roster.md) |
-| AC-17 | T-17 | `server/tests/api/roster.test.ts` rejection/no-query; smoke direct API responses | Automated | Pass | Uncommitted tree on `d1914a2`; [API evidence](../../evidence/sprint-1/issue6-api.json) |
-| AC-18 | T-18, M-02 | `<>` | Automated + manual | Not run | |
+| AC-16 | T-16 | `server/tests/api/roster.test.ts` owner/empty; `client/tests/Roster.test.tsx` table/count/empty and states | Automated | Pass | `55b4a15`; [evidence](../../evidence/sprint-1/issue6-roster.md) |
+| AC-17 | T-17 | `server/tests/api/roster.test.ts` rejection/no-query; smoke direct API responses | Automated | Pass | `55b4a15`; [API evidence](../../evidence/sprint-1/issue6-api.json) |
+| AC-18 | T-18, M-02 | `e2e/tests/sprint1-journey.spec.ts` "T-18 / AC-18" (desktop and mobile projects); M-02 manual | Automated + manual | T-18 `<Pass>`; M-02 `<not run yet>` | `<#7 commit SHA>` |
 | AC-19 | T-19, M-01 | `server/tests/api/foundation.test.ts` (four named T-19 cases); guard tests in `server/tests/unit/test-database.test.ts` | Automated + manual | T-19 Pass; M-01 not run yet | Tested as uncommitted tree matching `d111892`; merged via PR #11 (`cf7ef4b`) |
 
 ## Evidence Index
@@ -114,14 +118,14 @@ Actual screenshots and logs are stored under `docs/evidence/sprint-1/` and linke
 | #2 foundation: migrate, seed twice, constraints, restart | AC-19 / T-19 | n/a | Empty test database; see evidence file | Seed idempotent, constraints reject bad rows, rows survive restart | As expected | [issue2-foundation.md](../../evidence/sprint-1/issue2-foundation.md), [file hashes](../../evidence/sprint-1/issue2-file-hashes.txt) | `d111892` |
 | #4 create, publish and discover at desktop and mobile | AC-05 to AC-07 | Organizer, Participant | Smoke runner on the test database | Draft, publish, My events, discovery and detail work at both viewports | As expected; no overflow | [issue4-events.md](../../evidence/sprint-1/issue4-events.md) (12 screenshots), [issue4-smoke.txt](../../evidence/sprint-1/issue4-smoke.txt) | `8538324` |
 | #6 authorized roster and API rejections | AC-16/17, T-16/17 | Owner, foreign Organizer, Participant, anonymous | Two saved registrations; owner opens My events; direct requests by each role | Owner sees rows/count; denied roles receive 401/403/404 without participant data | Pass; desktop/mobile empty/error/retry also checked | [roster evidence](../../evidence/sprint-1/issue6-roster.md), [API bodies](../../evidence/sprint-1/issue6-api.json) | Uncommitted on `d1914a2` |
-| Normal journey: publish, register, retrieve saved registration | AC-05, AC-10, AC-15 / T-18 | Organizer, Participant | `<>` | `<>` | `<>` | `docs/evidence/sprint-1/<file>.png` | `<SHA>` |
-| Rule rejection: event full or duplicate | AC-11, AC-12 / T-18 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
+| Normal journey: publish, register, retrieve saved registration | AC-05, AC-10, AC-15 / T-18 | Organizer, Participant | T-18 steps 1 and 3 | Event published; receipt and My registrations show the registration | `<from your run>` | [01](../../evidence/sprint-1/issue7/desktop/01-create-form.png), [02](../../evidence/sprint-1/issue7/desktop/02-published.png), [03](../../evidence/sprint-1/issue7/desktop/03-receipt.png), [04](../../evidence/sprint-1/issue7/desktop/04-my-registrations.png) (same names under `mobile/`) | `<#7 commit SHA>` |
+| Rule rejection: event full or duplicate | AC-11, AC-12 / T-18 | Participant | T-18: duplicate from a stale tab; last place taken while participant2's page was open | Duplicate and full messages; page then shows the registration or Full | `<from your run>` | [05](../../evidence/sprint-1/issue7/desktop/05-duplicate.png), [06](../../evidence/sprint-1/issue7/desktop/06-full-message.png) | `<#7 commit SHA>` |
 | Login and logout, old session rejected | AC-01, AC-04 / T-04 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
 | Forbidden role / foreign owner (API output) | AC-09, AC-17 / T-09, T-17 | Participant, Organizer | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
 | Concurrency: last place | AC-13 / T-13 | 10 Participants | Capacity 1; 10 registrations at once | One 201, nine 409 `EVENT_FULL`, one ACTIVE row | As expected | [issue5-npm-test.txt](../../evidence/sprint-1/issue5-npm-test.txt) | `7582113` |
 | TDD red and green | AC-12 / T-12 | n/a | Commit the two T-12 files alone, run; then add the implementation, run again | Red fails on the capacity rule; green passes with unchanged files | As expected | [issue5-t12-red.txt](../../evidence/sprint-1/issue5-t12-red.txt), [issue5-t12-green.txt](../../evidence/sprint-1/issue5-t12-green.txt) | `5e373f0`, `d3d1c4a` |
-| Restart persistence | AC-15, AC-18 / T-15, T-18 | Participant | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
-| Desktop and mobile viewports | AC-18 / T-18, M-02 | all | `<>` | `<>` | `<>` | `<file>` | `<SHA>` |
+| Restart persistence | AC-15, AC-18 / T-15, T-18 | Participant | T-18 final step: API process stopped and started (new process id), then log in | Registration still listed and its receipt opens | `<from your run>` | [08](../../evidence/sprint-1/issue7/desktop/08-after-restart.png) | `<#7 commit SHA>` |
+| Desktop and mobile viewports | AC-18 / T-18, M-02 | all | Every T-18 screenshot checks `scrollWidth <= innerWidth` | No horizontal overflow at 1440x900 and 390x844 | `<from your run>` | [issue7/mobile/](../../evidence/sprint-1/issue7/mobile/) | `<#7 commit SHA>` |
 | Fresh clone setup | AC-19 / M-01 | n/a | `<>` | `<>` | `<>` | `<file>.log` | `<SHA>` |
 
 ## Known Limitations
@@ -144,3 +148,4 @@ Failed or skipped tests, incomplete work and accepted limitations. Fill in at re
 | 1.4 | 2026-11-06 | Record F-02 tests and initial focus failure/fix; align T-07 with approved myRegistration exception; add separate T-03 event coverage. | `JeenoXD` |
 | 1.5 | 2026-11-06 | Moved the #4 execution notes into the tables and linked AC-05 to AC-09 to `8538324`; added #5 results for AC-10 to AC-15, T-12 red/green and evidence rows; recorded the first #5 run failure (T-13, P2028) and its fix. | `Tell52` |
 | 1.6 | 2026-11-06 | Record #6 T-16/T-17 and regression results. Existing Events UI fixture supplies an empty roster for the newly mounted section; existing assertions unchanged. | Pending Tell52/teammate review |
+| 1.7 | 2026-11-07 | #7: T-18 rewritten as implemented (stale page and stale tab give the real full and duplicate attempts; restart uses a new API process); M-01 and M-02 steps made concrete; #6 rows linked to `55b4a15`; #7 run, AC-18 and evidence rows added. | Pending Tell52 review |
