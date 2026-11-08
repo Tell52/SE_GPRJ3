@@ -1,0 +1,9 @@
+
+> event-planner@0.1.0 db:seed
+> npm run seed --workspace server
+
+
+> @event-planner/server@0.1.0 seed
+> tsx prisma/seed.ts
+
+Seed complete: existing rows and passwords preserved.

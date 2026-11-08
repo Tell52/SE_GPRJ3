@@ -1,0 +1,3 @@
+PASS desktop 1440x900: create, publish, My events, logout, participant discovery/detail; no overflow or page errors.
+PASS mobile 390x844: create, publish, My events, logout, participant discovery/detail; no overflow or page errors.
+PASS PostgreSQL: both created events persisted as PUBLISHED.

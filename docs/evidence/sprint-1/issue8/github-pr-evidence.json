@@ -1,0 +1,584 @@
+{
+  "capturedOn": "2026-11-08",
+  "source": "GitHub connector read-only API",
+  "records": [
+    {
+      "pullRequest": {
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/10",
+        "number": 10,
+        "state": "closed",
+        "merged": true,
+        "mergeable": false,
+        "draft": false,
+        "body": "Closes #1\n\nAdds Parts A to E for Deliverable 1: SRS, features, traceability, system SDS, three sprint plan, and Sprint 1 specification, API, UI and tests, plus reviewer and AI use records.\n\nPlease review decisions DEC-01 to DEC-12 in srs.md section 7.",
+        "title": "[Sprint 1] issue1: Documentation baseline",
+        "base": "sprint1",
+        "base_sha": "8a67e9fddcf23440b817741ab0768055d05d8c1c",
+        "head": "feature/issue1-docs",
+        "head_sha": "96d9a67b8adefe1ecbf6491ba0d5cad6dae760c5",
+        "head_repo_id": 1443195541,
+        "head_repo_full_name": "Tell52/SE_GPRJ3",
+        "merge_commit_sha": "28be4c5e6d105d9a24f7851d4ac9e2338b62fdef",
+        "user": {
+          "login": "JeenoXD",
+          "name": "JeenoXD",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/186738975?v=4",
+          "id": 186738975
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-02T18:33:27Z",
+        "updated_at": "2026-11-02T18:38:45Z",
+        "closed_at": "2026-11-02T18:38:35Z",
+        "merged_at": "2026-11-02T18:38:35Z",
+        "commits": 1,
+        "changed_files": 14,
+        "additions": 1141,
+        "deletions": 1,
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/10",
+        "display_title": "[Sprint 1] issue1: Documentation baseline"
+      },
+      "discussion": {
+        "comments": [
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/10#pullrequestreview-5741506697",
+            "body": "Thanks for preparing the documentation baseline krub",
+            "user": {
+              "login": "Tell52",
+              "name": "Tell52",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/191856933?v=4",
+              "id": 191856933
+            },
+            "id": 5741506697,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-02T18:38:19Z",
+            "updated_at": null,
+            "review": "APPROVED",
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<p dir=\"auto\">Thanks for preparing the documentation baseline krub</p>"
+          },
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/10#issuecomment-6585217224",
+            "body": "> Thanks for preparing the documentation baseline krub\r\n\r\nNo problem bro",
+            "user": {
+              "login": "JeenoXD",
+              "name": "JeenoXD",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/186738975?v=4",
+              "id": 186738975
+            },
+            "id": 6585217224,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-02T18:38:45Z",
+            "updated_at": "2026-11-02T18:38:45Z",
+            "review": null,
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<blockquote>\n<p dir=\"auto\">Thanks for preparing the documentation baseline krub</p>\n</blockquote>\n<p dir=\"auto\">No problem bro</p>"
+          }
+        ],
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/10",
+        "title": "Tell52/SE_GPRJ3 PR #10 comments",
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/10",
+        "display_title": "Tell52/SE_GPRJ3 PR #10 comments"
+      }
+    },
+    {
+      "pullRequest": {
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/11",
+        "number": 11,
+        "state": "closed",
+        "merged": true,
+        "mergeable": false,
+        "draft": false,
+        "body": "Implements #2 (SYS-FOUND; NFR-03/NFR-06; AC-19): reproducible React/Express/PostgreSQL application foundation with npm workspaces, versioned Prisma migrations and repeatable seed.\r\n\r\n- Four related tables, unique email/session hash, capacity/time checks and partial ACTIVE-registration uniqueness.\r\n- Seed creates 2 organizers, 3 participants and 2 events; repeated runs preserve changed passwords and edited events.\r\n- Local PostgreSQL Compose with separate dev/test databases and volumes; environment examples, setup commands and execution evidence. Local database Compose was approved to resolve the scope conflict; app containers, CI and deployment remain deferred.\r\n\r\nValidation: npm ci, build, migrate and seed passed; 12 server tests and 1 client test passed; npm audit reported 0 vulnerabilities. T-19 checks seed repeat, constraints, foreign keys and data across two real API process starts. Implementation matches tested commit d111892; subsequent documentation edits clarify review/history. Evidence: docs/evidence/sprint-1/issue2-foundation.md and issue2-verification.txt. Contracts: docs/system-sds.md and docs/sprints/sprint-1/specification.md.",
+        "title": "feat: application foundation, PostgreSQL migrations and reproducible seed (#2)",
+        "base": "sprint1",
+        "base_sha": "d16684b682e9fbeee5666094d72b3b9dcae53039",
+        "head": "feature/issue2-foundation",
+        "head_sha": "fe4c0568798a49db7afea283e56a3dc169f2733b",
+        "head_repo_id": 1443195541,
+        "head_repo_full_name": "Tell52/SE_GPRJ3",
+        "merge_commit_sha": "cf7ef4bf55d65a8d40857fe9736a9c98cd265eb5",
+        "user": {
+          "login": "Tell52",
+          "name": "Tell52",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/191856933?v=4",
+          "id": 191856933
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-05T10:20:43Z",
+        "updated_at": "2026-11-06T07:07:53Z",
+        "closed_at": "2026-11-05T11:27:46Z",
+        "merged_at": "2026-11-05T11:27:46Z",
+        "commits": 1,
+        "changed_files": 44,
+        "additions": 5964,
+        "deletions": 28,
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/11",
+        "display_title": "feat: application foundation, PostgreSQL migrations and reproducible seed (#2)"
+      },
+      "discussion": {
+        "comments": [
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/11#pullrequestreview-5784127365",
+            "body": "nice one bro very good job na",
+            "user": {
+              "login": "JeenoXD",
+              "name": "JeenoXD",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/186738975?v=4",
+              "id": 186738975
+            },
+            "id": 5784127365,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-05T11:27:31Z",
+            "updated_at": null,
+            "review": "APPROVED",
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<p dir=\"auto\">nice one bro very good job na</p>"
+          },
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/11#issuecomment-6679313178",
+            "body": "> nice one bro very good job na\r\n\r\nty krub",
+            "user": {
+              "login": "Tell52",
+              "name": "Tell52",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/191856933?v=4",
+              "id": 191856933
+            },
+            "id": 6679313178,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-06T07:07:53Z",
+            "updated_at": "2026-11-06T07:07:53Z",
+            "review": null,
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<blockquote>\n<p dir=\"auto\">nice one bro very good job na</p>\n</blockquote>\n<p dir=\"auto\">ty krub</p>"
+          }
+        ],
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/11",
+        "title": "Tell52/SE_GPRJ3 PR #11 comments",
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/11",
+        "display_title": "Tell52/SE_GPRJ3 PR #11 comments"
+      }
+    },
+    {
+      "pullRequest": {
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/12",
+        "number": 12,
+        "state": "closed",
+        "merged": true,
+        "mergeable": false,
+        "draft": false,
+        "body": "Closes #3\n\nImplements F-01 for #3: login, me and logout with server side sessions (8 hour absolute expiry, revoked on logout), CSRF token on state changing requests, and requireSession, requireRole and requireCsrf middleware. Client adds the login page, auth context, protected routes and app shell. Tests T-01 to T-04 in server/tests/api/auth.test.ts, server/tests/unit/password.test.ts and client/tests/App.test.tsx.",
+        "title": "[Sprint 1] issue3: Authentication, sessions and access control",
+        "base": "sprint1",
+        "base_sha": "cf7ef4bf55d65a8d40857fe9736a9c98cd265eb5",
+        "head": "feature/issue3-auth",
+        "head_sha": "7eeb9e71db59dc27cafdc91e3ac846bc1f833d58",
+        "head_repo_id": 1443195541,
+        "head_repo_full_name": "Tell52/SE_GPRJ3",
+        "merge_commit_sha": "3a5f20b1d5ac91c86e7e92c716e2ee7f5adcf718",
+        "user": {
+          "login": "JeenoXD",
+          "name": "JeenoXD",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/186738975?v=4",
+          "id": 186738975
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-05T16:22:27Z",
+        "updated_at": "2026-11-06T08:08:29Z",
+        "closed_at": "2026-11-06T07:09:17Z",
+        "merged_at": "2026-11-06T07:09:17Z",
+        "commits": 2,
+        "changed_files": 28,
+        "additions": 1190,
+        "deletions": 70,
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/12",
+        "display_title": "[Sprint 1] issue3: Authentication, sessions and access control"
+      },
+      "discussion": {
+        "comments": [
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/12#pullrequestreview-5796882372",
+            "body": "good job na",
+            "user": {
+              "login": "Tell52",
+              "name": "Tell52",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/191856933?v=4",
+              "id": 191856933
+            },
+            "id": 5796882372,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-06T07:09:00Z",
+            "updated_at": null,
+            "review": "APPROVED",
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<p dir=\"auto\">good job na</p>"
+          },
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/12#issuecomment-6680288806",
+            "body": "> good job na\r\n\r\nty",
+            "user": {
+              "login": "JeenoXD",
+              "name": "JeenoXD",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/186738975?v=4",
+              "id": 186738975
+            },
+            "id": 6680288806,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-06T08:08:29Z",
+            "updated_at": "2026-11-06T08:08:29Z",
+            "review": null,
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<blockquote>\n<p dir=\"auto\">good job na</p>\n</blockquote>\n<p dir=\"auto\">ty</p>"
+          }
+        ],
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/12",
+        "title": "Tell52/SE_GPRJ3 PR #12 comments",
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/12",
+        "display_title": "Tell52/SE_GPRJ3 PR #12 comments"
+      }
+    },
+    {
+      "pullRequest": {
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/13",
+        "number": 13,
+        "state": "closed",
+        "merged": true,
+        "mergeable": false,
+        "draft": false,
+        "body": "Implement :\n- Add event APIs:\n  - POST /api/events\n  - POST /api/events/:id/publish\n  - GET /api/events\n  - GET /api/events/mine\n  - GET /api/events/:id\n- Create events as DRAFT with ownership derived from the session.\n- Validate field limits, capacity and event dates according to Sprint 1 docs.\n- Allow only the owning Organizer to publish; reject repeated publication and events whose start time has passed.\n- List upcoming PUBLISHED events with active registration counts and remaining places.\n- Restrict draft visibility to its owner and expose only the caller’s own myRegistration summary in participant detail.\n- Add Events, My events, Create event and Event detail pages with publication confirmation.\n- Handle loading, empty, validation, error, pending and success states; support Bangkok time and responsive layouts.\n- Separate event routes, services, validation, UI and tests into new files.\n- Update documentation, traceability and execution evidence to reflect the approved requirements.",
+        "title": "[Sprint 1] issue4 : Implement event creation, publication and discovery",
+        "base": "sprint1",
+        "base_sha": "3a5f20b1d5ac91c86e7e92c716e2ee7f5adcf718",
+        "head": "feature/issue4-events",
+        "head_sha": "8538324e7cc6dd4eb10855430f6098fbe0a2fbb1",
+        "head_repo_id": 1443195541,
+        "head_repo_full_name": "Tell52/SE_GPRJ3",
+        "merge_commit_sha": "345459c1aeb5e4f42ebbf3b2d62610c79d953ddc",
+        "user": {
+          "login": "Tell52",
+          "name": "Tell52",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/191856933?v=4",
+          "id": 191856933
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-06T07:48:44Z",
+        "updated_at": "2026-11-06T16:00:47Z",
+        "closed_at": "2026-11-06T08:08:11Z",
+        "merged_at": "2026-11-06T08:08:11Z",
+        "commits": 1,
+        "changed_files": 39,
+        "additions": 1136,
+        "deletions": 23,
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/13",
+        "display_title": "[Sprint 1] issue4 : Implement event creation, publication and discovery"
+      },
+      "discussion": {
+        "comments": [
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/13#pullrequestreview-5797396595",
+            "body": "good job bro very nice",
+            "user": {
+              "login": "JeenoXD",
+              "name": "JeenoXD",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/186738975?v=4",
+              "id": 186738975
+            },
+            "id": 5797396595,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-06T08:08:03Z",
+            "updated_at": null,
+            "review": "APPROVED",
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<p dir=\"auto\">good job bro very nice</p>"
+          },
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/13#issuecomment-6689249296",
+            "body": "> good job bro very nice\r\n\r\nty",
+            "user": {
+              "login": "Tell52",
+              "name": "Tell52",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/191856933?v=4",
+              "id": 191856933
+            },
+            "id": 6689249296,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-06T16:00:47Z",
+            "updated_at": "2026-11-06T16:00:47Z",
+            "review": null,
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<blockquote>\n<p dir=\"auto\">good job bro very nice</p>\n</blockquote>\n<p dir=\"auto\">ty</p>"
+          }
+        ],
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/13",
+        "title": "Tell52/SE_GPRJ3 PR #13 comments",
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/13",
+        "display_title": "Tell52/SE_GPRJ3 PR #13 comments"
+      }
+    },
+    {
+      "pullRequest": {
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/14",
+        "number": 14,
+        "state": "closed",
+        "merged": true,
+        "mergeable": false,
+        "draft": false,
+        "body": "Closes #5\n\nImplements F-03: participants register in a locked transaction (one active registration each, never over capacity, closed at start), and can view their registrations and a saved receipt. Tests T-10 to T-15; T-12 was committed red first, then made green with unchanged files. Also fixes the #4 doc tables.",
+        "title": "[Sprint 1] issue5: Atomic registration and personal registrations",
+        "base": "sprint1",
+        "base_sha": "345459c1aeb5e4f42ebbf3b2d62610c79d953ddc",
+        "head": "feature/issue5-registration",
+        "head_sha": "e53369b37242c20ac79500ee6de5583dc85f5ff5",
+        "head_repo_id": 1443195541,
+        "head_repo_full_name": "Tell52/SE_GPRJ3",
+        "merge_commit_sha": "d1914a2c8c51ab9645bdb77c2a781b3af5736fcc",
+        "user": {
+          "login": "JeenoXD",
+          "name": "JeenoXD",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/186738975?v=4",
+          "id": 186738975
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-06T09:46:19Z",
+        "updated_at": "2026-11-06T11:59:11Z",
+        "closed_at": "2026-11-06T11:59:11Z",
+        "merged_at": "2026-11-06T11:59:11Z",
+        "commits": 4,
+        "changed_files": 27,
+        "additions": 994,
+        "deletions": 87,
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/14",
+        "display_title": "[Sprint 1] issue5: Atomic registration and personal registrations"
+      },
+      "discussion": {
+        "comments": [
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/14#pullrequestreview-5799754924",
+            "body": "nice bro",
+            "user": {
+              "login": "Tell52",
+              "name": "Tell52",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/191856933?v=4",
+              "id": 191856933
+            },
+            "id": 5799754924,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-06T11:58:57Z",
+            "updated_at": null,
+            "review": "APPROVED",
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<p dir=\"auto\">nice bro</p>"
+          }
+        ],
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/14",
+        "title": "Tell52/SE_GPRJ3 PR #14 comments",
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/14",
+        "display_title": "Tell52/SE_GPRJ3 PR #14 comments"
+      }
+    },
+    {
+      "pullRequest": {
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/15",
+        "number": 15,
+        "state": "closed",
+        "merged": true,
+        "mergeable": false,
+        "draft": false,
+        "body": "…n roster\n\nImplements the Organizer private event registration roster for #6 (F-04, AC-16–17).\n- Added GET /api/events/:id/registrations with backend ownership checks before querying participant data.\n- Returns registration ID, status, date, participant ID/name/email, and total count in registration order. Excludes password and session fields.\n- Enforces access restrictions: anonymous 401, Participant 403, and non-owning Organizer 404.\n- Added the roster section to Organizer event details, with responsive mobile cards and loading, empty, error, and retry states.\n- Added API/UI tests and desktop/mobile smoke checks.\n- Updated documentation and execution evidence, including the merged status of #5.",
+        "title": "[Sprint 1] issue6 : Implement the Organizer private event registratio…",
+        "base": "sprint1",
+        "base_sha": "d1914a2c8c51ab9645bdb77c2a781b3af5736fcc",
+        "head": "feature/issue6-roster",
+        "head_sha": "55b4a15994771ba40f87a1100f42020c0f8c301d",
+        "head_repo_id": 1443195541,
+        "head_repo_full_name": "Tell52/SE_GPRJ3",
+        "merge_commit_sha": "7f5e4b2de67d3555981ccec65e830253a4506f96",
+        "user": {
+          "login": "Tell52",
+          "name": "Tell52",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/191856933?v=4",
+          "id": 191856933
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-06T19:11:43Z",
+        "updated_at": "2026-11-06T19:20:32Z",
+        "closed_at": "2026-11-06T19:20:32Z",
+        "merged_at": "2026-11-06T19:20:32Z",
+        "commits": 1,
+        "changed_files": 25,
+        "additions": 643,
+        "deletions": 10,
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/15",
+        "display_title": "[Sprint 1] issue6 : Implement the Organizer private event registratio…"
+      },
+      "discussion": {
+        "comments": [
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/15#pullrequestreview-5805731319",
+            "body": "good job na bro very nice",
+            "user": {
+              "login": "JeenoXD",
+              "name": "JeenoXD",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/186738975?v=4",
+              "id": 186738975
+            },
+            "id": 5805731319,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-06T19:20:14Z",
+            "updated_at": null,
+            "review": "APPROVED",
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<p dir=\"auto\">good job na bro very nice</p>"
+          }
+        ],
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/15",
+        "title": "Tell52/SE_GPRJ3 PR #15 comments",
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/15",
+        "display_title": "Tell52/SE_GPRJ3 PR #15 comments"
+      }
+    },
+    {
+      "pullRequest": {
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/16",
+        "number": 16,
+        "state": "closed",
+        "merged": true,
+        "mergeable": false,
+        "draft": false,
+        "body": "Closes #7\n\nAdds npm run test:e2e: the full Sprint 1 journey (T-18, AC-18) in Chrome at 1440x900 and 390x844 against the real API and the guarded test database, including a real API restart. Screenshots in docs/evidence/sprint-1/issue7/. Fixes the stale register tab found in the screenshots. Updates #6 records and names members by GitHub username. M-01 and M-02 are manual checks for the reviewer.",
+        "title": "[Sprint 1] issue7: End to end journeys, persistence and regression",
+        "base": "sprint1",
+        "base_sha": "7f5e4b2de67d3555981ccec65e830253a4506f96",
+        "head": "feature/issue7-verification",
+        "head_sha": "2d49808137646bc51e0e509a776f6d1366221a2c",
+        "head_repo_id": 1443195541,
+        "head_repo_full_name": "Tell52/SE_GPRJ3",
+        "merge_commit_sha": "bc8b6ba8457dd51211ea93e68ef6d6c2ab803dd4",
+        "user": {
+          "login": "JeenoXD",
+          "name": "JeenoXD",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/186738975?v=4",
+          "id": 186738975
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-07T11:09:10Z",
+        "updated_at": "2026-11-07T19:37:10Z",
+        "closed_at": "2026-11-07T19:37:09Z",
+        "merged_at": "2026-11-07T19:37:09Z",
+        "commits": 2,
+        "changed_files": 36,
+        "additions": 516,
+        "deletions": 54,
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/16",
+        "display_title": "[Sprint 1] issue7: End to end journeys, persistence and regression"
+      },
+      "discussion": {
+        "comments": [
+          {
+            "url": "https://github.com/Tell52/SE_GPRJ3/pull/16#pullrequestreview-5814590126",
+            "body": "nice bro",
+            "user": {
+              "login": "Tell52",
+              "name": "Tell52",
+              "email": null,
+              "avatar_url": "https://avatars.githubusercontent.com/u/191856933?v=4",
+              "id": 191856933
+            },
+            "id": 5814590126,
+            "pull_request_review_id": null,
+            "in_reply_to_id": null,
+            "created_at": "2026-11-07T19:37:03Z",
+            "updated_at": null,
+            "review": "APPROVED",
+            "side": null,
+            "line": null,
+            "start_line": null,
+            "path": null,
+            "body_html": "<p dir=\"auto\">nice bro</p>"
+          }
+        ],
+        "url": "https://github.com/Tell52/SE_GPRJ3/pull/16",
+        "title": "Tell52/SE_GPRJ3 PR #16 comments",
+        "display_url": "https://github.com/Tell52/SE_GPRJ3/pull/16",
+        "display_title": "Tell52/SE_GPRJ3 PR #16 comments"
+      }
+    }
+  ]
+}

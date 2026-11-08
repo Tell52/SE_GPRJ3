@@ -1,0 +1,24 @@
+.events-page { overflow-wrap: anywhere; min-width: 0; }
+.event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: 1rem; }
+.event-card { background: var(--surface); border: 1px solid var(--border); border-radius: .5rem; padding: 1.25rem; margin-top: 1rem; min-width: 0; }
+.event-card h2 { margin-top: 0; }
+.event-description { white-space: pre-wrap; }
+.event-action { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: .75rem; }
+.event-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.events-page textarea { font: inherit; width: 100%; min-width: 0; resize: vertical; padding: .75rem; border: 1px solid var(--border); border-radius: .375rem; }
+.events-page input { min-width: 0; }
+.event-table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: var(--surface); }
+.event-table th, .event-table td { text-align: left; padding: .75rem; border-bottom: 1px solid var(--border); }
+.event-table a { display: inline-flex; align-items: center; min-height: 44px; }
+.register-panel { margin-top: 1rem; display: grid; gap: .75rem; justify-items: start; }
+.receipt { display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1.25rem; margin: 1rem 0; }
+.receipt dt { font-weight: 600; }
+.receipt dd { margin: 0; min-width: 0; }
+@media (max-width: 640px) {
+  .receipt { grid-template-columns: 1fr; gap: .15rem; }
+  .receipt dd { margin-bottom: .5rem; }
+  .event-table, .event-table tbody, .event-table tr, .event-table td { display: block; }
+  .event-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .event-table tr { border: 1px solid var(--border); border-radius: .5rem; margin-bottom: 1rem; }
+  .event-table td { border: 0; padding: .5rem .75rem; }
+}

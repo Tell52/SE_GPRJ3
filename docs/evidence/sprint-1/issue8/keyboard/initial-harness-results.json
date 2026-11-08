@@ -1,0 +1,98 @@
+{
+  "operator": "Codex",
+  "method": "Playwright keyboard input with visual evidence; not a human attestation",
+  "records": [
+    {
+      "viewport": "desktop",
+      "size": {
+        "width": 1440,
+        "height": 900
+      },
+      "steps": [
+        "01-login-focus",
+        "02-required-error",
+        "Start entered: "
+      ],
+      "focus": [
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Email",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Password",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Log in",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "A",
+          "label": "Create event",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Title",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "TEXTAREA",
+          "label": "Description",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Location",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        },
+        {
+          "tag": "INPUT",
+          "label": "Start",
+          "outline": "rgb(41, 108, 97) solid 3px",
+          "visible": true
+        }
+      ],
+      "result": "running"
+    },
+    {
+      "result": "failed",
+      "error": "Error: expect(received).not.toBe(expected) // Object.is equality\n\nExpected: not \"\"",
+      "stack": "Error: expect(received).not.toBe(expected) // Object.is equality\n\nExpected: not \"\"\n    at captureRawStack (C:\\Users\\hp\\AppData\\Local\\Temp\\se-gprj3-issue8-d7512f9c\\node_modules\\playwright-core\\lib\\coreBundle.js:9282:17)\n    at callMatcherAsStep (C:\\Users\\hp\\AppData\\Local\\Temp\\se-gprj3-issue8-d7512f9c\\node_modules\\playwright\\lib\\matchers\\expect.js:13316:57)\n    at Object.toBe (C:\\Users\\hp\\AppData\\Local\\Temp\\se-gprj3-issue8-d7512f9c\\node_modules\\playwright\\lib\\matchers\\expect.js:13308:23)\n    at C:\\Users\\hp\\AppData\\Local\\Temp\\se-gprj3-issue8-d7512f9c\\e2e\\scripts\\issue8-keyboard.mjs:93:44"
+    }
+  ]
+}

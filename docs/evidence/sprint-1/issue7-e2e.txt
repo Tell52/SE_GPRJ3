@@ -1,0 +1,29 @@
+PS C:\Users\chuti\Documents\SE_GPRJ3> npm run test:e2e
+
+> event-planner@0.1.0 test:e2e
+> npm run build --workspace server && npm test --workspace e2e
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 159ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+
+> @event-planner/e2e@0.1.0 test
+> playwright test
+
+
+Running 2 tests using 1 worker
+
+  ✓  1 [desktop] › tests\sprint1-journey.spec.ts:18:1 › T-18 / AC-18: publish, register, rejections, roster and restart persistence (19.3s)
+  ✓  2 [mobile] › tests\sprint1-journey.spec.ts:18:1 › T-18 / AC-18: publish, register, rejections, roster and restart persistence (18.7s)
+
+  2 passed (1.0m)

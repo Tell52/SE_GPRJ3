@@ -1,0 +1,94 @@
+PASS desktop 1440x900: My events to roster, empty, simulated error/retry, logout, no overflow or page errors.
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+ExpectError: expect(locator).toBeVisible() failed
+
+Locator: getByRole('cell', { name: 'roster-participant-one@example.test', exact: true })
+Expected: visible
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toBeVisible" getByRole('cell', { name: 'roster-participant-one@example.test', exact: true }) with timeout 5000ms
+  - waiting for getByRole('cell', { name: 'roster-participant-one@example.test', exact: true })
+
+    at captureRawStack (E:\SE Group\SE_GPRJ3\node_modules\playwright-core\lib\coreBundle.js:9282:17)
+    at callMatcherAsStep (E:\SE Group\SE_GPRJ3\node_modules\playwright\lib\matchers\expect.js:13316:57)
+    at Object.toBeVisible (E:\SE Group\SE_GPRJ3\node_modules\playwright\lib\matchers\expect.js:13308:23)
+    at <anonymous> (E:\SE Group\SE_GPRJ3\e2e\scripts\issue6-smoke.mjs:75:104) {
+  matcherResult: {
+    message: 'expect(locator).toBeVisible() failed\n' +
+      '\n' +
+      "Locator: getByRole('cell', { name: 'roster-participant-one@example.test', exact: true })\n" +
+      'Expected: visible\n' +
+      'Timeout: 5000ms\n' +
+      'Error: element(s) not found\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toBeVisible" getByRole('cell', { name: 'roster-participant-one@example.test', exact: true }) with timeout 5000ms\n` +
+      "  - waiting for getByRole('cell', { name: 'roster-participant-one@example.test', exact: true })\n",
+    pass: false,
+    actual: undefined,
+    name: 'toBeVisible',
+    expected: 'visible',
+    log: [
+      `  - Expect "toBeVisible" getByRole('cell', { name: 'roster-participant-one@example.test', exact: true }) with timeout 5000ms`,
+      "  - waiting for getByRole('cell', { name: 'roster-participant-one@example.test', exact: true })"
+    ],
+    timeout: 5000,
+    ariaSnapshot: '- banner:\n' +
+      '  - text: Event Planner\n' +
+      '  - navigation "Main":\n' +
+      '    - link "My events":\n' +
+      '      - /url: /organizer/events\n' +
+      '    - link "Events":\n' +
+      '      - /url: /events\n' +
+      '  - text: roster-owner Organizer\n' +
+      '  - button "Logout"\n' +
+      '- main:\n' +
+      '  - link "Back to My events":\n' +
+      '    - /url: /organizer/events\n' +
+      '  - article:\n' +
+      '    - heading "Issue 6 private roster" [level=1]\n' +
+      '    - text: Published\n' +
+      '    - paragraph\n' +
+      '    - paragraph: CB2301\n' +
+      '    - paragraph: "Start: 20 Nov 2099, 14:00 (Bangkok)"\n' +
+      '    - paragraph: "End: 20 Nov 2099, 16:00 (Bangkok)"\n' +
+      '    - paragraph: "Organizer: roster-owner"\n' +
+      '    - paragraph: 1 place left\n' +
+      '    - region "Roster":\n' +
+      '      - heading "Roster" [level=2]\n' +
+      '      - paragraph: 2 of 3 places taken\n' +
+      '      - table "Event registrations":\n' +
+      '        - caption: Event registrations\n' +
+      '        - rowgroup:\n' +
+      '          - row "Registration ID Participant Email Status Registered (Bangkok)":\n' +
+      '            - columnheader "Registration ID"\n' +
+      '            - columnheader "Participant"\n' +
+      '            - columnheader "Email"\n' +
+      '            - columnheader "Status"\n' +
+      '            - columnheader "Registered (Bangkok)"\n' +
+      '        - rowgroup:\n' +
+      '          - row "Registration ID 1 Participant roster-participant-one Email roster-participant-one@example.test Status ACTIVE Registered (Bangkok) 6 Nov 2026, 23:18":\n' +
+      '            - cell "Registration ID 1"\n' +
+      '            - cell "Participant roster-participant-one"\n' +
+      '            - cell "Email roster-participant-one@example.test"\n' +
+      '            - cell "Status ACTIVE"\n' +
+      '            - cell "Registered (Bangkok) 6 Nov 2026, 23:18":\n' +
+      '              - text: Registered (Bangkok)\n' +
+      '              - time: 6 Nov 2026, 23:18\n' +
+      '          - row "Registration ID 2 Participant roster-participant-two-with-a-long-email-for-mobile Email roster-participant-two-with-a-long-email-for-mobile@example.test Status ACTIVE Registered (Bangkok) 6 Nov 2026, 23:18":\n' +
+      '            - cell "Registration ID 2"\n' +
+      '            - cell "Participant roster-participant-two-with-a-long-email-for-mobile"\n' +
+      '            - cell "Email roster-participant-two-with-a-long-email-for-mobile@example.test"\n' +
+      '            - cell "Status ACTIVE"\n' +
+      '            - cell "Registered (Bangkok) 6 Nov 2026, 23:18":\n' +
+      '              - text: Registered (Bangkok)\n' +
+      '              - time: 6 Nov 2026, 23:18'
+  }
+}
+
+Node.js v22.17.1

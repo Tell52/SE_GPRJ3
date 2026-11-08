@@ -1,0 +1,47 @@
+
+> event-planner@0.1.0 test
+> npm test --workspace server && npm test --workspace client
+
+
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 66ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/hp/AppData/Local/Temp/se-gprj3-issue8-d7512f9c/server
+
+
+ Test Files  10 passed (10)
+      Tests  100 passed (100)
+   Start at  02:54:45
+   Duration  76.76s (transform 286ms, setup 0ms, import 2.43s, tests 67.05s, environment 1ms)
+
+
+> @event-planner/client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/hp/AppData/Local/Temp/se-gprj3-issue8-d7512f9c/client
+
+
+ Test Files  4 passed (4)
+      Tests  46 passed (46)
+   Start at  02:56:03
+   Duration  2.56s (transform 835ms, setup 1.63s, import 1.32s, tests 1.74s, environment 4.17s)
+

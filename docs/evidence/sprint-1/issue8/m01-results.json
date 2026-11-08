@@ -1,0 +1,57 @@
+{
+  "candidate": "bc8b6ba8457dd51211ea93e68ef6d6c2ab803dd4",
+  "start": "2026-11-08T02:53:55.0940161+07:00",
+  "end": "2026-11-08T02:56:55.8704080+07:00",
+  "elapsedSeconds": 180.7790731,
+  "clone": "C:\\Users\\hp\\AppData\\Local\\Temp\\se-gprj3-issue8-d7512f9c",
+  "runs": [
+    {
+      "command": "docker compose -p se-gprj3-issue8 --profile test up -d --wait",
+      "exit": 0,
+      "seconds": 5.3335983,
+      "log": "m01-docker-compose--p-se-gprj3-issue8---profile-test-up--d---wait.txt"
+    },
+    {
+      "command": "npm.cmd ci",
+      "exit": 0,
+      "seconds": 16.8529022,
+      "log": "m01-npm.cmd-ci.txt"
+    },
+    {
+      "command": "npm.cmd run db:generate",
+      "exit": 0,
+      "seconds": 4.2516476,
+      "log": "m01-npm.cmd-run-db-generate.txt"
+    },
+    {
+      "command": "npm.cmd run db:migrate",
+      "exit": 0,
+      "seconds": 6.5034275,
+      "log": "m01-npm.cmd-run-db-migrate.txt"
+    },
+    {
+      "command": "npm.cmd run db:seed",
+      "exit": 0,
+      "seconds": 3.3169942,
+      "log": "m01-npm.cmd-run-db-seed.txt"
+    },
+    {
+      "command": "npm.cmd run build",
+      "exit": 0,
+      "seconds": 7.4715797,
+      "log": "m01-npm.cmd-run-build.txt"
+    },
+    {
+      "command": "npm.cmd test",
+      "exit": 0,
+      "seconds": 85.4163793,
+      "log": "m01-npm.cmd-test.txt"
+    },
+    {
+      "command": "npm.cmd run test:e2e",
+      "exit": 0,
+      "seconds": 49.6693888,
+      "log": "m01-npm.cmd-run-test-e2e.txt"
+    }
+  ]
+}
