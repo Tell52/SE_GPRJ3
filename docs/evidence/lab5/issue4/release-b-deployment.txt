@@ -1,0 +1,9 @@
+Workflow: https://github.com/Tell52/SE_GPRJ3/actions/runs/44900752305
+GitHub job: https://github.com/Tell52/SE_GPRJ3/actions/runs/44900752305/job/136835932623
+Commit: 99981136e9d5ef90d3acaa3d1fbededc84f62b4c
+Revision: s9084416c-00008-vcl
+2026-11-21T11:48:31.5977030Z   IMAGE: asia-southeast1-docker.pkg.dev/cpe-se-course-2026/s9084416c/s9084416c:99981136e9d5ef90d3acaa3d1fbededc84f62b4c
+2026-11-21T11:49:09.9560693Z   IMAGE: asia-southeast1-docker.pkg.dev/cpe-se-course-2026/s9084416c/s9084416c:99981136e9d5ef90d3acaa3d1fbededc84f62b4c
+2026-11-21T11:49:24.9452634Z Service [s9084416c] revision [s9084416c-00008-vcl] has been deployed and is serving 100 percent of traffic.
+2026-11-21T11:49:25.1130447Z Service URL: https://s9084416c-670075229477.asia-southeast1.run.app
+2026-11-21T11:49:25.1240423Z   IMAGE: asia-southeast1-docker.pkg.dev/cpe-se-course-2026/s9084416c/s9084416c:99981136e9d5ef90d3acaa3d1fbededc84f62b4c
