@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ==============================================================================
-# Event Planner — Google Cloud Run deployment script
+# Event Planner — Idempotent Google Cloud Run Deployment Script
 # ==============================================================================
 # Usage:
 #   ./deploy/deploy.sh [--demo]
@@ -130,8 +130,10 @@ echo "=================================================================="
 # ==============================================================================
 # Portal/TA pre-provisions infrastructure and public service IAM (Guide 5.3 steps 1–8, 5.4).
 # These names must exist. Never create or modify project-level IAM here.
-# Event Planner: the seed reads SEED_PASSWORD (password of the 5 synthetic demo accounts).
-JOB_SECRETS="DATABASE_URL=${SECRET_DB_URL}:latest,SEED_PASSWORD=${SECRET_DEMO_PASS}:latest"
+JOB_SECRETS="DATABASE_URL=${SECRET_DB_URL}:latest,ADMIN_PASSWORD=${SECRET_ADMIN_PASS}:latest"
+if [ "$SEED_DEMO_DATA" = "true" ]; then
+  JOB_SECRETS="${JOB_SECRETS},DEMO_USER_PASSWORD=${SECRET_DEMO_PASS}:latest"
+fi
 if [ "$DRY_RUN" != "1" ]; then
   gcloud run services describe "$SERVICE_NAME" --project "$PROJECT_ID" --region "$REGION" >/dev/null
   gcloud run jobs describe "$MIGRATE_JOB_NAME" --project "$PROJECT_ID" --region "$REGION" >/dev/null
@@ -162,9 +164,9 @@ run_cmd gcloud run jobs update "$MIGRATE_JOB_NAME" \
   --service-account "$SA_EMAIL" \
   --set-cloudsql-instances "$SQL_CONN_NAME" \
   --set-secrets "$JOB_SECRETS" \
-  --set-env-vars "NODE_ENV=production,TZ=Asia/Bangkok" \
+  --set-env-vars "NODE_ENV=production,TZ=Asia/Bangkok,SEED_DEMO_DATA=${SEED_DEMO_DATA}" \
   --command "sh" \
-  --args "-c,npx prisma migrate deploy && node dist/prisma/seed.js" \
+  --args "-c,npx prisma migrate deploy && npm run prisma:seed" \
   --max-retries 1 \
   --task-timeout 300s \
   --project "$PROJECT_ID"
@@ -191,7 +193,7 @@ run_cmd gcloud run services update "$SERVICE_NAME" \
   --service-account "$SA_EMAIL" \
   --add-cloudsql-instances "$SQL_CONN_NAME" \
   --set-secrets "DATABASE_URL=${SECRET_DB_URL}:latest" \
-  --set-env-vars "NODE_ENV=production,TZ=Asia/Bangkok,SESSION_TTL_HOURS=8" \
+  --set-env-vars "NODE_ENV=production,TZ=Asia/Bangkok" \
   --min-instances 0 \
   --max-instances 1 \
   --memory 512Mi \
@@ -216,5 +218,8 @@ printf '%s\n' "Service URL    : ${SERVICE_URL}"
 printf '%s\n' "Health Check   : ${SERVICE_URL}/api/health"
 printf '%s\n' "Readiness Check: ${SERVICE_URL}/api/ready"
 printf '%s\n' "Demo accounts  : organizer1@example.test, organizer2@example.test, participant1..3@example.test"
-printf '%s\n' "Demo password  : Stored in Secret Manager: ${SECRET_DEMO_PASS} (not printed)."
+printf '%s\n' "Admin Password : Stored in Secret Manager: ${SECRET_ADMIN_PASS} (not printed)."
+if [ "$SEED_DEMO_DATA" = "true" ]; then
+  printf '%s\n' "Demo Password  : Stored in Secret Manager: ${SECRET_DEMO_PASS} (not printed)."
+fi
 printf '%s\n' "=================================================================="
