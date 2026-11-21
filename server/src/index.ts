@@ -9,9 +9,12 @@ if (!Number.isInteger(port) || port < 0 || port > 65535) {
 
 // Connection only: migrations and seed are explicit administrative commands.
 await prisma.$connect();
-const server = createApp().listen(port, '127.0.0.1', () => {
+// Cloud Run sends traffic to the container's network interface, so production listens on all of them.
+// Local development and tests stay on loopback only.
+const host = process.env.HOST ?? (process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1');
+const server = createApp().listen(port, host, () => {
   const address = server.address();
-  if (address && typeof address !== 'string') console.log(`API listening on http://127.0.0.1:${address.port}`);
+  if (address && typeof address !== 'string') console.log(`API listening on http://${host}:${address.port}`);
 });
 server.on('error', () => {
   console.error('Could not start the API listener.');

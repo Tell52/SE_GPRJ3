@@ -1,0 +1,104 @@
+# ##############################################################################
+# CI & Docker Build — Event Planner
+# ##############################################################################
+# Runs on every Pull Request into `staging` or `main`, and is reused by
+# deploy.yml (workflow_call) before every deployment. It:
+#   1) checks the deploy scripts offline (no GCP access, no cost),
+#   2) runs the server tests against a throw-away PostgreSQL 16 (100+ tests),
+#   3) runs the client tests (46) and the end-to-end journey in Chrome (2),
+#   4) builds the production client and the production Docker image.
+# A failing step fails the job, which blocks the merge (ruleset) and the deploy.
+#
+# ⚠️ DO NOT RENAME the job `test-and-docker`: it is the required status check
+#    and deploy.yml calls it.
+# The database values below are throw-away CI values for a container that only
+# exists during the run. They are not real secrets.
+# ##############################################################################
+
+name: CI & Docker Build
+
+on:
+  workflow_call:
+  pull_request:
+    branches: [main, staging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: event_planner
+          POSTGRES_PASSWORD: ci_only_password
+          POSTGRES_DB: event_planner_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+
+      - name: Setup Python 3.14
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.14"
+
+      # 1. Deploy scripts: syntax + offline tests (fake gcloud, no GCP access)
+      - name: Check deployment scripts without accessing GCP
+        run: |
+          bash -n deploy/deploy.sh deploy/release.sh
+          bash deploy/tests/test_deploy_stub.sh
+          bash deploy/tests/test_release_stub.sh
+          python3 -m unittest discover -s deploy/tests -p 'test_smoke.py'
+
+      # 2. One install for the whole npm workspaces monorepo (root lockfile)
+      - name: Install dependencies
+        run: npm ci
+
+      # The test suites only accept server/.env.test naming a local event_planner_test
+      # database (guard in server/tests/helpers/test-database.ts).
+      - name: Configure the throw-away test database
+        run: |
+          {
+            echo 'DATABASE_URL=postgresql://event_planner:ci_only_password@localhost:5432/event_planner_test?schema=public'
+            echo 'SEED_PASSWORD=Ci-only-demo-42'
+            echo 'NODE_ENV=test'
+          } > server/.env.test
+
+      # 3. Server (build + migrate + 100+ tests on real PostgreSQL), then client tests
+      - name: Server and client tests
+        run: npm test
+
+      # 4. End-to-end journey (T-18) in the runner's Chrome, desktop and mobile
+      - name: End-to-end journey
+        run: npm run test:e2e
+
+      # 5. Production builds
+      - name: Build server and client for production
+        run: npm run build
+
+      - name: Verify the production Docker image builds
+        run: docker build -t event-planner:ci .
