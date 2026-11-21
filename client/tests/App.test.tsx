@@ -48,11 +48,6 @@ describe('T-04 (UI) / AC-01, AC-04: login screen', () => {
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
   });
 
-  test('Lab 5 release B: the login page shows the release note', async () => {
-    renderAt('/login');
-    expect(await screen.findByText('Release B: deployed on Google Cloud Run')).toBeInTheDocument();
-  });
-
   test('empty submit shows field messages, focuses email and sends no login request', async () => {
     renderAt('/login');
     await screen.findByLabelText('Email');

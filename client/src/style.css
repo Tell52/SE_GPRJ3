@@ -13,7 +13,6 @@ a { color: var(--accent-dark); }
 .page { max-width: 60rem; margin: 0 auto; padding: 1.5rem 1rem; }
 .auth-page { max-width: 28rem; margin-top: 10vh; }
 .eyebrow { color: var(--accent); font-weight: 600; margin: 0; }
-.release-note { color: var(--muted); font-size: 0.875rem; margin-top: 1.5rem; }
 
 .form { display: grid; gap: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: .5rem; padding: 1.25rem; }
 .field { display: grid; gap: .35rem; }
