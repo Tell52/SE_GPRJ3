@@ -76,6 +76,7 @@ export function LoginPage() {
         </div>
         <button type="submit" disabled={busy}>{busy ? 'Logging in...' : 'Log in'}</button>
       </form>
+      <p className="release-note">Release B: deployed on Google Cloud Run</p>
     </main>
   );
 }
