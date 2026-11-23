@@ -59,6 +59,13 @@ describe('T-05 events UI and states', () => {
     expect(screen.getByText('Published')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Publish' })).not.toBeInTheDocument();
   });
+  test('UAT-F-01 (#45): reloading a published event never shows the stale draft message', async () => {
+    routes['GET /api/events/7'] = { status: 200, body: { ...event, status: 'PUBLISHED', publishedAt: '2099-11-19T00:00:00Z' } };
+    // A browser reload keeps the history state { saved: true } set when the draft was created.
+    render(<MemoryRouter initialEntries={[{ pathname: '/organizer/events/7', state: { saved: true } }]}><App /></MemoryRouter>);
+    expect(await screen.findByText('Published')).toBeInTheDocument();
+    expect(screen.queryByText('Event saved as draft')).not.toBeInTheDocument();
+  });
   test('empty lists and participant discovery hide organizer controls', async () => {
     routes['GET /api/auth/me'] = { status: 200, body: { user: participant, csrfToken: 'csrf' } };
     renderAt('/events'); expect(await screen.findByText('No upcoming events')).toBeInTheDocument();
