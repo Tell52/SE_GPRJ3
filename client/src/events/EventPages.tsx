@@ -53,11 +53,15 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
   useEffect(() => {
     let active = true;
     setEvent(null); setLoading(true); setError(''); setConfirm(false); setBusy(false);
-    setSuccess(location.state?.saved ? 'Event saved as draft' : '');
+    setSuccess('');
     apiFetch<EventRecord>(`/api/events/${id}`).then((data) => {
       if (!active) return;
       if (organizer && data.organizer.id !== user?.id) setError('Event not found');
-      else setEvent(data);
+      else {
+        setEvent(data);
+        // #45: history state survives a reload, so only confirm the save while the event is still a draft.
+        if (location.state?.saved && data.status === 'DRAFT') setSuccess('Event saved as draft');
+      }
     }).catch((e) => { if (active) setError(e instanceof ApiError && e.status === 404 ? 'Event not found' : errorMessage(e)); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };

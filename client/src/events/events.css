@@ -10,6 +10,9 @@
 .event-table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: var(--surface); }
 .event-table th, .event-table td { text-align: left; padding: .75rem; border-bottom: 1px solid var(--border); }
 .event-table a { display: inline-flex; align-items: center; min-height: 44px; }
+/* #46: long unbroken titles wrap inside the title cell; badges, dates and counts stay on one line. */
+.event-table td:first-child { width: 100%; }
+.event-table td:not(:first-child), .event-table th:not(:first-child), .event-table .role-badge { white-space: nowrap; overflow-wrap: normal; }
 .register-panel { margin-top: 1rem; display: grid; gap: .75rem; justify-items: start; }
 .receipt { display: grid; grid-template-columns: max-content 1fr; gap: .5rem 1.25rem; margin: 1rem 0; }
 .receipt dt { font-weight: 600; }
