@@ -54,13 +54,13 @@ Explicit exclusions: self registration, password recovery and account administra
 | ID | Rule | Sprint | Source |
 |---|---|---|---|
 | BR-01 | Event capacity is a whole number from 1 to 1000. Title (3 to 120 characters) and location (1 to 200 characters) are required; description is optional up to 2000 characters; start must be in the future and end after start. | 1 | Brief (positive capacity); Team (limits, DEC-03) |
-| BR-02 | Registration is open only for an existing PUBLISHED event whose start time has not passed. | 1 | Brief; Team (closes at start, DEC-05) |
+| BR-02 | Registration is open only for an existing PUBLISHED event until 60 minutes before its start: a request is rejected when server time ≥ start − 60 minutes. | 1 | Brief; Team (DEC-05); changed in Lab 7, #49 (v1.0: closed at start) |
 | BR-03 | A participant may hold at most one ACTIVE registration per event, including when the same participant sends concurrent requests. | 1 | Brief |
 | BR-04 | ACTIVE registrations for an event never exceed its capacity, including when different participants compete for the last place at the same time. | 1 | Brief |
 | BR-05 | Role and ownership: only Participants register; only Organizers create events; only the owning Organizer may publish, manage or view the roster of an event; a registration is visible only to the participant who holds it (and, through the roster, to the event's owner). | 1 | Brief |
 | BR-06 | Only a DRAFT event can be published; publication is one way. | 1 | Team (DEC-04) |
 | BR-07 | A participant may cancel their own ACTIVE registration until the event starts. Cancelling frees the place, and the participant may register again while places remain. | 2 | Brief; Team (DEC-06) |
-| BR-08 | A registration deadline, if set, must not be later than the event start; registration after the deadline is rejected. | 2 | Brief; Team (DEC-05) |
+| BR-08 | A registration deadline, if set, must not be later than 60 minutes before the event start (BR-02); registration after the deadline is rejected. | 2 | Brief; Team (DEC-05) |
 | BR-09 | Capacity may be increased before the event ends and decreased only down to the current number of ACTIVE registrations. | 2 | Brief; Team (DEC-07) |
 | BR-10 | A cancelled event accepts no registrations; its active registrations become cancelled by organizer. | 2 | Team |
 | BR-11 | Check in is allowed only for ACTIVE registrations, from 1 hour before start until event end, at most once per registration. | 3 | Team |
@@ -90,7 +90,7 @@ Status: **Proposed** (drafted, awaiting review by both members), **Accepted** (b
 | DEC-02 | What is a duplicate registration? | Same participant, same event, an ACTIVE registration already exists. Enforced by an event row lock in the transaction and a partial unique index on (eventId, participantId) WHERE status = 'ACTIVE'. A cancelled registration (Sprint 2) keeps its row; re registering creates a new row. | Preserves history; the database guard catches anything the service misses. | BR-03, F-03, AC-11 | Proposed |
 | DEC-03 | Capacity and field limits? | Capacity integer 1 to 1000; title 3 to 120; location 1 to 200; description up to 2000 characters. | Brief only says positive; 1000 covers faculty events and catches typos. | BR-01, AC-06 | Proposed |
 | DEC-04 | Can a published event return to draft? | No. Publication is one way. Corrections go through editing (Sprint 2). | Participants may already have registered. | BR-06, AC-08 | Proposed |
-| DEC-05 | When does registration close? | Sprint 1: at event start. Sprint 2: at the optional deadline, which must not be after start. | Brief asks to clarify deadlines; simple rule first. | BR-02, BR-08 | Proposed |
+| DEC-05 | When does registration close? | When server time ≥ start − 60 minutes (Lab 7, #49; v1.0 closed at start). Sprint 2: at the optional deadline, which must not be later than that cutoff. | Organizers need a final roster before the event; one fixed cutoff keeps the rule simple. | BR-02, BR-08 | Accepted (TA approved #49, 24 Nov 2026) |
 | DEC-06 | Re registration after cancelling? | Allowed while places remain and registration is open. | Matches how sign ups work in practice. | BR-07 | Proposed |
 | DEC-07 | Capacity changes? | Increase anytime before the event ends; decrease only down to the ACTIVE count. Never auto remove registrations. | Brief asks to clarify; avoids silently dropping people. | BR-09 | Proposed |
 | DEC-08 | Session design? | Server side sessions in a `Session` table: random 32 byte token in an HttpOnly, SameSite=Lax cookie (Secure in production); only its SHA-256 hash stored; 8 hour absolute expiry; logout sets `revokedAt`. CSRF: per session synchronizer token returned by login and `/me`, sent as `X-CSRF-Token` on state changing requests. | Issue #3 requires revocable logout and CSRF protection; a stateless JWT cannot be revoked. | NFR-02, F-01 | Proposed |
