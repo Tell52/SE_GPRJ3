@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ApiError, apiFetch } from '../api';
 import type { EventRecord } from '../events/model';
-import { registerErrorMessage, type RegistrationRecord } from './model';
+import { REGISTRATION_CLOSED_MESSAGE, registerErrorMessage, registrationClosed, type RegistrationRecord } from './model';
 
 /** Register area on a participant's event detail (F-03). The API enforces every rule; this only reflects them. */
 export function RegisterPanel({ event, onFull, onRefresh }: { event: EventRecord; onFull?: () => void; onRefresh?: () => void }) {
@@ -31,6 +31,10 @@ export function RegisterPanel({ event, onFull, onRefresh }: { event: EventRecord
       if (e instanceof ApiError && e.code === 'ALREADY_REGISTERED') onRefresh?.();
       setBusy(false);
     }
+  }
+
+  if (registrationClosed(event.startsAt)) {
+    return <div className="register-panel"><p role="status">{REGISTRATION_CLOSED_MESSAGE}</p></div>;
   }
 
   return <div className="register-panel">
