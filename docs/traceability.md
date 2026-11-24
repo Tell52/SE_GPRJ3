@@ -19,7 +19,7 @@ Sprint 2 and 3 requirements are allocated to a feature and sprint now; their AC 
 | FR-11 | F-09 | 3 | S3 contract | S3 contract |
 | FR-12 | F-10 | 3 | S3 contract | S3 contract |
 | BR-01 | F-02 | 1 | AC-06 | T-06 |
-| BR-02 | F-03 | 1 | AC-14 | T-14 |
+| BR-02 | F-03 | 1 | AC-14 | T-14, T-14b |
 | BR-03 | F-03 | 1 | AC-11 | T-11 |
 | BR-04 | F-03 | 1 | AC-12, AC-13 | T-12, T-13 |
 | BR-05 | F-02, F-03, F-04 | 1 | AC-09, AC-14, AC-15, AC-17 | T-09, T-14, T-15, T-17 |
@@ -55,7 +55,7 @@ Sprint 2 and 3 requirements are allocated to a feature and sprint now; their AC 
 | AC-11 | F-03 | T-11 | API (concurrent) |
 | AC-12 | F-03 | T-12 | Unit + API (TDD) |
 | AC-13 | F-03 | T-13 | API (concurrent) |
-| AC-14 | F-03 | T-14 | API |
+| AC-14 | F-03 | T-14, T-14b | API, Unit, UI |
 | AC-15 | F-03 | T-15 | API |
 | AC-16 | F-04 | T-16 | API + UI |
 | AC-17 | F-04 | T-17 | API |

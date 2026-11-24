@@ -71,7 +71,7 @@ Behaviour and workflow:
 1. A Participant presses Register; `POST /api/events/:id/registrations` (no body; identity from the session).
 2. The service runs one transaction:
    1. `SELECT ... FROM "Event" WHERE id = $1 FOR UPDATE` locks the event row, serialising concurrent requests for that event.
-   2. Missing or DRAFT gives 404; start passed gives 409 `REGISTRATION_CLOSED` (BR-02).
+   2. Missing or DRAFT gives 404; server time ≥ start − 60 minutes gives 409 `REGISTRATION_CLOSED` (BR-02, changed by #49; v1.0: start passed).
    3. Existing ACTIVE registration for this participant gives 409 `ALREADY_REGISTERED` (BR-03).
    4. ACTIVE count >= capacity gives 409 `EVENT_FULL` (BR-04).
    5. Insert ACTIVE registration; 201 is returned only after commit.
@@ -89,7 +89,7 @@ Data: Registration (from SYS-FOUND). No new migration.
 | AC-11 | A Participant with an ACTIVE registration who registers again gets 409 `ALREADY_REGISTERED` and the ACTIVE count is unchanged. Five concurrent requests from the same Participant store exactly one ACTIVE registration. |
 | AC-12 | For an event whose ACTIVE registrations equal its capacity, a new Participant gets 409 `EVENT_FULL` and the ACTIVE count is unchanged. |
 | AC-13 | For an event with capacity 1 and ten independent Participants registering concurrently, exactly one gets 201, nine get 409 `EVENT_FULL`, and exactly one ACTIVE row is stored. |
-| AC-14 | Registering for a draft or a missing event returns 404; for an event whose start has passed returns 409 `REGISTRATION_CLOSED`; an Organizer registering returns 403; none of these insert a row. |
+| AC-14 | Registering for a draft or a missing event returns 404; when server time ≥ start − 60 minutes returns 409 `REGISTRATION_CLOSED` (start − 60 min − 1 s is accepted with 201; start − 60 min exactly is rejected; #49, v1.0: start has passed); an Organizer registering returns 403; none of these insert a row. From the cutoff the participant event page shows "Registration for this event is closed." instead of Register. |
 | AC-15 | `GET /api/registrations/mine` returns only the session Participant's registrations with event title, start and location. Another Participant requesting that registration by id gets 404 and does not see it in their own list. After the server restarts against the same database, the holder still retrieves it. |
 
 ## F-04 Organizer roster (Issue #6)

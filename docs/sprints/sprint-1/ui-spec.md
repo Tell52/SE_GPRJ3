@@ -43,7 +43,7 @@ Hiding a control is convenience only; the API enforces every permission. Opening
 
 | Screen | Content and behaviour |
 |---|---|
-| Register area on `/events/:id` (Participant) | Register button ("Registering...", disabled while pending). Already registered: "You are registered" with a View registration link. No places: Full badge, button hidden. Messages: `EVENT_FULL` "Sorry, this event just filled up."; `ALREADY_REGISTERED` "You are already registered for this event."; `REGISTRATION_CLOSED` "Registration for this event is closed." Success opens the receipt. |
+| Register area on `/events/:id` (Participant) | Register button ("Registering...", disabled while pending). Already registered: "You are registered" with a View registration link. No places: Full badge, button hidden. Messages: `EVENT_FULL` "Sorry, this event just filled up."; `ALREADY_REGISTERED` "You are already registered for this event."; `REGISTRATION_CLOSED` "Registration for this event is closed." Success opens the receipt. From 60 minutes before start the event stays listed and viewable, but the Register button is replaced by "Registration for this event is closed." (#49); the API still enforces the rule. |
 | Registration receipt `/registrations/:id` | Registration number, status, registered time, event title, start, location. 404 shows "Registration not found". |
 | My registrations `/registrations` | List of own registrations with event title, start, status. Empty: "You have not registered for any events". |
 

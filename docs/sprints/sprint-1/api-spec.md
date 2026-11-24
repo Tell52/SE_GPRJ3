@@ -88,7 +88,7 @@ No body.
 | 409 | `REGISTRATION_CLOSED`, `ALREADY_REGISTERED` or `EVENT_FULL` |
 | 503 | `SERVICE_BUSY` if the server is too busy to start the transaction within 15 s; nothing is stored |
 
-Checks run in this order inside the locked transaction: missing or draft (404), started (`REGISTRATION_CLOSED`), duplicate (`ALREADY_REGISTERED`), capacity (`EVENT_FULL`). So a participant who is already registered for a full event gets `ALREADY_REGISTERED`, not `EVENT_FULL`.
+Checks run in this order inside the locked transaction: missing or draft (404), server time ≥ start − 60 minutes (`REGISTRATION_CLOSED`, #49; v1.0: started), duplicate (`ALREADY_REGISTERED`), capacity (`EVENT_FULL`). So a participant who is already registered for a full event gets `ALREADY_REGISTERED`, not `EVENT_FULL`.
 
 ### GET /api/registrations/mine (Participant)
 
