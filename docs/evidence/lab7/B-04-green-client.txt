@@ -1,0 +1,18 @@
+﻿
+> @event-planner/client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/client
+
+ ✓ tests/Roster.test.tsx (11 tests) 402ms
+ ✓ tests/App.test.tsx (10 tests) 442ms
+ ✓ tests/Registrations.test.tsx (15 tests) 569ms
+ ✓ tests/Events.test.tsx (14 tests) 668ms
+     ✓ create saves Bangkok time as UTC, navigates to draft and confirms publication  321ms
+
+ Test Files  4 passed (4)
+      Tests  50 passed (50)
+   Start at  17:48:10
+   Duration  3.04s (transform 931ms, setup 2.39s, import 1.79s, tests 2.08s, environment 4.32s)
+

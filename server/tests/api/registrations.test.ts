@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { PrismaClient, type User } from '@prisma/client';
-import { afterAll, beforeAll, beforeEach, describe, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { loadTestEnvironment } from '../helpers/test-database.js';
 import { createUser, loginAs, resetTables } from '../helpers/api.js';
 
@@ -170,5 +170,52 @@ describe('T-15 / AC-15: personal registrations are private and durable', () => {
     const afterRestart = await relogin.agent.get(`/api/registrations/${mineReg.id}`);
     expect(afterRestart.status).toBe(200);
     expect(afterRestart.body).toMatchObject({ id: mineReg.id, status: 'ACTIVE', event: { id: e1.id } });
+  });
+});
+
+describe('T-14b / AC-14, #49: registration closes 60 minutes before start (server clock)', () => {
+  const MIN = 60000;
+  // Only Date is faked, so the server's `new Date()` is fixed while the database and HTTP keep running normally.
+  afterEach(() => vi.useRealTimers());
+  const freezeAt = (time: Date) => { vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(time); };
+  const eventStartingAt = (startsAt: Date) => prisma.event.create({ data: {
+    organizerId: organizer.id, title: 'Cutoff workshop', location: 'CB2301', capacity: 3, status: 'PUBLISHED',
+    publishedAt: new Date(), startsAt, endsAt: new Date(startsAt.getTime() + 2 * 3600000),
+  } });
+
+  test('start - 60 min - 1 s is accepted with 201; exactly start - 60 min, start - 30 min and start get 409 with no row', async () => {
+    const now = new Date(Date.now());
+    const open = await eventStartingAt(new Date(now.getTime() + 60 * MIN + 1000));
+    const atCutoff = await eventStartingAt(new Date(now.getTime() + 60 * MIN));
+    const halfHour = await eventStartingAt(new Date(now.getTime() + 30 * MIN));
+    const atStart = await eventStartingAt(now);
+    freezeAt(now);
+
+    const accepted = await register(p1, open.id);
+    expect(accepted.status).toBe(201);
+    expect(accepted.body.status).toBe('ACTIVE');
+
+    for (const closed of [atCutoff, halfHour, atStart]) {
+      const response = await register(p1, closed.id);
+      expect(response.status).toBe(409);
+      expect(response.body.error).toMatchObject({ code: 'REGISTRATION_CLOSED', message: 'Registration for this event is closed.' });
+      expect(await activeCount(closed.id)).toBe(0);
+    }
+  });
+
+  test('after the cutoff an organizer still gets 403 and an already registered participant gets REGISTRATION_CLOSED, keeping one ACTIVE registration', async () => {
+    const now = new Date(Date.now());
+    const event = await eventStartingAt(new Date(now.getTime() + 2 * 3600000));
+    const organizer2 = await loginAs(app, 'reg-org2@example.test');
+    expect((await register(p2, event.id)).status).toBe(201);
+
+    freezeAt(new Date(event.startsAt.getTime() - 60 * MIN));
+    const again = await register(p2, event.id);
+    const asOrganizer = await register(organizer2, event.id);
+
+    expect(again.status).toBe(409);
+    expect(again.body.error.code).toBe('REGISTRATION_CLOSED');
+    expect(asOrganizer.status).toBe(403);
+    expect(await activeCount(event.id)).toBe(1);
   });
 });

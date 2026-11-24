@@ -162,3 +162,27 @@ describe('T-15 / AC-15 (UI): my registrations and receipt', () => {
     expect(screen.queryByText('You are registered')).not.toBeInTheDocument();
   });
 });
+
+describe('T-14b (UI) / AC-14, #49: Register is replaced by the closed message 60 minutes before start', () => {
+  const startingIn = (ms: number) => {
+    const startsAt = new Date(Date.now() + ms);
+    return { ...event, startsAt: startsAt.toISOString(), endsAt: new Date(startsAt.getTime() + 2 * 3600000).toISOString() };
+  };
+
+  test('59 minutes before start: closed message, no Register button, no request sent', async () => {
+    routes['GET /api/events/7'] = { status: 200, body: startingIn(59 * 60000) };
+    renderAt('/events/7');
+
+    expect(await screen.findByText('Registration for this event is closed.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Register' })).not.toBeInTheDocument();
+    expect(calls.some((c) => c.url === '/api/events/7/registrations')).toBe(false);
+  });
+
+  test('61 minutes before start: Register is still offered', async () => {
+    routes['GET /api/events/7'] = { status: 200, body: startingIn(61 * 60000) };
+    renderAt('/events/7');
+
+    expect(await registerButton()).toBeEnabled();
+    expect(screen.queryByText('Registration for this event is closed.')).not.toBeInTheDocument();
+  });
+});

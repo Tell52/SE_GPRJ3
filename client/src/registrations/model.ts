@@ -14,6 +14,12 @@ const MESSAGES: Record<string, string> = {
   REGISTRATION_CLOSED: 'Registration for this event is closed.',
 };
 
+export const REGISTRATION_CLOSED_MESSAGE = MESSAGES.REGISTRATION_CLOSED;
+
+/** Mirrors BR-02 (#49) for display only: registration closes 60 minutes before start. The API and server clock decide. */
+const REGISTRATION_CUTOFF_MS = 60 * 60 * 1000;
+export const registrationClosed = (startsAt: string, now = Date.now()) => now >= Date.parse(startsAt) - REGISTRATION_CUTOFF_MS;
+
 export function registerErrorMessage(error: unknown) {
   if (error instanceof ApiError && MESSAGES[error.code]) return MESSAGES[error.code];
   return errorMessage(error);

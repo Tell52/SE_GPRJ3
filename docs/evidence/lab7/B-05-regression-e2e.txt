@@ -1,0 +1,36 @@
+﻿
+> event-planner@0.1.0 test:e2e
+> npm run build --workspace server && npm test --workspace e2e
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+npm : Environment variables loaded from .env
+At line:11 char:29
++ $env:PW_CHANNEL="chromium"; npm run test:e2e 2>&1 | Out-File -Encodin ...
++                             ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Environment variables loaded from .env:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 117ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+
+
+> @event-planner/e2e@0.1.0 test
+> playwright test
+
+
+Running 4 tests using 1 worker
+
+  ✓  1 [desktop] › tests\sprint1-journey.spec.ts:18:1 › T-18 / AC-18: publish, register, rejections, roster and restart persistence (16.5s)
+  ✓  2 [desktop] › tests\uat-findings.spec.ts:14:1 › UAT-F-01 (#45) and UAT-F-02 (#46): reload message and long title layout (2.1s)
+  ✓  3 [mobile] › tests\sprint1-journey.spec.ts:18:1 › T-18 / AC-18: publish, register, rejections, roster and restart persistence (18.2s)
+  ✓  4 [mobile] › tests\uat-findings.spec.ts:14:1 › UAT-F-01 (#45) and UAT-F-02 (#46): reload message and long title layout (2.1s)
+
+  4 passed (1.1m)

@@ -1,0 +1,168 @@
+﻿
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+npm : Environment variables loaded from .env
+At line:1 char:1
++ npm test --workspace server 2>&1 | Out-File -Encoding utf8 docs\evide ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Environment variables loaded from .env:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 115ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/server
+
+ ❯ tests/api/registrations.test.ts (9 tests | 2 failed) 15370ms
+     ✓ 201 ACTIVE for the session participant, row stored, remainingPlaces drops, same id in a new session  497ms
+     ✓ a second attempt returns 409 ALREADY_REGISTERED and the count is unchanged 70ms
+     ✓ five concurrent requests from the same participant store exactly one ACTIVE row  2172ms
+     ✓ capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row  3417ms
+     ✓ draft 404, missing 404, started 409 REGISTRATION_CLOSED, organizer 403; no rows inserted  397ms
+     ✓ registration endpoints require a session, the participant role and a CSRF token  343ms
+     ✓ mine lists only own registrations with event details; another participant gets 404; survives an app restart  2540ms
+     × start - 60 min - 1 s is accepted with 201; exactly start - 60 min, start - 30 min and start get 409 with no row 118ms
+     × after the cutoff an organizer still gets 403 and an already registered participant gets REGISTRATION_CLOSED, keeping one ACTIVE registration 364ms
+ ❯ tests/unit/registration-rules.test.ts (11 tests | 3 failed) 14ms
+     ✓ a full event is rejected with EVENT_FULL 2ms
+     ✓ an over-full count is still rejected 0ms
+     ✓ the last place is still available 0ms
+     ✓ missing and draft events are NOT_FOUND 0ms
+     ✓ an event that has started is REGISTRATION_CLOSED, even if places remain 0ms
+     ✓ an existing active registration is ALREADY_REGISTERED, checked before capacity 0ms
+     ✓ start - 60 min - 1 s (13:59:59 Bangkok) is still open 0ms
+     × exactly start - 60 min (14:00:00) is REGISTRATION_CLOSED 6ms
+     × start - 30 min is REGISTRATION_CLOSED 1ms
+     ✓ the start time itself is REGISTRATION_CLOSED 0ms
+     × after the cutoff the closed check comes before duplicate and capacity 1ms
+ ✓ tests/api/foundation.test.ts (5 tests) 28823ms
+   ✓ T-19: fresh migration, repeat seed, changed passwords and edited events survive  14915ms
+   ✓ T-19: two real API process starts preserve every existing row  5180ms
+ ✓ tests/api/auth.test.ts (15 tests) 12100ms
+     ✓ valid credentials return the stored identity, a CSRF token and an HttpOnly SameSite=Lax sid cookie  2960ms
+     ✓ wrong password and unknown email return the identical 401 with no cookie and no session  997ms
+     ✓ stored hash differs from the password and no response exposes hashes or tokens  420ms
+     ✓ a session past its absolute expiry is rejected with 401  516ms
+     ✓ expiry is absolute: using the session does not extend expiresAt  479ms
+     ✓ requireRole returns 403 for the wrong role and passes the right role  872ms
+     ✓ a state changing request without or with a wrong X-CSRF-Token returns 403 and changes nothing  827ms
+     ✓ requireCsrf lets safe methods through without a token  480ms
+     ✓ role or userId in the login body is ignored; identity comes from the stored account  447ms
+     ✓ logout revokes the session, clears the cookie and the replayed old cookie is rejected  499ms
+     ✓ logging out one session leaves the user's other sessions working  819ms
+ ✓ tests/api/events.test.ts (26 tests) 9047ms
+     ✓ T-08 repeated and concurrent publication changes state only once; past start rejected  2205ms
+ ✓ tests/api/roster.test.ts (10 tests) 6299ms
+ ✓ tests/api/registration-capacity.test.ts (1 test) 5269ms
+     ✓ capacity 2 with two ACTIVE registrations: a third participant gets 409 EVENT_FULL and nothing is stored  2994ms
+ ✓ tests/api/cloud-ready.test.ts (6 tests) 2240ms
+     ✓ GET /api/ready answers 200 when PostgreSQL responds  2094ms
+ ✓ tests/unit/password.test.ts (4 tests) 1457ms
+     ✓ hash is bcrypt cost 12, differs from plaintext and verifies only the right password  869ms
+     ✓ two hashes of the same password differ (salted)  584ms
+ ✓ tests/unit/events.test.ts (19 tests) 19ms
+ ✓ tests/unit/test-database.test.ts (7 tests) 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/api/registrations.test.ts > T-14b / AC-14, #49: registration closes 60 minutes before start (server clock) > start - 60 min - 1 s is 
+accepted with 201; exactly start - 60 min, start - 30 min and start get 409 with no row
+AssertionError: expected 201 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 201
+
+ ❯ tests/api/registrations.test.ts:200:31
+    198|     for (const closed of [atCutoff, halfHour, atStart]) {
+    199|       const response = await register(p1, closed.id);
+    200|       expect(response.status).toBe(409);
+       |                               ^
+    201|       expect(response.body.error).toMatchObject({ code: 'REGISTRATION_…
+    202|       expect(await activeCount(closed.id)).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/api/registrations.test.ts > T-14b / AC-14, #49: registration closes 60 minutes before start (server clock) > after the cutoff an organizer 
+still gets 403 and an already registered participant gets REGISTRATION_CLOSED, keeping one ACTIVE registration
+AssertionError: expected 'ALREADY_REGISTERED' to be 'REGISTRATION_CLOSED' // Object.is equality
+
+Expected: "REGISTRATION_CLOSED"
+Received: "ALREADY_REGISTERED"
+
+ ❯ tests/api/registrations.test.ts:217:35
+    215|
+    216|     expect(again.status).toBe(409);
+    217|     expect(again.body.error.code).toBe('REGISTRATION_CLOSED');
+       |                                   ^
+    218|     expect(asOrganizer.status).toBe(403);
+    219|     expect(await activeCount(event.id)).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/unit/registration-rules.test.ts > T-14b (unit, TDD) / AC-14, #49: registration closes 60 minutes before start > exactly start - 60 min 
+(14:00:00) is REGISTRATION_CLOSED
+ FAIL  tests/unit/registration-rules.test.ts > T-14b (unit, TDD) / AC-14, #49: registration closes 60 minutes before start > start - 30 min is 
+REGISTRATION_CLOSED
+AssertionError: expected 'OK' to be 'REGISTRATION_CLOSED' // Object.is equality
+
+Expected: "REGISTRATION_CLOSED"
+Received: "OK"
+
+ ❯ tests/unit/registration-rules.test.ts:53:106
+     51|     ['the start time itself', 0],
+     52|   ])('%s is REGISTRATION_CLOSED', (_label, before) => {
+     53|     expect(decideRegistration({ event, hasActiveRegistration: false, a…
+       |                                                                                                          ^
+     54|   });
+     55|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/unit/registration-rules.test.ts > T-14b (unit, TDD) / AC-14, #49: registration closes 60 minutes before start > after the cutoff the closed 
+check comes before duplicate and capacity
+AssertionError: expected 'ALREADY_REGISTERED' to be 'REGISTRATION_CLOSED' // Object.is equality
+
+Expected: "REGISTRATION_CLOSED"
+Received: "ALREADY_REGISTERED"
+
+ ❯ tests/unit/registration-rules.test.ts:57:107
+     55|
+     56|   test('after the cutoff the closed check comes before duplicate and c…
+     57|     expect(decideRegistration({ event, hasActiveRegistration: true, ac…
+       |                                                                                                           ^
+     58|     expect(decideRegistration({ event, hasActiveRegistration: false, a…
+     59|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+
+ Test Files  2 failed | 9 passed (11)
+      Tests  5 failed | 108 passed (113)
+   Start at  17:43:02
+   Duration  94.68s (transform 516ms, setup 0ms, import 4.62s, tests 80.64s, environment 1ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error workspace @event-planner/server@0.1.0
+npm error location C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c vitest run
