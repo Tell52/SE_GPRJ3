@@ -169,6 +169,14 @@ Sprint 1 endpoints (details in [api-spec.md](sprints/sprint-1/api-spec.md)):
 
 Sprint 2 and 3 operations (cancel registration, edit or cancel event, check in, reports) follow the same pattern: Participants act only on their own registrations; only the owning Organizer acts on an event.
 
+### Sprint 2 design candidate (#50)
+
+The [feature contracts](sprints/sprint-2/contracts.md) define request fields, responses, UI states and permission tests. Add participant receipt cancellation, owner event editing (including the optional deadline), and owner event cancellation to the existing detail views. Keep discovery limited to upcoming published events and participant history scoped to the session holder.
+
+Extend both status enums with CANCELLED. Add nullable Event.registrationDeadline and Registration.cancelledAt (timestamp with time zone, millisecond precision), plus nullable Registration.cancelledBy (PARTICIPANT or ORGANIZER). Existing rows retain their status and null metadata. Keep the ACTIVE-only partial unique index. Share the registration cancellation representation across #51 and #54 so both migration paths preserve history.
+
+Serialize every booking, receipt cancellation, capacity/deadline edit and event cancellation on the same event row in PostgreSQL. Inside the transaction, re-read ownership, state, stored times and applicable ACTIVE count after acquiring the lock, then check server time before writing. Cancel an event and update its ACTIVE receipts in one commit. Compute remaining places from capacity minus ACTIVE count. No seat counter or destructive history migration is required.
+
 Enforcement: `requireSession` (401), `requireRole` (403), `requireCsrf` on POST, PUT, PATCH and DELETE except login (403 `CSRF_INVALID`), ownership checks in services (404). Hidden UI controls are never relied on.
 
 ## 6. Authentication, sessions and CSRF
