@@ -107,6 +107,12 @@ Status: **Proposed** (drafted, awaiting review by both members), **Accepted** (b
 | `<date>` | `<name>` | `<DEC IDs>` | `<accepted / changed and why>` |
 | `<date>` | `<name>` | `<DEC IDs>` | `<accepted / changed and why>` |
 
+## Sprint 2 specification candidate (#50)
+
+FR-07/BR-07 permit an owner to cancel an ACTIVE registration strictly before start, including after registration closes. Rebooking while open creates a new receipt and preserves history. FR-09/BR-09 require an atomic capacity check against the current ACTIVE count. A capacity increase requires server time strictly before the stored end. FR-10/BR-10 require event cancellation and organizer cancellation of all ACTIVE rows in a single transaction, retaining earlier participant cancellations.
+
+FR-08/BR-08 has an open decision. The accepted BR-02 cutoff from #49 is inclusive at start minus 60 minutes. The current BR-08 text above limits the stored deadline to that cutoff, while #53 permits a deadline equal to start. The [Sprint 2 proposal and boundary tests](sprints/sprint-2/specification.md#f-06-registration-deadline) distinguish the stored value from the effective cutoff. Record approval or revision before implementing F-06.
+
 ## Version history
 
 | Version | Date | Change |

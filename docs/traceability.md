@@ -1,6 +1,6 @@
 # Requirements Traceability
 
-Sprint 2 and 3 requirements are allocated to a feature and sprint now; their AC and tests are written in that sprint's contract ("S2 contract", "S3 contract").
+Sprint 2 criteria and planned test inputs are in the [versioned feature contracts](sprints/sprint-2/contracts.md). Sprint 3 verification is deferred to its contract.
 
 ## Requirements to features, sprints and verification
 
@@ -12,22 +12,23 @@ Sprint 2 and 3 requirements are allocated to a feature and sprint now; their AC 
 | FR-04 | F-03 | 1 | AC-10, AC-18 | T-10, T-18 |
 | FR-05 | F-03 | 1 | AC-15, AC-18 | T-15, T-18 |
 | FR-06 | F-04 | 1 | AC-16, AC-18 | T-16, T-18 |
-| FR-07 | F-05 | 2 | S2 contract | S2 contract |
-| FR-08 | F-06 | 2 | S2 contract | S2 contract |
-| FR-09 | F-07 | 2 | S2 contract | S2 contract |
-| FR-10 | F-08 | 2 | S2 contract | S2 contract |
+| FR-07 | F-05 | 2 | AC-20–AC-23 | T-20–T-23 |
+| FR-08 | F-06 | 2 | AC-24–AC-27 | T-24–T-27 |
+| FR-09 | F-07 | 2 | AC-28–AC-32 | T-28–T-32 |
+| FR-10 | F-08 | 2 | AC-33–AC-36 | T-33–T-36 |
 | FR-11 | F-09 | 3 | S3 contract | S3 contract |
 | FR-12 | F-10 | 3 | S3 contract | S3 contract |
 | BR-01 | F-02 | 1 | AC-06 | T-06 |
 | BR-02 | F-03 | 1 | AC-14 | T-14, T-14b |
+| BR-02 | F-06 | 2 | AC-24, AC-26, AC-27 | T-24, T-26, T-27 |
 | BR-03 | F-03 | 1 | AC-11 | T-11 |
 | BR-04 | F-03 | 1 | AC-12, AC-13 | T-12, T-13 |
 | BR-05 | F-02, F-03, F-04 | 1 | AC-09, AC-14, AC-15, AC-17 | T-09, T-14, T-15, T-17 |
 | BR-06 | F-02 | 1 | AC-08 | T-08 |
-| BR-07 | F-05 | 2 | S2 contract | S2 contract |
-| BR-08 | F-06 | 2 | S2 contract | S2 contract |
-| BR-09 | F-07 | 2 | S2 contract | S2 contract |
-| BR-10 | F-08 | 2 | S2 contract | S2 contract |
+| BR-07 | F-05 | 2 | AC-20–AC-23 | T-20–T-23 |
+| BR-08 | F-06 | 2 | AC-24–AC-27 | T-24–T-27 |
+| BR-09 | F-07 | 2 | AC-28–AC-32 | T-28–T-32 |
+| BR-10 | F-08 | 2 | AC-33–AC-36 | T-33–T-36 |
 | BR-11 | F-09 | 3 | S3 contract | S3 contract |
 | BR-12 | F-10 | 3 | S3 contract | S3 contract |
 | NFR-01 | F-01 to F-04, SYS-UI | 1 | AC-03, AC-07, AC-09, AC-14, AC-15, AC-17 | T-03, T-07, T-09, T-14, T-15, T-17 |
@@ -66,7 +67,7 @@ Execution results (test file and name, result, tested commit) are recorded in th
 
 ## Coverage gaps
 
-None for the baseline. Every FR, BR and NFR is allocated to a feature or responsibility and a sprint. Sprint 2 and 3 items are allocated but not yet elaborated.
+None for the baseline. Every FR, BR and NFR is allocated to a feature or responsibility and a sprint. Sprint 2 has planned tests. Sprint 3 verification is pending.
 
 ## Approved changes
 
