@@ -47,6 +47,8 @@ Unless specified, O owns published event E on 1 December 2026 from 12:00 to 14:0
 
 ### Sprint 2 completion table
 
+The [integrated release table for #55](../../evidence/sprint-2/issue6/release.md) covers AC-20 through AC-36 on one application SHA, including race tests and the F-07 cancelled-event case delivered by F-08. The rows below retain the earlier feature-branch verification.
+
 | Issue / criterion | Executed test | Observed result on 27 November 2026 |
 |---|---|---|
 | #51 / AC-20 | T-20 [PostgreSQL API](../../../server/tests/api/registrations.test.ts), [receipt UI](../../../client/tests/Registrations.test.tsx), [desktop and mobile journey](../../../e2e/tests/participant-cancellation.spec.ts) | At start −1 ms, two cancellation requests returned 200 and 409 INVALID_STATE. One ACTIVE row became zero. A fresh GET matched the cancelled receipt, including actor and time. Both browser viewports retained the cancellation on reload and showed the freed place on event detail. |
@@ -60,4 +62,4 @@ Unless specified, O owns published event E on 1 December 2026 from 12:00 to 14:0
 
 #51 was tested on `sprint2-issue2`, based on `1e75308`. Build, 118 server tests, 51 client tests and both cancellation browser journeys passed.
 
-#53 was tested on the working tree based on `a4bc2be`. Server and client builds passed. All 136 server tests, 55 client tests and four focused browser cases passed. Record the implementation commit and PR link after commit and review.
+#53 was tested on the working tree based on `a4bc2be` and integrated at `994f155` via [PR #66](https://github.com/Tell52/SE_GPRJ3/pull/66). Server and client builds, 136 server tests, 55 client tests and four focused browser cases passed.
