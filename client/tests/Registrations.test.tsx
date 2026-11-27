@@ -41,6 +41,25 @@ afterEach(() => vi.unstubAllGlobals());
 const renderAt = (path: string) => render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
 const registerButton = () => screen.findByRole('button', { name: 'Register' });
 
+test('T-20: confirm cancellation, then reload the saved receipt without a cancel action', async () => {
+  const confirm = vi.fn().mockReturnValueOnce(false).mockReturnValueOnce(true);
+  vi.stubGlobal('confirm', confirm);
+  const saved = { ...registration, status: 'CANCELLED', cancelledBy: 'PARTICIPANT' };
+  routes['POST /api/registrations/15/cancel'] = { status: 200, body: saved };
+  const page = renderAt('/registrations/15');
+  const button = await screen.findByRole('button', { name: 'Cancel registration' });
+  fireEvent.click(button);
+  expect(calls.some(c => c.init.method === 'POST')).toBe(false);
+  fireEvent.click(button);
+  expect(await screen.findByText('Cancelled by participant')).toBeInTheDocument();
+  expect(calls.find(c => c.init.method === 'POST')?.init.headers).toMatchObject({ 'X-CSRF-Token': 'csrf-p' });
+  page.unmount();
+  routes['GET /api/registrations/15'] = { status: 200, body: saved };
+  renderAt('/registrations/15');
+  expect(await screen.findByText('Cancelled by participant')).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Cancel registration' })).not.toBeInTheDocument();
+});
+
 describe('T-10 / AC-10 (UI): register and see the saved receipt', () => {
   test('Register shows a busy state, sends the CSRF token, then opens the receipt', async () => {
     let release!: () => void;
@@ -81,12 +100,12 @@ describe('T-11 to T-14 (UI): rejections show the matching message', () => {
     expect(screen.queryByText(/places? left/)).not.toBeInTheDocument();
   });
 
-  test('REGISTRATION_CLOSED shows the closed message and keeps the button for a retry', async () => {
+  test('REGISTRATION_CLOSED replaces a stale Register button with the closed message', async () => {
     routes['POST /api/events/7/registrations'] = apiError(409, 'REGISTRATION_CLOSED', 'server text');
     renderAt('/events/7');
     fireEvent.click(await registerButton());
-    expect(await screen.findByRole('alert')).toHaveTextContent('Registration for this event is closed.');
-    expect(screen.getByRole('button', { name: 'Register' })).toBeEnabled();
+    expect(await screen.findByText('Registration for this event is closed.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Register' })).not.toBeInTheDocument();
   });
 
   test('ALREADY_REGISTERED (registered in another tab) shows the message, then the saved registration', async () => {

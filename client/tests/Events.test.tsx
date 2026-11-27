@@ -144,3 +144,110 @@ test('T-06 client validation enforces capacity and field boundaries', () => {
   for (const capacity of ['', '0', '-1', '1.5', '1001']) expect(validateEventForm({ ...form, capacity })).toHaveProperty('capacity');
   expect(validateEventForm({ ...form, title: 'x'.repeat(121), location: 'x'.repeat(201), description: 'x'.repeat(2001), endsAt: form.startsAt })).toMatchObject({ title: expect.any(String), location: expect.any(String), description: expect.any(String), endsAt: expect.any(String) });
 });
+
+test('T-24: save, reopen, update and clear a Bangkok deadline on the owner form', async () => {
+  let saved: string | null = null;
+  const detail = () => ({ status: 200, body: { ...event, registrationDeadline: saved } });
+  routes['GET /api/events/7'] = async () => detail();
+  routes['PATCH /api/events/7'] = async () => {
+    saved = JSON.parse(calls.at(-1)!.init.body as string).registrationDeadline;
+    return detail();
+  };
+  renderAt('/organizer/events/7/edit');
+  const label = 'Registration deadline (optional)';
+  for (const [local, iso] of [['2099-11-20T10:00', '2099-11-20T03:00:00.000Z'],
+    ['2099-11-20T14:00', '2099-11-20T07:00:00.000Z'], ['', null]] as const) {
+    await screen.findByLabelText(label);
+    fill(label, local);
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await screen.findByText('Event updated');
+    expect(saved).toBe(iso);
+    fireEvent.click(screen.getByRole('link', { name: 'Edit event' }));
+    expect(await screen.findByLabelText(label)).toHaveValue(local);
+  }
+});
+
+describe('T-28 / T-29 (UI), #52: owner edits an event', () => {
+  const published = { ...event, status: 'PUBLISHED', publishedAt: '2099-11-01T00:00:00Z', capacity: 4, activeCount: 3, remainingPlaces: 1 };
+
+  test('Edit opens a prefilled form in Bangkok time; Save sends PATCH with CSRF and the page shows the saved values', async () => {
+    routes['GET /api/events/7'] = { status: 200, body: published };
+    routes['PATCH /api/events/7'] = { status: 200, body: { ...published, title: 'Workshop', location: 'CB2312' } };
+    renderAt('/organizer/events/7');
+    fireEvent.click(await screen.findByRole('link', { name: 'Edit event' }));
+    expect(await screen.findByRole('heading', { name: 'Edit event' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Title')).toHaveValue('Git workshop');
+    expect(screen.getByLabelText('Start')).toHaveValue('2099-11-20T14:00');
+    expect(screen.getByLabelText('End')).toHaveValue('2099-11-20T16:00');
+    expect(screen.getByLabelText('Capacity')).toHaveValue(4);
+
+    routes['GET /api/events/7'] = { status: 200, body: { ...published, title: 'Workshop', location: 'CB2312' } };
+    fill('Title', 'Workshop'); fill('Location', 'CB2312');
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    expect(await screen.findByText('Event updated')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Workshop' })).toBeInTheDocument();
+    const patch = calls.find((c) => c.url === '/api/events/7' && c.init.method === 'PATCH')!;
+    expect(patch.init.headers).toMatchObject({ 'X-CSRF-Token': 'csrf' });
+    expect(JSON.parse(patch.init.body as string)).toEqual({ title: 'Workshop', location: 'CB2312' });
+  });
+
+  test('CAPACITY_BELOW_ACTIVE is shown beside Capacity and the form stays open for correction', async () => {
+    routes['GET /api/events/7'] = { status: 200, body: published };
+    routes['PATCH /api/events/7'] = { status: 409, body: { error: { code: 'CAPACITY_BELOW_ACTIVE', message: 'Capacity cannot be lower than the 3 active registrations.', details: [] } } };
+    renderAt('/organizer/events/7/edit');
+    await screen.findByRole('heading', { name: 'Edit event' });
+    fill('Capacity', '2');
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    expect(await screen.findByText('Capacity cannot be lower than the 3 active registrations.')).toBeInTheDocument();
+    expect(screen.getByLabelText('Capacity')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByRole('button', { name: 'Save changes' })).toBeEnabled();
+  });
+
+  test('a participant never sees Edit event', async () => {
+    routes['GET /api/auth/me'] = { status: 200, body: { user: participant, csrfToken: 'csrf' } };
+    routes['GET /api/events/7'] = { status: 200, body: { ...published, myRegistration: null } };
+    renderAt('/events/7');
+    expect(await screen.findByRole('heading', { name: 'Git workshop' })).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Edit event' })).not.toBeInTheDocument();
+  });
+});
+
+describe('T-34 (UI) / AC-33, AC-34, #54: owner cancels a published event', () => {
+  const published = { ...event, status: 'PUBLISHED', publishedAt: '2099-11-01T00:00:00Z', activeCount: 2, remainingPlaces: 8 };
+
+  test('Cancel event explains the effect, needs confirmation, then shows Cancelled without the actions', async () => {
+    routes['GET /api/events/7'] = { status: 200, body: published };
+    let release!: () => void;
+    routes['POST /api/events/7/cancel'] = () => new Promise((resolve) => {
+      release = () => resolve({ status: 200, body: { ...published, status: 'CANCELLED', activeCount: 0, remainingPlaces: 10 } });
+    });
+    renderAt('/organizer/events/7');
+    fireEvent.click(await screen.findByRole('button', { name: 'Cancel event' }));
+    expect(screen.getByText('Cancel this event? All active registrations will be cancelled.')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Keep event' }));
+    expect(calls.some((c) => c.url.endsWith('/cancel'))).toBe(false);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel event' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm event cancellation' }));
+    expect(await screen.findByRole('button', { name: 'Cancelling...' })).toBeDisabled();
+    const post = calls.find((c) => c.url === '/api/events/7/cancel')!;
+    expect(post.init.headers).toMatchObject({ 'X-CSRF-Token': 'csrf' });
+    await act(async () => release());
+    expect(await screen.findByText('Event cancelled')).toBeInTheDocument();
+    expect(screen.getByText('Cancelled')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Cancel event' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Edit event' })).not.toBeInTheDocument();
+  });
+
+  test('My events shows Cancelled for a cancelled event', async () => {
+    routes['GET /api/events/mine'] = { status: 200, body: { items: [{ ...published, status: 'CANCELLED', activeCount: 0 }] } };
+    renderAt('/organizer/events');
+    expect(await screen.findByText('Cancelled')).toBeInTheDocument();
+  });
+
+  test('a draft offers Publish but not Cancel event', async () => {
+    renderAt('/organizer/events/7');
+    expect(await screen.findByRole('button', { name: 'Publish' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Cancel event' })).not.toBeInTheDocument();
+  });
+});

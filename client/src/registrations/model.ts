@@ -3,7 +3,9 @@ import { errorMessage } from '../events/model';
 
 export type RegistrationRecord = {
   id: number;
-  status: 'ACTIVE';
+  status: 'ACTIVE' | 'CANCELLED';
+  cancelledBy: 'PARTICIPANT' | 'ORGANIZER' | null;
+  cancelledAt: string | null;
   registeredAt: string;
   event: { id: number; title: string; startsAt: string; endsAt: string; location: string };
 };

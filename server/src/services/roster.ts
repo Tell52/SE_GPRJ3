@@ -12,5 +12,5 @@ export async function getEventRoster(id: number, organizerId: number) {
     select: { id: true, status: true, registeredAt: true,
       participant: { select: { id: true, name: true, email: true } } },
   });
-  return { event, count: items.length, items };
+  return { event, count: items.filter((item) => item.status === 'ACTIVE').length, items };
 }

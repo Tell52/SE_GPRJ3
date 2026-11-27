@@ -1,19 +1,21 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '../db.js';
+import { registrationCutoff } from './registration-rules.js';
 import { AppError, notFound } from '../errors.js';
 import type { SessionUser } from '../auth/session.js';
-import type { EventInput } from '../validation/events.js';
+import type { EventInput, EventPatch } from '../validation/events.js';
 
 const eventSelect = {
   id: true, title: true, description: true, location: true, startsAt: true, endsAt: true,
-  capacity: true, status: true, publishedAt: true,
+  capacity: true, status: true, publishedAt: true, registrationDeadline: true,
   organizer: { select: { id: true, name: true } },
   _count: { select: { registrations: { where: { status: 'ACTIVE' } } } },
 } satisfies Prisma.EventSelect;
 
 type SelectedEvent = Prisma.EventGetPayload<{ select: typeof eventSelect }>;
 function present({ _count, ...event }: SelectedEvent) {
-  return { ...event, activeCount: _count.registrations, remainingPlaces: event.capacity - _count.registrations };
+  const effectiveCutoff = registrationCutoff(event.startsAt, event.registrationDeadline);
+  return { ...event, effectiveCutoff, serverTime: new Date(), activeCount: _count.registrations, remainingPlaces: event.capacity - _count.registrations };
 }
 
 export async function createEvent(input: EventInput, organizerId: number) {
@@ -54,4 +56,73 @@ export async function publishEvent(id: number, organizerId: number) {
     }
     return present(await tx.event.findUniqueOrThrow({ where: { id }, select: eventSelect }));
   });
+}
+
+const TRANSACTION_LIMITS = { maxWait: 15000, timeout: 15000 };
+
+/**
+ * F-07 (#52, BR-09): the owner edits a draft or published event. The event row is locked FOR UPDATE, the
+ * same lock a booking takes, so an edit and a registration never interleave and capacity is always
+ * compared with the committed ACTIVE count. Checks: owner (404), merged schedule (400), capacity below
+ * ACTIVE (409 CAPACITY_BELOW_ACTIVE), capacity increase at or after the stored end (409 INVALID_STATE).
+ */
+export async function updateEvent(id: number, patch: EventPatch, organizerId: number) {
+  return prisma.$transaction(async (tx) => {
+    const [current] = await tx.$queryRaw<{ status: string; startsAt: Date; endsAt: Date; capacity: number; registrationDeadline: Date | null }[]>`
+      SELECT "status"::text AS "status", "startsAt", "endsAt", "capacity", "registrationDeadline" FROM "Event" WHERE "id" = ${id} AND "organizerId" = ${organizerId} FOR UPDATE`;
+    if (!current) throw notFound();
+    // T-32 (#54): a cancelled event is final.
+    if (current.status === 'CANCELLED') throw new AppError(409, 'INVALID_STATE', 'A cancelled event cannot be edited.');
+    const now = new Date();
+    const startsAt = patch.startsAt ? new Date(patch.startsAt) : current.startsAt;
+    const endsAt = patch.endsAt ? new Date(patch.endsAt) : current.endsAt;
+    const details: { field: string; message: string }[] = [];
+    const deadline = patch.registrationDeadline === undefined ? current.registrationDeadline
+      : patch.registrationDeadline === null ? null : new Date(patch.registrationDeadline);
+    if (deadline && deadline > startsAt) {
+      details.push({ field: 'registrationDeadline', message: 'Registration deadline must be at or before the event start.' });
+    }
+    // An unchanged start may already be in the past (capacity edits during the event); a changed one may not.
+    if (patch.startsAt && startsAt.getTime() !== current.startsAt.getTime() && startsAt <= now) {
+      details.push({ field: 'startsAt', message: 'Start must be in the future.' });
+    }
+    if (endsAt <= startsAt) details.push({ field: 'endsAt', message: 'End must be after start.' });
+    if (details.length) throw new AppError(400, 'VALIDATION_ERROR', 'Some fields are invalid.', details);
+
+    if (patch.capacity !== undefined) {
+      const active = await tx.registration.count({ where: { eventId: id, status: 'ACTIVE' } });
+      if (patch.capacity < active) {
+        throw new AppError(409, 'CAPACITY_BELOW_ACTIVE', `Capacity cannot be lower than the ${active} active registrations.`);
+      }
+      if (patch.capacity > current.capacity && now >= current.endsAt) {
+        throw new AppError(409, 'INVALID_STATE', 'Capacity cannot be increased after the event has ended.');
+      }
+    }
+    return present(await tx.event.update({
+      where: { id },
+      data: { ...patch, ...(patch.startsAt && { startsAt }), ...(patch.endsAt && { endsAt }) },
+      select: eventSelect,
+    }));
+  }, TRANSACTION_LIMITS);
+}
+
+/**
+ * F-08 (#54, BR-10): the owner cancels a published event. Under the same FOR UPDATE lock a booking takes,
+ * the event becomes CANCELLED and every ACTIVE registration becomes CANCELLED by ORGANIZER at one server
+ * time, in one transaction. Earlier participant cancellations are not touched. A booking that waited on the
+ * lock re-reads the status and gets 404; one that committed first is cancelled here. Owner only (404 otherwise);
+ * a draft or an already cancelled event is 409 INVALID_STATE.
+ */
+export async function cancelEvent(id: number, organizerId: number) {
+  return prisma.$transaction(async (tx) => {
+    const [current] = await tx.$queryRaw<{ status: string }[]>`
+      SELECT "status"::text AS "status" FROM "Event" WHERE "id" = ${id} AND "organizerId" = ${organizerId} FOR UPDATE`;
+    if (!current) throw notFound();
+    if (current.status !== 'PUBLISHED') throw new AppError(409, 'INVALID_STATE', 'Only a published event can be cancelled.');
+    const now = new Date();
+    await tx.registration.updateMany({
+      where: { eventId: id, status: 'ACTIVE' }, data: { status: 'CANCELLED', cancelledBy: 'ORGANIZER', cancelledAt: now },
+    });
+    return present(await tx.event.update({ where: { id }, data: { status: 'CANCELLED' }, select: eventSelect }));
+  }, TRANSACTION_LIMITS);
 }

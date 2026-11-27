@@ -1,0 +1,287 @@
+﻿
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+npm : Environment variables loaded from .env
+At line:2 char:1
++ npm test --workspace server 2>&1 | Out-File -Encoding utf8 docs\evide ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Environment variables loaded from .env:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 74ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/server
+
+ ❯ tests/api/event-editing.test.ts (10 tests | 10 failed) 7706ms
+     × DRAFT event: title and location saved, survive a reload, status unchanged 27ms
+     × PUBLISHED event: title and location saved, survive a reload, status unchanged 16ms
+     × each invalid edit gets 400 VALIDATION_ERROR and saves no field, including the valid ones beside it 16ms
+     × empty event: 1 and 1000 accepted; 0, 1001 and 1.5 rejected with 400 16ms
+     × capacity 4 with three ACTIVE: reduce to 3 succeeds, to 2 gets 409 CAPACITY_BELOW_ACTIVE; all three rows remain 34ms
+     × event in progress: 1 ms before end 200; at end and 1 ms after 409 INVALID_STATE, capacity unchanged 22ms
+     × edit first: 200 then booking 409 EVENT_FULL, final 1 ACTIVE / capacity 1 20ms
+     × booking first: 201 then edit 409 CAPACITY_BELOW_ACTIVE, final 2 ACTIVE / capacity 2 45ms
+     × ten concurrent races: always one of the two outcomes and the ACTIVE count never exceeds capacity 2111ms
+     × participant 403, other organizer 404, no session 401, missing CSRF 403, missing event 404; nothing stored 16ms
+ ✓ tests/api/foundation.test.ts (5 tests) 25103ms
+   ✓ T-19: fresh migration, repeat seed, changed passwords and edited events survive  12479ms
+   ✓ T-19: two real API process starts preserve every existing row  4736ms
+ ✓ tests/api/registrations.test.ts (14 tests) 16321ms
+     ✓ T-20: one cancellation at start minus 1 ms persists across reads and frees one seat  2147ms
+     ✓ T-22: rebook with a new ID, then another participant takes the freed seat  339ms
+     ✓ five concurrent requests from the same participant store exactly one ACTIVE row  2102ms
+     ✓ capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row  2790ms
+     ✓ mine lists only own registrations with event details; another participant gets 404; survives an app restart  2358ms
+ ✓ tests/api/auth.test.ts (15 tests) 9645ms
+     ✓ valid credentials return the stored identity, a CSRF token and an HttpOnly SameSite=Lax sid cookie  2647ms
+     ✓ wrong password and unknown email return the identical 401 with no cookie and no session  718ms
+     ✓ stored hash differs from the password and no response exposes hashes or tokens  317ms
+     ✓ a session past its absolute expiry is rejected with 401  331ms
+     ✓ expiry is absolute: using the session does not extend expiresAt  354ms
+     ✓ requireRole returns 403 for the wrong role and passes the right role  538ms
+     ✓ a state changing request without or with a wrong X-CSRF-Token returns 403 and changes nothing  570ms
+     ✓ requireCsrf lets safe methods through without a token  330ms
+     ✓ role or userId in the login body is ignored; identity comes from the stored account  330ms
+     ✓ logout revokes the session, clears the cookie and the replayed old cookie is rejected  333ms
+     ✓ logging out one session leaves the user's other sessions working  552ms
+ ✓ tests/api/events.test.ts (26 tests) 7734ms
+     ✓ T-08 repeated and concurrent publication changes state only once; past start rejected  2108ms
+ ✓ tests/api/roster.test.ts (10 tests) 5338ms
+ ✓ tests/api/registration-capacity.test.ts (1 test) 4826ms
+     ✓ capacity 2 with two ACTIVE registrations: a third participant gets 409 EVENT_FULL and nothing is stored  2577ms
+ ✓ tests/api/cloud-ready.test.ts (6 tests) 2145ms
+     ✓ GET /api/ready answers 200 when PostgreSQL responds  2090ms
+ ✓ tests/unit/password.test.ts (4 tests) 1009ms
+     ✓ hash is bcrypt cost 12, differs from plaintext and verifies only the right password  601ms
+     ✓ two hashes of the same password differ (salted)  405ms
+ ✓ tests/unit/events.test.ts (19 tests) 11ms
+ ✓ tests/unit/test-database.test.ts (7 tests) 6ms
+ ✓ tests/unit/registration-rules.test.ts (11 tests) 4ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/api/event-editing.test.ts > T-28 / AC-28: persist valid edits atomically > DRAFT event: title and location saved, survive a reload, status 
+unchanged
+ FAIL  tests/api/event-editing.test.ts > T-28 / AC-28: persist valid edits atomically > PUBLISHED event: title and location saved, survive a reload, 
+status unchanged
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-editing.test.ts:61:29
+     59|     const event = await createEvent({ status });
+     60|     const response = await edit(o, event.id, { title: 'Workshop', loca…
+     61|     expect(response.status).toBe(200);
+       |                             ^
+     62|     expect(response.body).toMatchObject({ id: event.id, title: 'Worksh…
+     63|     const reloaded = await o.agent.get(`/api/events/${event.id}`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/api/event-editing.test.ts > T-28 / AC-28: persist valid edits atomically > each invalid edit gets 400 VALIDATION_ERROR and saves no field, 
+including the valid ones beside it
+AssertionError: {"title":"X","location":"CB2312"}: expected 404 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 404
+
+ ❯ tests/api/event-editing.test.ts:82:66
+     80|     for (const [body, field] of cases) {
+     81|       const response = await edit(o, event.id, body);
+     82|       expect(response.status, JSON.stringify(body).slice(0, 60)).toBe(…
+       |                                                                  ^
+     83|       expect(response.body.error.code).toBe('VALIDATION_ERROR');
+     84|       expect(response.body.error.details.map((d: { field: string }) =>…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/api/event-editing.test.ts > T-29 / AC-29: capacity limits and active seats > empty event: 1 and 1000 accepted; 0, 1001 and 1.5 rejected with 
+400
+AssertionError: expected undefined to be 1 // Object.is equality
+
+- Expected:
+1
+
++ Received:
+undefined
+
+ ❯ tests/api/event-editing.test.ts:93:70
+     91|   test('empty event: 1 and 1000 accepted; 0, 1001 and 1.5 rejected wit…
+     92|     const event = await createEvent();
+     93|     expect((await edit(o, event.id, { capacity: 1 })).body.capacity).t…
+       |                                                                      ^
+     94|     expect((await edit(o, event.id, { capacity: 1000 })).body.capacity…
+     95|     for (const capacity of [0, 1001, 1.5]) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/api/event-editing.test.ts > T-29 / AC-29: capacity limits and active seats > capacity 4 with three ACTIVE: reduce to 3 succeeds, to 2 gets 
+409 CAPACITY_BELOW_ACTIVE; all three rows remain
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-editing.test.ts:107:28
+    105|     await activeRows(event.id, 3);
+    106|     const toThree = await edit(o, event.id, { capacity: 3 });
+    107|     expect(toThree.status).toBe(200);
+       |                            ^
+    108|     expect(toThree.body).toMatchObject({ capacity: 3, activeCount: 3, …
+    109|     const toTwo = await edit(o, event.id, { capacity: 2 });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/api/event-editing.test.ts > T-30 / AC-30: capacity increases only before the stored end > event in progress: 1 ms before end 200; at end and 
+1 ms after 409 INVALID_STATE, capacity unchanged
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-editing.test.ts:122:63
+    120|     const event = await createEvent({ capacity: 4, startsInMs: -360000…
+    121|     freezeAt(new Date(event.endsAt.getTime() - 1));
+    122|     expect((await edit(o, event.id, { capacity: 5 })).status).toBe(200…
+       |                                                               ^
+    123|     await prisma.event.update({ where: { id: event.id }, data: { capac…
+    124|     for (const after of [0, 1]) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  tests/api/event-editing.test.ts > T-31 / AC-31: an edit and a booking are serialized on the event row > edit first: 200 then booking 409 
+EVENT_FULL, final 1 ACTIVE / capacity 1
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-editing.test.ts:138:63
+    136|     const event = await createEvent({ capacity: 2 });
+    137|     await activeRows(event.id, 1);
+    138|     expect((await edit(o, event.id, { capacity: 1 })).status).toBe(200…
+       |                                                               ^
+    139|     const booking = await r.agent.post(`/api/events/${event.id}/regist…
+    140|     expect(booking.body.error.code).toBe('EVENT_FULL');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  tests/api/event-editing.test.ts > T-31 / AC-31: an edit and a booking are serialized on the event row > booking first: 201 then edit 409 
+CAPACITY_BELOW_ACTIVE, final 2 ACTIVE / capacity 2
+AssertionError: expected 'NOT_FOUND' to be 'CAPACITY_BELOW_ACTIVE' // Object.is equality
+
+Expected: "CAPACITY_BELOW_ACTIVE"
+Received: "NOT_FOUND"
+
+ ❯ tests/api/event-editing.test.ts:148:72
+    146|     await activeRows(event.id, 1);
+    147|     expect((await r.agent.post(`/api/events/${event.id}/registrations`…
+    148|     expect((await edit(o, event.id, { capacity: 1 })).body.error.code)…
+       |                                                                        ^
+    149|     expect([await activeCount(event.id), (await stored(event.id)).capa…
+    150|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  tests/api/event-editing.test.ts > T-31 / AC-31: an edit and a booking are serialized on the event row > ten concurrent races: always one of the 
+two outcomes and the ACTIVE count never exceeds capacity
+AssertionError: expected [ [ 200, 409, 1, 1 ], …(1) ] to deep equally contain [ 404, 201, 2, 2 ]
+
+- Expected
++ Received
+
+  [
+-   404,
++   [
++     200,
++     409,
++     1,
++     1,
++   ],
++   [
++     409,
+      201,
+      2,
+      2,
++   ],
+  ]
+
+ ❯ tests/api/event-editing.test.ts:162:52
+    160|       ]);
+    161|       const outcome = [editResponse.status, booking.status, await acti…
+    162|       expect([[200, 409, 1, 1], [409, 201, 2, 2]]).toContainEqual(outc…
+       |                                                    ^
+    163|     }
+    164|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  tests/api/event-editing.test.ts > T-32 / AC-32: only the owner can edit > participant 403, other organizer 404, no session 401, missing CSRF 403, 
+missing event 404; nothing stored
+AssertionError: expected [ 404, 'NOT_FOUND' ] to deeply equal [ 403, 'FORBIDDEN' ]
+
+- Expected
++ Received
+
+  [
+-   403,
+-   "FORBIDDEN",
++   404,
++   "NOT_FOUND",
+  ]
+
+ ❯ tests/api/event-editing.test.ts:172:67
+    170|     const before = await stored(event.id);
+    171|     const asParticipant = await edit(p, event.id, { title: 'Taken over…
+    172|     expect([asParticipant.status, asParticipant.body.error.code]).toEq…
+       |                                                                   ^
+    173|     expect((await edit(q, event.id, { title: 'Taken over' })).status).…
+    174|     expect((await request(app).patch(`/api/events/${event.id}`).send({…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+
+ Test Files  1 failed | 11 passed (12)
+      Tests  10 failed | 118 passed (128)
+   Start at  19:33:26
+   Duration  89.96s (transform 277ms, setup 0ms, import 2.83s, tests 79.85s, environment 1ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error workspace @event-planner/server@0.1.0
+npm error location C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c vitest run

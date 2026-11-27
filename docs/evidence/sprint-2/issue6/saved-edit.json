@@ -1,0 +1,14 @@
+{
+  "request": {
+    "path": "/api/events/2",
+    "method": "PATCH",
+    "role": "non-owner organizer"
+  },
+  "rejected": {
+    "httpStatus": 404,
+    "code": "NOT_FOUND"
+  },
+  "ownerReload": {
+    "location": "Sprint 2 demo room"
+  }
+}

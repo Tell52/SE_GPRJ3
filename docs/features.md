@@ -6,12 +6,14 @@
 | F-02 | Event creation, publication and discovery | Organizer creates a draft, publishes it and lists own events; authenticated users discover published events. | FR-02, FR-03, BR-01, BR-05, BR-06, NFR-01 | F-01 | 1 | #4 |
 | F-03 | Atomic registration and personal registrations | Participant registers under capacity and duplicate rules; lists and views own persisted registrations. | FR-04, FR-05, BR-02, BR-03, BR-04, BR-05, NFR-01, NFR-03, NFR-04 | F-01, F-02 | 1 | #5 |
 | F-04 | Organizer roster | Owning Organizer views the registrations of their event. | FR-06, BR-05, NFR-01 | F-02, F-03 | 1 | #6 |
-| F-05 | Registration cancellation | Participant cancels own registration; place is freed; re registration allowed. | FR-07, BR-07 | F-03 | 2 | |
-| F-06 | Registration deadline | Optional deadline set by the Organizer and enforced on registration. | FR-08, BR-08 | F-03, F-07 | 2 | |
-| F-07 | Event editing and capacity change | Organizer edits own event and changes capacity within limits. | FR-09, BR-09 | F-02, F-03 | 2 | |
-| F-08 | Event cancellation | Organizer cancels own published event. | FR-10, BR-10 | F-02, F-03 | 2 | |
+| F-05 | Registration cancellation | Participant cancels own registration; place is freed; re registration allowed. | FR-07, BR-07 | F-03 | 2 | #51 |
+| F-06 | Registration deadline | Optional deadline set by the Organizer and enforced on registration. | FR-08, BR-08, BR-02 | F-03, F-07 | 2 | #53 |
+| F-07 | Event editing and capacity change | Organizer edits own event and changes capacity within limits. | FR-09, BR-09 | F-02, F-03 | 2 | #52 |
+| F-08 | Event cancellation | Organizer cancels own published event. | FR-10, BR-10 | F-02, F-03 | 2 | #54 |
 | F-09 | Check in | Organizer checks in active registrations during the check in window. | FR-11, BR-11 | F-04 | 3 | |
 | F-10 | Attendance reporting and summaries | Attendance report, cross event summary, CSV export. | FR-12, BR-12 | F-09 | 3 | |
+
+See the [Sprint 2 contracts and test specifications](sprints/sprint-2/contracts.md) for #50 and the BR-08 deadline rule.
 
 ## System responsibilities
 

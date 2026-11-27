@@ -1,0 +1,14 @@
+{
+  "read": {
+    "path": "/api/registrations/3",
+    "httpStatus": 200,
+    "id": 3,
+    "status": "CANCELLED",
+    "cancelledBy": "PARTICIPANT",
+    "cancelledAt": "2026-11-27T15:20:05.234Z"
+  },
+  "repeat": {
+    "httpStatus": 409,
+    "code": "INVALID_STATE"
+  }
+}
