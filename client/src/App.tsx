@@ -6,6 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { LoginPage } from './pages/LoginPage';
 import { EventsPage, EventDetailPage } from './events/EventPages';
 import { CreateEventPage } from './events/CreateEventPage';
+import { EditEventPage } from './events/EditEventPage';
 import { MyRegistrationsPage, RegistrationReceiptPage } from './registrations/RegistrationPages';
 
 // The roster arrives in #6; unknown routes retain a simple fallback.
@@ -35,6 +36,7 @@ export function AppRoutes() {
             <Route path="/organizer/events" element={<EventsPage mine />} />
             <Route path="/organizer/events/new" element={<CreateEventPage />} />
             <Route path="/organizer/events/:id" element={<EventDetailPage organizer />} />
+            <Route path="/organizer/events/:id/edit" element={<EditEventPage />} />
           </Route>
           <Route path="*" element={<Placeholder title="Page not found" text="This page does not exist." />} />
         </Route>

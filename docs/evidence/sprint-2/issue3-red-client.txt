@@ -1,0 +1,460 @@
+﻿
+> @event-planner/client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/client
+
+ ✓ tests/Roster.test.tsx (11 tests) 321ms
+ ✓ tests/App.test.tsx (10 tests) 438ms
+ ✓ tests/Registrations.test.tsx (16 tests) 503ms
+ ❯ tests/Events.test.tsx (17 tests | 2 failed) 2617ms
+     ✓ create saves Bangkok time as UTC, navigates to draft and confirms publication 246ms
+     ✓ UAT-F-01 (#45): reloading a published event never shows the stale draft message 12ms
+     ✓ empty lists and participant discovery hide organizer controls 16ms
+     ✓ my events empty state offers creation 11ms
+     ✓ lists show loading before cards with Full and detail link 39ms
+     ✓ my events table shows status and registered count 17ms
+     ✓ validation focuses first error and avoids API insert 18ms
+     ✓ server field errors appear and preserve input 45ms
+     ✓ save pending disables submit and network failure permits retry 72ms
+     ✓ publish server failure leaves draft visible 59ms
+     ✓ list server failure shows error instead of empty 10ms
+     ✓ 404 detail shows Event not found 20ms
+     ✓ participant detail never offers publish or roster 21ms
+   ✓ T-06 client validation enforces capacity and field boundaries 1ms
+     × Edit opens a prefilled form in Bangkok time; Save sends PATCH with CSRF and the page shows the saved values 1007ms
+     × CAPACITY_BELOW_ACTIVE is shown beside Capacity and the form stays open for correction 1011ms
+     ✓ a participant never sees Edit event 10ms
+npm : 
+At line:3 char:1
++ npm test --workspace client 2>&1 | Out-File -Encoding utf8 docs\evide ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/Events.test.tsx > T-28 / T-29 (UI), #52: owner edits an event > Edit opens a prefilled form in Bangkok time; Save sends PATCH with CSRF and 
+the page shows the saved values
+TestingLibraryElementError: Unable to find role="link" and name "Edit event"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"app-header"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"brand"[39m
+      [36m>[39m
+        [0mEvent Planner[0m
+      [36m</span>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Main"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/events"[39m
+        [36m>[39m
+          [0mEvents[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"user-name"[39m
+        [36m>[39m
+          [0mOrganizer One[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"role-badge"[39m
+        [36m>[39m
+          [0mOrganizer[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mLogout[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"page"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"events-page"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"event-action"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mBack to [0m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"event-card"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mGit workshop[0m
+          [36m</h1>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"role-badge"[39m
+          [36m>[39m
+            [0mPublished[0m
+          [36m</span>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"event-description"[39m
+          [36m>[39m
+            [0mLearn Git[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mRoom 1[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mStart: [0m
+            [0m20 Nov 2099, 14:00[0m
+            [0m (Bangkok)[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mEnd: [0m
+            [0m20 Nov 2099, 16:00[0m
+            [0m (Bangkok)[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mOrganizer: [0m
+            [0mOrganizer One[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m1 place left[0m
+          [36m</p>[39m
+          [36m<section[39m
+            [33maria-labelledby[39m=[32m"roster-heading"[39m
+            [33mclass[39m=[32m"roster-panel"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"roster-heading"[39m
+            [36m>[39m
+              [0mRoster[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0m0[0m
+              [0m of [0m
+              [0m10[0m
+              [0m places taken[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mNo registrations yet[0m
+            [36m</p>[39m
+          [36m</section>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"app-header"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"brand"[39m
+      [36m>[39m
+        [0mEvent Planner[0m
+      [36m</span>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Main"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/events"[39m
+        [36m>[39m
+          [0mEvents[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"user-name"[39m
+        [36m>[39m
+          [0mOrganizer One[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"role-badge"[39m
+        [36m>[39m
+          [0mOrganizer[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mLogout[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"page"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"events-page"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"event-action"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mBack to [0m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"event-card"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mGit workshop[0m
+          [36m</h1>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"role-badge"[39m
+          [36m>[39m
+            [0mPublished[0m
+          [36m</span>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"event-description"[39m
+          [36m>[39m
+            [0mLearn Git[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mRoom 1[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mStart: [0m
+            [0m20 Nov 2099, 14:00[0m
+            [0m (Bangkok)[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mEnd: [0m
+            [0m20 Nov 2099, 16:00[0m
+            [0m (Bangkok)[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mOrganizer: [0m
+            [0mOrganizer One[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m1 place left[0m
+          [36m</p>[39m
+          [36m<section[39m
+            [33maria-labelledby[39m=[32m"roster-heading"[39m
+            [33mclass[39m=[32m"roster-panel"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"roster-heading"[39m
+            [36m>[39m
+              [0mRoster[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0m0[0m
+              [0m of [0m
+              [0m10[0m
+              [0m places taken[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mNo registrations yet[0m
+            [36m</p>[39m
+          [36m</section>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ tests/Events.test.tsx:155:34
+    153|     routes['PATCH /api/events/7'] = { status: 200, body: { ...publishe…
+    154|     renderAt('/organizer/events/7');
+    155|     fireEvent.click(await screen.findByRole('link', { name: 'Edit even…
+       |                                  ^
+    156|     expect(await screen.findByRole('heading', { name: 'Edit event' }))…
+    157|     expect(screen.getByLabelText('Title')).toHaveValue('Git workshop');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/Events.test.tsx > T-28 / T-29 (UI), #52: owner edits an event > CAPACITY_BELOW_ACTIVE is shown beside Capacity and the form stays open for 
+correction
+TestingLibraryElementError: Unable to find role="heading" and name "Edit event"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"app-header"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"brand"[39m
+      [36m>[39m
+        [0mEvent Planner[0m
+      [36m</span>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Main"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  2 failed | 52 passed (54)
+   Start at  19:34:56
+   Duration  4.44s (transform 727ms, setup 1.46s, import 1.34s, tests 3.88s, environment 3.71s)
+
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/events"[39m
+        [36m>[39m
+          [0mEvents[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"user-name"[39m
+        [36m>[39m
+          [0mOrganizer One[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"role-badge"[39m
+        [36m>[39m
+          [0mOrganizer[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mLogout[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"page"[39m
+    [36m>[39m
+      [36m<section>[39m
+        [36m<h1>[39m
+          [0mPage not found[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0mThis page does not exist.[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"app-header"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"brand"[39m
+      [36m>[39m
+        [0mEvent Planner[0m
+      [36m</span>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Main"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/events"[39m
+        [36m>[39m
+          [0mEvents[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"user-name"[39m
+        [36m>[39m
+          [0mOrganizer One[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"role-badge"[39m
+        [36m>[39m
+          [0mOrganizer[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mLogout[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"page"[39m
+    [36m>[39m
+      [36m<section>[39m
+        [36m<h1>[39m
+          [0mPage not found[0m
+        [36m</h1>[39m
+        [36m<p>[39m
+          [0mThis page does not exist.[0m
+        [36m</p>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ tests/Events.test.tsx:176:18
+    174|     routes['PATCH /api/events/7'] = { status: 409, body: { error: { co…
+    175|     renderAt('/organizer/events/7/edit');
+    176|     await screen.findByRole('heading', { name: 'Edit event' });
+       |                  ^
+    177|     fill('Capacity', '2');
+    178|     fireEvent.click(screen.getByRole('button', { name: 'Save changes' …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\chuti\Documents\SE_GPRJ3\client
+npm error workspace @event-planner/client@0.1.0
+npm error location C:\Users\chuti\Documents\SE_GPRJ3\client
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c vitest run
