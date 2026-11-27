@@ -4,7 +4,7 @@ import { AppError, notFound } from '../errors.js';
 import { decideRegistration, type RegistrationDecision } from './registration-rules.js';
 
 const registrationSelect = {
-  id: true, status: true, registeredAt: true,
+  id: true, status: true, registeredAt: true, cancelledAt: true, cancelledBy: true,
   event: { select: { id: true, title: true, startsAt: true, endsAt: true, location: true } },
 } satisfies Prisma.RegistrationSelect;
 
@@ -49,6 +49,23 @@ export async function registerForEvent(eventId: number, participantId: number) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2028') throw new AppError(503, 'SERVICE_BUSY', 'The server is busy. Please try again.');
     throw error;
   }
+}
+
+export async function cancelMyRegistration(id: number, participantId: number) {
+  return prisma.$transaction(async (tx) => {
+    // Serialize with bookings before reading the receipt's current status.
+    const [event] = await tx.$queryRaw<{ startsAt: Date }[]>`
+      SELECT e."startsAt" FROM "Event" e JOIN "Registration" r ON r."eventId" = e.id
+      WHERE r.id = ${id} AND r."participantId" = ${participantId} FOR UPDATE OF e`;
+    if (!event) throw notFound();
+    const now = new Date();
+    const receipt = await tx.registration.findUniqueOrThrow({ where: { id }, select: { status: true } });
+    if (receipt.status !== 'ACTIVE') throw new AppError(409, 'INVALID_STATE', 'This registration is already cancelled.');
+    if (now >= event.startsAt) throw new AppError(409, 'CANCELLATION_CLOSED', 'This event has started. Cancellation is closed.');
+    return tx.registration.update({
+      where: { id }, data: { status: 'CANCELLED', cancelledBy: 'PARTICIPANT', cancelledAt: now }, select: registrationSelect,
+    });
+  }, TRANSACTION_LIMITS);
 }
 
 export async function listMyRegistrations(participantId: number) {

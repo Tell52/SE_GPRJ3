@@ -41,6 +41,25 @@ afterEach(() => vi.unstubAllGlobals());
 const renderAt = (path: string) => render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
 const registerButton = () => screen.findByRole('button', { name: 'Register' });
 
+test('T-20: confirm cancellation, then reload the saved receipt without a cancel action', async () => {
+  const confirm = vi.fn().mockReturnValueOnce(false).mockReturnValueOnce(true);
+  vi.stubGlobal('confirm', confirm);
+  const saved = { ...registration, status: 'CANCELLED', cancelledBy: 'PARTICIPANT' };
+  routes['POST /api/registrations/15/cancel'] = { status: 200, body: saved };
+  const page = renderAt('/registrations/15');
+  const button = await screen.findByRole('button', { name: 'Cancel registration' });
+  fireEvent.click(button);
+  expect(calls.some(c => c.init.method === 'POST')).toBe(false);
+  fireEvent.click(button);
+  expect(await screen.findByText('Cancelled by participant')).toBeInTheDocument();
+  expect(calls.find(c => c.init.method === 'POST')?.init.headers).toMatchObject({ 'X-CSRF-Token': 'csrf-p' });
+  page.unmount();
+  routes['GET /api/registrations/15'] = { status: 200, body: saved };
+  renderAt('/registrations/15');
+  expect(await screen.findByText('Cancelled by participant')).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Cancel registration' })).not.toBeInTheDocument();
+});
+
 describe('T-10 / AC-10 (UI): register and see the saved receipt', () => {
   test('Register shows a busy state, sends the CSRF token, then opens the receipt', async () => {
     let release!: () => void;
