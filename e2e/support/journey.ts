@@ -27,9 +27,10 @@ export async function expectNoOverflow(page: Page) {
   expect(sizes.scroll, `horizontal overflow on ${page.url()}`).toBeLessThanOrEqual(sizes.width);
 }
 
-/** Saves a screenshot as evidence in docs/evidence/sprint-1/issue7/<project>/. */
+/** A release rerun can direct fresh screenshots to its own evidence directory. */
 export async function evidence(page: Page, testInfo: TestInfo, name: string) {
-  const dir = resolve(import.meta.dirname, '../../docs/evidence/sprint-1/issue7', testInfo.project.name);
+  const root = process.env.JOURNEY_EVIDENCE_DIR ?? resolve(import.meta.dirname, '../../docs/evidence/sprint-1/issue7');
+  const dir = resolve(root, testInfo.project.name);
   mkdirSync(dir, { recursive: true });
   await expectNoOverflow(page);
   await page.screenshot({ path: resolve(dir, `${name}.png`), fullPage: true });

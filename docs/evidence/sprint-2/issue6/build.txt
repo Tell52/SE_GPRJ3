@@ -1,0 +1,30 @@
+
+> event-planner@0.1.0 build
+> npm run build --workspace server && npm run build --workspace client
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 59ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+
+
+> @event-planner/client@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 54 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.40 kB │ gzip:  0.27 kB
+dist/assets/index-BH7-dc1A.css    4.92 kB │ gzip:  1.48 kB
+dist/assets/index-DkhXod3u.js   205.62 kB │ gzip: 66.45 kB
+✓ built in 714ms
