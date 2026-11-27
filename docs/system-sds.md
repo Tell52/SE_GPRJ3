@@ -148,6 +148,7 @@ Sprint 1 endpoints (details in [api-spec.md](sprints/sprint-1/api-spec.md)):
 | `GET /api/events/:id` | any session (drafts: owner only) | F-02 |
 | `POST /api/events/:id/registrations` | Participant | F-03 |
 | `GET /api/registrations/mine` | Participant | F-03 |
+| `POST /api/registrations/:id/check-in` | owning Organizer | F-09 |
 | `GET /api/registrations/:id` | holding Participant | F-03 |
 | `GET /api/events/:id/registrations` | owning Organizer | F-04 |
 
@@ -165,7 +166,8 @@ Sprint 1 endpoints (details in [api-spec.md](sprints/sprint-1/api-spec.md)):
 | Register | 401 | yes (BR-02 to BR-04) | 403 | 403 |
 | List my registrations | 401 | own only | 403 | 403 |
 | View a registration | 401 | own only, else 404 | 403 | 403 |
-| View event roster | 401 | 403 | yes | 404 |
+| View event roster | 401 | 403 | yes (includes `checkedInAt`) | 404 |
+| Check in a registration (F-09) | 401 | 403 | yes, ACTIVE on PUBLISHED, once, [start − 1 h, end) (else 409) | 404 |
 
 Sprint 2 and 3 operations (cancel registration, edit or cancel event, check in, reports) follow the same pattern: Participants act only on their own registrations; only the owning Organizer acts on an event.
 
@@ -176,6 +178,10 @@ The [feature contracts](sprints/sprint-2/contracts.md) define request fields, re
 Extend both status enums with CANCELLED. Add nullable Event.registrationDeadline and Registration.cancelledAt (timestamp with time zone, millisecond precision), plus nullable Registration.cancelledBy (PARTICIPANT or ORGANIZER). Existing rows retain their status and null metadata. Keep the ACTIVE-only partial unique index. Share the registration cancellation representation across #51 and #54 so both migration paths preserve history.
 
 Serialize every booking, receipt cancellation, capacity/deadline edit and event cancellation on the same event row in PostgreSQL. Inside the transaction, re-read ownership, state, stored times and applicable ACTIVE count after acquiring the lock, then check server time before writing. Cancel an event and update its ACTIVE receipts in one commit. Compute remaining places from capacity minus ACTIVE count. No seat counter or destructive history migration is required.
+
+### Sprint 3 design: F-09 check-in
+
+Nullable `Registration.checkedInAt` (timestamptz, millisecond precision); existing rows read null. Check-in takes the same event row lock as the other event mutations, re-reads the registration and writes `checkedInAt` from the server clock. Rules and codes are in the [Sprint 3 contract](sprints/sprint-3/contracts.md). F-10 will derive attendance from status and `checkedInAt` with no summary table.
 
 Enforcement: `requireSession` (401), `requireRole` (403), `requireCsrf` on POST, PUT, PATCH and DELETE except login (403 `CSRF_INVALID`), ownership checks in services (404). Hidden UI controls are never relied on.
 
@@ -220,3 +226,4 @@ Planned GCP deployment (Lab 5):
 | 1.0 | 2026-11-03 | Initial system SDS aligned with Issues #1 to #8 |
 | 1.1 | 2026-11-05 | Record approved local PostgreSQL Compose scope, separate test database and stable internal seed identity for #2. |
 | 1.2 | 2026-11-06 | #5: added 503 `SERVICE_BUSY` for an overloaded registration transaction; server log records the error code. | Pending Tell52 review |
+| 1.3 | 2026-11-28 | Sprint 3 F-09: `checkedInAt`, check-in endpoint and permission row. |
