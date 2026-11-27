@@ -9,7 +9,7 @@ export function registrationCutoff(startsAt: Date, deadline?: Date | null) {
 export type RegistrationDecision = 'OK' | 'NOT_FOUND' | 'REGISTRATION_CLOSED' | 'ALREADY_REGISTERED' | 'EVENT_FULL';
 
 export type RegistrationFacts = {
-  event: { status: 'DRAFT' | 'PUBLISHED'; startsAt: Date; registrationDeadline?: Date | null; capacity: number } | null;
+  event: { status: 'DRAFT' | 'PUBLISHED' | 'CANCELLED'; startsAt: Date; registrationDeadline?: Date | null; capacity: number } | null;
   hasActiveRegistration: boolean;
   activeCount: number;
   now: Date;

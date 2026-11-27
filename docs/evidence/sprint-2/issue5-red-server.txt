@@ -1,0 +1,259 @@
+﻿
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+npm : Environment variables loaded from .env
+At line:3 char:1
++ npm test --workspace server 2>&1 | Out-File -Encoding utf8 docs\evide ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Environment variables loaded from .env:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 82ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/server
+
+ ✓ tests/api/auth.test.ts (15 tests) 10341ms
+     ✓ valid credentials return the stored identity, a CSRF token and an HttpOnly SameSite=Lax sid cookie  2719ms
+     ✓ wrong password and unknown email return the identical 401 with no cookie and no session  774ms
+     ✓ stored hash differs from the password and no response exposes hashes or tokens  388ms
+     ✓ a session past its absolute expiry is rejected with 401  405ms
+     ✓ expiry is absolute: using the session does not extend expiresAt  406ms
+     ✓ requireRole returns 403 for the wrong role and passes the right role  619ms
+     ✓ a state changing request without or with a wrong X-CSRF-Token returns 403 and changes nothing  612ms
+     ✓ requireCsrf lets safe methods through without a token  391ms
+     ✓ role or userId in the login body is ignored; identity comes from the stored account  355ms
+     ✓ logout revokes the session, clears the cookie and the replayed old cookie is rejected  361ms
+     ✓ logging out one session leaves the user's other sessions working  571ms
+ ✓ tests/api/event-editing.test.ts (15 tests) 8874ms
+     ✓ ten concurrent races: always one of the two outcomes and the ACTIVE count never exceeds capacity  2437ms
+ ❯ tests/api/event-cancellation.test.ts (8 tests | 8 failed) 7768ms
+     × 200 CANCELLED; both ACTIVE rows become organizer-cancelled at one server time; the earlier participant cancellation is unchanged; a repeat is 409 82ms
+     × a draft cannot be cancelled: 409 INVALID_STATE and it stays DRAFT 21ms
+     × owner detail and list show CANCELLED; participant receipt and history show organizer cancellation; discovery omits it; a new booking gets 404 65ms
+     × T-32 cancelled-event case: editing a cancelled event is 409 INVALID_STATE and changes nothing 59ms
+     × booking first: 201 then that row becomes organizer-cancelled; final CANCELLED with zero ACTIVE 37ms
+     × cancel first: booking gets 404 and inserts nothing 20ms
+     × ten concurrent races: cancel always succeeds, the booking is 201 (then organizer-cancelled) or 404, and zero ACTIVE remain 2088ms
+     × participant 403, other organizer 404, no session 401, missing CSRF 403, missing event 404; event and rows unchanged 58ms
+ ✓ tests/api/foundation.test.ts (5 tests) 24988ms
+   ✓ T-19: fresh migration, repeat seed, changed passwords and edited events survive  12467ms
+   ✓ T-19: two real API process starts preserve every existing row  4723ms
+ ✓ tests/api/registrations.test.ts (14 tests) 17870ms
+     ✓ T-20: one cancellation at start minus 1 ms persists across reads and frees one seat  2132ms
+     ✓ T-22: rebook with a new ID, then another participant takes the freed seat  361ms
+     ✓ five concurrent requests from the same participant store exactly one ACTIVE row  2084ms
+     ✓ capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row  4374ms
+     ✓ mine lists only own registrations with event details; another participant gets 404; survives an app restart  2359ms
+ ✓ tests/api/events.test.ts (26 tests) 7804ms
+     ✓ T-08 repeated and concurrent publication changes state only once; past start rejected  2113ms
+ ✓ tests/api/roster.test.ts (10 tests) 5373ms
+ ✓ tests/api/registration-capacity.test.ts (1 test) 4875ms
+     ✓ capacity 2 with two ACTIVE registrations: a third participant gets 409 EVENT_FULL and nothing is stored  2604ms
+ ✓ tests/api/cloud-ready.test.ts (6 tests) 2121ms
+     ✓ GET /api/ready answers 200 when PostgreSQL responds  2063ms
+ ✓ tests/unit/password.test.ts (4 tests) 1049ms
+     ✓ hash is bcrypt cost 12, differs from plaintext and verifies only the right password  640ms
+     ✓ two hashes of the same password differ (salted)  407ms
+ ✓ tests/unit/events.test.ts (19 tests) 10ms
+ ✓ tests/unit/test-database.test.ts (7 tests) 4ms
+ ✓ tests/unit/registration-rules.test.ts (14 tests) 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/api/event-cancellation.test.ts > T-33 / AC-33: cancel a published event and preserve history > 200 CANCELLED; both ACTIVE rows become 
+organizer-cancelled at one server time; the earlier participant cancellation is unchanged; a repeat is 409
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-cancellation.test.ts:66:29
+     64|
+     65|     const response = await cancelEvent(o, event.id);
+     66|     expect(response.status).toBe(200);
+       |                             ^
+     67|     expect(response.body).toMatchObject({ id: event.id, status: 'CANCE…
+     68|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/api/event-cancellation.test.ts > T-33 / AC-33: cancel a published event and preserve history > a draft cannot be cancelled: 409 
+INVALID_STATE and it stays DRAFT
+AssertionError: expected [ 404, 'NOT_FOUND' ] to deeply equal [ 409, 'INVALID_STATE' ]
+
+- Expected
++ Received
+
+  [
+-   409,
+-   "INVALID_STATE",
++   404,
++   "NOT_FOUND",
+  ]
+
+ ❯ tests/api/event-cancellation.test.ts:85:57
+     83|     const draft = await createEvent({ status: 'DRAFT' });
+     84|     const response = await cancelEvent(o, draft.id);
+     85|     expect([response.status, response.body.error.code]).toEqual([409, …
+       |                                                         ^
+     86|     expect((await prisma.event.findUniqueOrThrow({ where: { id: draft.…
+     87|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/api/event-cancellation.test.ts > T-34 / AC-34: both roles see the saved cancellation > owner detail and list show CANCELLED; participant 
+receipt and history show organizer cancellation; discovery omits it; a new booking gets 404
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-cancellation.test.ts:94:53
+     92|     const { event } = await mixedEvent();
+     93|     const pReceipt = (await p.agent.get('/api/registrations/mine')).bo…
+     94|     expect((await cancelEvent(o, event.id)).status).toBe(200);
+       |                                                     ^
+     95|
+     96|     expect((await o.agent.get(`/api/events/${event.id}`)).body.status)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/api/event-cancellation.test.ts > T-34 / AC-34: both roles see the saved cancellation > T-32 cancelled-event case: editing a cancelled event 
+is 409 INVALID_STATE and changes nothing
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-cancellation.test.ts:109:53
+    107|   test('T-32 cancelled-event case: editing a cancelled event is 409 IN…
+    108|     const { event } = await mixedEvent();
+    109|     expect((await cancelEvent(o, event.id)).status).toBe(200);
+       |                                                     ^
+    110|     const before = await prisma.event.findUniqueOrThrow({ where: { id:…
+    111|     const response = await o.agent.patch(`/api/events/${event.id}`).se…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/api/event-cancellation.test.ts > T-35 / AC-35: cancellation and booking are serialized on the event row > booking first: 201 then that row 
+becomes organizer-cancelled; final CANCELLED with zero ACTIVE
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-cancellation.test.ts:121:53
+    119|     const event = await createEvent();
+    120|     expect((await book(p, event.id)).status).toBe(201);
+    121|     expect((await cancelEvent(o, event.id)).status).toBe(200);
+       |                                                     ^
+    122|     expect((await rows(event.id)).map((x) => [x.status, x.cancelledBy]…
+    123|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/api/event-cancellation.test.ts > T-35 / AC-35: cancellation and booking are serialized on the event row > cancel first: booking gets 404 and 
+inserts nothing
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-cancellation.test.ts:127:53
+    125|   test('cancel first: booking gets 404 and inserts nothing', async () …
+    126|     const event = await createEvent();
+    127|     expect((await cancelEvent(o, event.id)).status).toBe(200);
+       |                                                     ^
+    128|     expect((await book(p, event.id)).status).toBe(404);
+    129|     expect(await rows(event.id)).toEqual([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  tests/api/event-cancellation.test.ts > T-35 / AC-35: cancellation and booking are serialized on the event row > ten concurrent races: cancel 
+always succeeds, the booking is 201 (then organizer-cancelled) or 404, and zero ACTIVE remain
+AssertionError: expected 404 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 404
+
+ ❯ tests/api/event-cancellation.test.ts:137:32
+    135|       const event = await createEvent();
+    136|       const [cancelled, booking] = await Promise.all([cancelEvent(o, e…
+    137|       expect(cancelled.status).toBe(200);
+       |                                ^
+    138|       expect([201, 404]).toContain(booking.status);
+    139|       const final = await rows(event.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  tests/api/event-cancellation.test.ts > T-36 / AC-36: only the owner can cancel the event > participant 403, other organizer 404, no session 401, 
+missing CSRF 403, missing event 404; event and rows unchanged
+AssertionError: expected [ 404, 'NOT_FOUND' ] to deeply equal [ 403, 'FORBIDDEN' ]
+
+- Expected
++ Received
+
+  [
+-   403,
+-   "FORBIDDEN",
++   404,
++   "NOT_FOUND",
+  ]
+
+ ❯ tests/api/event-cancellation.test.ts:151:67
+    149|     const before = await rows(event.id);
+    150|     const asParticipant = await cancelEvent(p, event.id);
+    151|     expect([asParticipant.status, asParticipant.body.error.code]).toEq…
+       |                                                                   ^
+    152|     expect((await cancelEvent(q, event.id)).status).toBe(404);
+    153|     expect((await request(app).post(`/api/events/${event.id}/cancel`))…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed | 12 passed (13)
+      Tests  8 failed | 136 passed (144)
+   Start at  21:29:14
+   Duration  101.85s (transform 304ms, setup 0ms, import 3.27s, tests 91.08s, environment 1ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error workspace @event-planner/server@0.1.0
+npm error location C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c vitest run

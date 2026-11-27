@@ -68,9 +68,11 @@ const TRANSACTION_LIMITS = { maxWait: 15000, timeout: 15000 };
  */
 export async function updateEvent(id: number, patch: EventPatch, organizerId: number) {
   return prisma.$transaction(async (tx) => {
-    const [current] = await tx.$queryRaw<{ startsAt: Date; endsAt: Date; capacity: number; registrationDeadline: Date | null }[]>`
-      SELECT "startsAt", "endsAt", "capacity", "registrationDeadline" FROM "Event" WHERE "id" = ${id} AND "organizerId" = ${organizerId} FOR UPDATE`;
+    const [current] = await tx.$queryRaw<{ status: string; startsAt: Date; endsAt: Date; capacity: number; registrationDeadline: Date | null }[]>`
+      SELECT "status"::text AS "status", "startsAt", "endsAt", "capacity", "registrationDeadline" FROM "Event" WHERE "id" = ${id} AND "organizerId" = ${organizerId} FOR UPDATE`;
     if (!current) throw notFound();
+    // T-32 (#54): a cancelled event is final.
+    if (current.status === 'CANCELLED') throw new AppError(409, 'INVALID_STATE', 'A cancelled event cannot be edited.');
     const now = new Date();
     const startsAt = patch.startsAt ? new Date(patch.startsAt) : current.startsAt;
     const endsAt = patch.endsAt ? new Date(patch.endsAt) : current.endsAt;
@@ -101,5 +103,26 @@ export async function updateEvent(id: number, patch: EventPatch, organizerId: nu
       data: { ...patch, ...(patch.startsAt && { startsAt }), ...(patch.endsAt && { endsAt }) },
       select: eventSelect,
     }));
+  }, TRANSACTION_LIMITS);
+}
+
+/**
+ * F-08 (#54, BR-10): the owner cancels a published event. Under the same FOR UPDATE lock a booking takes,
+ * the event becomes CANCELLED and every ACTIVE registration becomes CANCELLED by ORGANIZER at one server
+ * time, in one transaction. Earlier participant cancellations are not touched. A booking that waited on the
+ * lock re-reads the status and gets 404; one that committed first is cancelled here. Owner only (404 otherwise);
+ * a draft or an already cancelled event is 409 INVALID_STATE.
+ */
+export async function cancelEvent(id: number, organizerId: number) {
+  return prisma.$transaction(async (tx) => {
+    const [current] = await tx.$queryRaw<{ status: string }[]>`
+      SELECT "status"::text AS "status" FROM "Event" WHERE "id" = ${id} AND "organizerId" = ${organizerId} FOR UPDATE`;
+    if (!current) throw notFound();
+    if (current.status !== 'PUBLISHED') throw new AppError(409, 'INVALID_STATE', 'Only a published event can be cancelled.');
+    const now = new Date();
+    await tx.registration.updateMany({
+      where: { eventId: id, status: 'ACTIVE' }, data: { status: 'CANCELLED', cancelledBy: 'ORGANIZER', cancelledAt: now },
+    });
+    return present(await tx.event.update({ where: { id }, data: { status: 'CANCELLED' }, select: eventSelect }));
   }, TRANSACTION_LIMITS);
 }

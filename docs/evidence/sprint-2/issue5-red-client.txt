@@ -1,0 +1,586 @@
+﻿
+> @event-planner/client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/client
+
+ ✓ tests/Roster.test.tsx (11 tests) 366ms
+ ✓ tests/App.test.tsx (10 tests) 415ms
+ ✓ tests/Registrations.test.tsx (16 tests) 522ms
+ ❯ tests/Events.test.tsx (21 tests | 2 failed) 2807ms
+     ✓ create saves Bangkok time as UTC, navigates to draft and confirms publication 229ms
+     ✓ UAT-F-01 (#45): reloading a published event never shows the stale draft message 12ms
+     ✓ empty lists and participant discovery hide organizer controls 7ms
+     ✓ my events empty state offers creation 15ms
+     ✓ lists show loading before cards with Full and detail link 33ms
+     ✓ my events table shows status and registered count 15ms
+     ✓ validation focuses first error and avoids API insert 23ms
+     ✓ server field errors appear and preserve input 54ms
+     ✓ save pending disables submit and network failure permits retry 77ms
+     ✓ publish server failure leaves draft visible 28ms
+     ✓ list server failure shows error instead of empty 15ms
+     ✓ 404 detail shows Event not found 14ms
+     ✓ participant detail never offers publish or roster 13ms
+   ✓ T-06 client validation enforces capacity and field boundaries 1ms
+   ✓ T-24: save, reopen, update and clear a Bangkok deadline on the owner form 158ms
+     ✓ Edit opens a prefilled form in Bangkok time; Save sends PATCH with CSRF and the page shows the saved values 37ms
+     ✓ CAPACITY_BELOW_ACTIVE is shown beside Capacity and the form stays open for correction 31ms
+     ✓ a participant never sees Edit event 8ms
+     × Cancel event explains the effect, needs confirmation, then shows Cancelled without the actions 1006ms
+     × My events shows Cancelled for a cancelled event 1014ms
+     ✓ a draft offers Publish but not Cancel event 15ms
+npm : 
+At line:4 char:1
++ npm test --workspace client 2>&1 | Out-File -Encoding utf8 docs\evide ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/Events.test.tsx > T-34 (UI) / AC-33, AC-34, #54: owner cancels a published event > Cancel event explains the effect, needs confirmation, 
+then shows Cancelled without the actions
+TestingLibraryElementError: Unable to find role="button" and name "Cancel event"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"app-header"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"brand"[39m
+      [36m>[39m
+        [0mEvent Planner[0m
+      [36m</span>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Main"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/events"[39m
+        [36m>[39m
+          [0mEvents[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"user-name"[39m
+        [36m>[39m
+          [0mOrganizer One[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"role-badge"[39m
+        [36m>[39m
+          [0mOrganizer[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mLogout[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"page"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"events-page"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"event-action"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mBack to [0m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"event-card"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mGit workshop[0m
+          [36m</h1>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"role-badge"[39m
+          [36m>[39m
+            [0mPublished[0m
+          [36m</span>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"event-description"[39m
+          [36m>[39m
+            [0mLearn Git[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mRoom 1[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mStart: [0m
+            [0m20 Nov 2099, 14:00[0m
+            [0m (Bangkok)[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mEnd: [0m
+            [0m20 Nov 2099, 16:00[0m
+            [0m (Bangkok)[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mOrganizer: [0m
+            [0mOrganizer One[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m8 places left[0m
+          [36m</p>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"event-action"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/organizer/events/7/edit"[39m
+          [36m>[39m
+            [0mEdit event[0m
+          [36m</a>[39m
+          [36m<section[39m
+            [33maria-labelledby[39m=[32m"roster-heading"[39m
+            [33mclass[39m=[32m"roster-panel"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"roster-heading"[39m
+            [36m>[39m
+              [0mRoster[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0m0[0m
+              [0m of [0m
+              [0m10[0m
+              [0m places taken[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mNo registrations yet[0m
+            [36m</p>[39m
+          [36m</section>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"app-header"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"brand"[39m
+      [36m>[39m
+        [0mEvent Planner[0m
+      [36m</span>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Main"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/events"[39m
+        [36m>[39m
+          [0mEvents[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"user-name"[39m
+        [36m>[39m
+          [0mOrganizer One[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"role-badge"[39m
+        [36m>[39m
+          [0mOrganizer[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mLogout[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"page"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"events-page"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"event-action"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mBack to [0m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<article[39m
+          [33mclass[39m=[32m"event-card"[39m
+        [36m>[39m
+          [36m<h1>[39m
+            [0mGit workshop[0m
+          [36m</h1>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"role-badge"[39m
+          [36m>[39m
+            [0mPublished[0m
+          [36m</span>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"event-description"[39m
+          [36m>[39m
+            [0mLearn Git[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mRoom 1[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mStart: [0m
+            [0m20 Nov 2099, 14:00[0m
+            [0m (Bangkok)[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mEnd: [0m
+            [0m20 Nov 2099, 16:00[0m
+            [0m (Bangkok)[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0mOrganizer: [0m
+            [0mOrganizer One[0m
+          [36m</p>[39m
+          [36m<p>[39m
+            [0m8 places left[0m
+          [36m</p>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"event-action"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/organizer/events/7/edit"[39m
+          [36m>[39m
+            [0mEdit event[0m
+          [36m</a>[39m
+          [36m<section[39m
+            [33maria-labelledby[39m=[32m"roster-heading"[39m
+            [33mclass[39m=[32m"roster-panel"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mid[39m=[32m"roster-heading"[39m
+            [36m>[39m
+              [0mRoster[0m
+            [36m</h2>[39m
+            [36m<p>[39m
+              [0m0[0m
+              [0m of [0m
+              [0m10[0m
+              [0m places taken[0m
+            [36m</p>[39m
+            [36m<p>[39m
+              [0mNo registrations yet[0m
+            [36m</p>[39m
+          [36m</section>[39m
+        [36m</article>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ tests/Events.test.tsx:225:34
+    223|     });
+    224|     renderAt('/organizer/events/7');
+    225|     fireEvent.click(await screen.findByRole('button', { name: 'Cancel …
+       |                                  ^
+    226|     expect(screen.getByText('Cancel this event? All active registratio…
+    227|     fireEvent.click(screen.getByRole('button', { name: 'Keep event' })…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/Events.test.tsx > T-34 (UI) / AC-33, AC-34, #54: owner cancels a published event > My events shows Cancelled for a cancelled event
+TestingLibraryElementError: Unable to find an element with the text: Cancelled. This could be because the text is broken up by multiple elements. In this 
+case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"app-header"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"brand"[39m
+      [36m>[39m
+        [0mEvent Planner[0m
+      [36m</span>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Main"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-current[39m=[32m"page"[39m
+          [33mclass[39m=[32m"active"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/events"[39m
+        [36m>[39m
+          [0mEvents[0m
+        [36m</a>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"user-name"[39m
+        [36m>[39m
+          [0mOrganizer One[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"role-badge"[39m
+        [36m>[39m
+          [0mOrganizer[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mLogout[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"page"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"events-page"[39m
+      [36m>[39m
+        [36m<h1>[39m
+          [0mMy events[0m
+        [36m</h1>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"event-action"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events/new"[39m
+        [36m>[39m
+          [0mCreate event[0m
+        [36m</a>[39m
+        [36m<table[39m
+          [33mclass[39m=[32m"event-table"[39m
+        [36m>[39m
+          [36m<thead>[39m
+            [36m<tr>[39m
+              [36m<th>[39m
+                [0mTitle[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mStart (Bangkok)[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mStatus[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mRegistered / capacity[0m
+              [36m</th>[39m
+            [36m</tr>[39m
+          [36m</thead>[39m
+          [36m<tbody>[39m
+            [36m<tr>[39m
+              [36m<td>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/organizer/events/7"[39m
+                [36m>[39m
+                  [0mGit workshop[0m
+                [36m</a>[39m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m20 Nov 2099, 14:00[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"role-badge"[39m
+                [36m>[39m
+                  [0mPublished[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0[0m
+                [0m / [0m
+                [0m10[0m
+              [36m</td>[39m
+            [36m</tr>[39m
+          [36m</tbody>[39m
+        [36m</table>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"app-header"[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"brand"[39m
+      [36m>[39m
+        [0mEvent Planner[0m
+      [36m</span>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Main"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-current[39m=[32m"page"[39m
+          [33mclass[39m=[32m"active"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events"[39m
+        [36m>[39m
+          [0mMy events[0m
+        [36m</a>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m""[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/events"[39m
+        [36m>[39m
+          [0mEvents[0m
+        [36m</a>[39m
+
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"account"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"user-name"[39m
+        [36m>[39m
+          [0mOrganizer One[0m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"role-badge"[39m
+        [36m>[39m
+          [0mOrganizer[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mLogout[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"page"[39m
+    [36m>[39m
+      [36m<section[39m
+        [33mclass[39m=[32m"events-page"[39m
+      [36m>[39m
+        [36m<h1>[39m
+          [0mMy events[0m
+        [36m</h1>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"event-action"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/organizer/events/new"[39m
+        [36m>[39m
+          [0mCreate event[0m
+        [36m</a>[39m
+        [36m<table[39m
+          [33mclass[39m=[32m"event-table"[39m
+        [36m>[39m
+          [36m<thead>[39m
+            [36m<tr>[39m
+              [36m<th>[39m
+                [0mTitle[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mStart (Bangkok)[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mStatus[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mRegistered / capacity[0m
+              [36m</th>[39m
+            [36m</tr>[39m
+          [36m</thead>[39m
+          [36m<tbody>[39m
+            [36m<tr>[39m
+              [36m<td>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/organizer/events/7"[39m
+                [36m>[39m
+                  [0mGit workshop[0m
+                [36m</a>[39m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m20 Nov 2099, 14:00[0m
+              [36m</td>[39m
+              [36m<td>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"role-badge"[39m
+                [36m>[39m
+                  [0mPublished[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td>[39m
+                [0m0[0m
+                [0m / [0m
+                [0m10[0m
+              [36m</td>[39m
+            [36m</tr>[39m
+          [36m</tbody>[39m
+        [36m</table>[39m
+      [36m</section>[39m
+    [36m</main>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper ../node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ tests/Events.test.tsx:245:25
+    243|     routes['GET /api/events/mine'] = { status: 200, body: { items: [{ …
+    244|     renderAt('/organizer/events');
+    245|     expect(await screen.findByText('Cancelled')).toBeInTheDocument();
+       |                         ^
+    246|   });
+    247|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  2 failed | 56 passed (58)
+   Start at  21:30:57
+   Duration  5.00s (transform 854ms, setup 1.81s, import 1.51s, tests 4.11s, environment 4.66s)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\chuti\Documents\SE_GPRJ3\client
+npm error workspace @event-planner/client@0.1.0
+npm error location C:\Users\chuti\Documents\SE_GPRJ3\client
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c vitest run
