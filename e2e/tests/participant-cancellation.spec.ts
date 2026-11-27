@@ -9,7 +9,10 @@ test.afterAll(async () => { await api.stop(); });
 test('T-20: cancel a saved receipt, reload it and see the freed place', async ({ page }) => {
   await login(page, 'participant1@example.test');
   await page.getByRole('link', { name: 'Introduction to Git' }).click();
-  const places = page.getByText(/^\d+ places left$/);
+  const detail = page.getByRole('article').filter({
+    has: page.getByRole('heading', { level: 1, name: 'Introduction to Git', exact: true }),
+  });
+  const places = detail.getByText(/^\d+ places? left$/);
   const beforeBooking = await places.innerText();
   await page.getByRole('button', { name: 'Register', exact: true }).click();
   await expect(page.getByText('Registration number')).toBeVisible();
