@@ -37,7 +37,8 @@ export function EventsPage({ mine = false }: { mine?: boolean }) {
   </section>;
 }
 
-function Status({ event }: { event: EventRecord }) { return <span className="role-badge">{event.status === 'DRAFT' ? 'Draft' : 'Published'}</span>; }
+const STATUS_LABEL = { DRAFT: 'Draft', PUBLISHED: 'Published', CANCELLED: 'Cancelled' } as const;
+function Status({ event }: { event: EventRecord }) { return <span className="role-badge">{STATUS_LABEL[event.status]}</span>; }
 function Places({ event }: { event: EventRecord }) { return <p>{event.remainingPlaces > 0 ? `${event.remainingPlaces} ${event.remainingPlaces === 1 ? 'place' : 'places'} left` : 'Full'}</p>; }
 
 export function EventDetailPage({ organizer = false }: { organizer?: boolean }) {
@@ -49,10 +50,11 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
   const [success, setSuccess] = useState('');
   useEffect(() => {
     let active = true;
-    setEvent(null); setLoading(true); setError(''); setConfirm(false); setBusy(false);
+    setEvent(null); setLoading(true); setError(''); setConfirm(false); setConfirmCancel(false); setBusy(false);
     setSuccess('');
     apiFetch<EventRecord>(`/api/events/${id}`).then((data) => {
       if (!active) return;
@@ -81,6 +83,16 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
     } catch (e) { setError(errorMessage(e)); }
     finally { setBusy(false); }
   }
+  // F-08 (#54): the API cancels the event and its ACTIVE registrations together.
+  async function cancelEvent() {
+    setBusy(true); setError(''); setSuccess('');
+    try {
+      setEvent(await apiFetch<EventRecord>(`/api/events/${id}/cancel`, { method: 'POST' }));
+      setSuccess('Event cancelled'); setConfirmCancel(false);
+    } catch (e) { setError(errorMessage(e)); }
+    finally { setBusy(false); }
+  }
+  const owns = organizer && event?.organizer.id === user?.id;
   return <section className="events-page">
     <Link className="event-action" to={organizer ? '/organizer/events' : '/events'}>Back to {organizer ? 'My events' : 'Events'}</Link>
     {loading && <p>Loading...</p>}{error && <p role="alert" className="alert">{error}</p>}
@@ -98,7 +110,13 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
           <div className="event-actions"><button disabled={busy} onClick={publish}>{busy ? 'Publishing...' : 'Confirm publish'}</button>
             <button className="secondary" disabled={busy} onClick={() => setConfirm(false)}>Cancel</button></div>
         </div> : <button onClick={() => setConfirm(true)}>Publish</button>)}
-      {organizer && event.organizer.id === user?.id && <Link className="event-action" to={`/organizer/events/${event.id}/edit`}>Edit event</Link>}
+      {owns && event.status === 'PUBLISHED' &&
+        (confirmCancel ? <div role="group" aria-label="Confirm event cancellation">
+          <p>Cancel this event? All active registrations will be cancelled.</p>
+          <div className="event-actions"><button disabled={busy} onClick={cancelEvent}>{busy ? 'Cancelling...' : 'Confirm event cancellation'}</button>
+            <button className="secondary" disabled={busy} onClick={() => setConfirmCancel(false)}>Keep event</button></div>
+        </div> : <button className="secondary" onClick={() => setConfirmCancel(true)}>Cancel event</button>)}
+      {owns && event.status !== 'CANCELLED' && <Link className="event-action" to={`/organizer/events/${event.id}/edit`}>Edit event</Link>}
       {organizer && event.organizer.id === user?.id && <RosterPanel key={event.id} eventId={event.id} />}
     </article>}
   </section>;

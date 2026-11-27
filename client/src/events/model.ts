@@ -6,7 +6,7 @@ export type EventRecord = {
   effectiveCutoff: string;
   serverTime: string;
   startsAt: string; endsAt: string; capacity: number; activeCount: number; remainingPlaces: number;
-  status: 'DRAFT' | 'PUBLISHED'; publishedAt: string | null; organizer: { id: number; name: string };
+  status: 'DRAFT' | 'PUBLISHED' | 'CANCELLED'; publishedAt: string | null; organizer: { id: number; name: string };
   myRegistration?: { id: number; status: string } | null;
 };
 export const errorMessage = (error: unknown) => error instanceof ApiError ? error.message : NETWORK_ERROR_MESSAGE;
