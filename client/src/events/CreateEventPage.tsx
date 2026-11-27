@@ -4,7 +4,7 @@ import { ApiError, apiFetch } from '../api';
 import { errorMessage, validateEventForm, type EventForm, type EventRecord } from './model';
 import './events.css';
 
-const fields = [
+export const fields = [
   ['title', 'Title', 'text'], ['description', 'Description', 'textarea'], ['location', 'Location', 'text'],
   ['startsAt', 'Start', 'datetime-local'], ['endsAt', 'End', 'datetime-local'], ['capacity', 'Capacity', 'number'],
 ] as const;

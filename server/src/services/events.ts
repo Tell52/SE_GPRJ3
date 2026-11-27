@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '../db.js';
 import { AppError, notFound } from '../errors.js';
 import type { SessionUser } from '../auth/session.js';
-import type { EventInput } from '../validation/events.js';
+import type { EventInput, EventPatch } from '../validation/events.js';
 
 const eventSelect = {
   id: true, title: true, description: true, location: true, startsAt: true, endsAt: true,
@@ -54,4 +54,45 @@ export async function publishEvent(id: number, organizerId: number) {
     }
     return present(await tx.event.findUniqueOrThrow({ where: { id }, select: eventSelect }));
   });
+}
+
+const TRANSACTION_LIMITS = { maxWait: 15000, timeout: 15000 };
+
+/**
+ * F-07 (#52, BR-09): the owner edits a draft or published event. The event row is locked FOR UPDATE, the
+ * same lock a booking takes, so an edit and a registration never interleave and capacity is always
+ * compared with the committed ACTIVE count. Checks: owner (404), merged schedule (400), capacity below
+ * ACTIVE (409 CAPACITY_BELOW_ACTIVE), capacity increase at or after the stored end (409 INVALID_STATE).
+ */
+export async function updateEvent(id: number, patch: EventPatch, organizerId: number) {
+  return prisma.$transaction(async (tx) => {
+    const [current] = await tx.$queryRaw<{ startsAt: Date; endsAt: Date; capacity: number }[]>`
+      SELECT "startsAt", "endsAt", "capacity" FROM "Event" WHERE "id" = ${id} AND "organizerId" = ${organizerId} FOR UPDATE`;
+    if (!current) throw notFound();
+    const now = new Date();
+    const startsAt = patch.startsAt ? new Date(patch.startsAt) : current.startsAt;
+    const endsAt = patch.endsAt ? new Date(patch.endsAt) : current.endsAt;
+    const details: { field: string; message: string }[] = [];
+    // An unchanged start may already be in the past (capacity edits during the event); a changed one may not.
+    if (patch.startsAt && startsAt.getTime() !== current.startsAt.getTime() && startsAt <= now) {
+      details.push({ field: 'startsAt', message: 'Start must be in the future.' });
+    }
+    if (endsAt <= startsAt) details.push({ field: 'endsAt', message: 'End must be after start.' });
+    if (details.length) throw new AppError(400, 'VALIDATION_ERROR', 'Some fields are invalid.', details);
+
+    if (patch.capacity !== undefined) {
+      const active = await tx.registration.count({ where: { eventId: id, status: 'ACTIVE' } });
+      if (patch.capacity < active) {
+        throw new AppError(409, 'CAPACITY_BELOW_ACTIVE', `Capacity cannot be lower than the ${active} active registrations.`);
+      }
+      if (patch.capacity > current.capacity && now >= current.endsAt) {
+        throw new AppError(409, 'INVALID_STATE', 'Capacity cannot be increased after the event has ended.');
+      }
+    }
+    return present(await tx.event.update({
+      where: { id },
+      data: { ...patch, ...(patch.startsAt && { startsAt }), ...(patch.endsAt && { endsAt }) },
+      select: eventSelect,
+    }));
+  }, TRANSACTION_LIMITS);
 }

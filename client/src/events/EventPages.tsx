@@ -61,6 +61,8 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
         setEvent(data);
         // #45: history state survives a reload, so only confirm the save while the event is still a draft.
         if (location.state?.saved && data.status === 'DRAFT') setSuccess('Event saved as draft');
+        // #52: confirm a saved edit once, then drop the flag so a reload does not repeat it (lesson from #45).
+        if (location.state?.updated) { setSuccess('Event updated'); window.history.replaceState({}, ''); }
       }
     }).catch((e) => { if (active) setError(e instanceof ApiError && e.status === 404 ? 'Event not found' : errorMessage(e)); })
       .finally(() => { if (active) setLoading(false); });
@@ -95,6 +97,7 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
           <div className="event-actions"><button disabled={busy} onClick={publish}>{busy ? 'Publishing...' : 'Confirm publish'}</button>
             <button className="secondary" disabled={busy} onClick={() => setConfirm(false)}>Cancel</button></div>
         </div> : <button onClick={() => setConfirm(true)}>Publish</button>)}
+      {organizer && event.organizer.id === user?.id && <Link className="event-action" to={`/organizer/events/${event.id}/edit`}>Edit event</Link>}
       {organizer && event.organizer.id === user?.id && <RosterPanel key={event.id} eventId={event.id} />}
     </article>}
   </section>;
