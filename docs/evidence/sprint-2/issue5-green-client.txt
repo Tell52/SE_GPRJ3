@@ -1,0 +1,17 @@
+﻿
+> @event-planner/client@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/client
+
+ ✓ tests/Roster.test.tsx (11 tests) 362ms
+ ✓ tests/App.test.tsx (10 tests) 442ms
+ ✓ tests/Registrations.test.tsx (16 tests) 561ms
+ ✓ tests/Events.test.tsx (21 tests) 922ms
+
+ Test Files  4 passed (4)
+      Tests  58 passed (58)
+   Start at  21:45:03
+   Duration  2.85s (transform 891ms, setup 1.42s, import 1.60s, tests 2.29s, environment 3.87s)
+
