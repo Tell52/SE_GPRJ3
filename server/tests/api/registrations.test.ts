@@ -49,6 +49,71 @@ beforeEach(async () => {
 
 afterAll(async () => { await resetTables(prisma); await prisma.$disconnect(); await appPrisma.$disconnect(); });
 
+describe('F-05 participant cancellation', () => {
+  const cancel = (login: Login, id: number) =>
+    login.agent.post(`/api/registrations/${id}/cancel`).set('X-CSRF-Token', login.csrfToken);
+  afterEach(() => vi.useRealTimers());
+
+  test('T-20: one cancellation at start minus 1 ms persists across reads and frees one seat', async () => {
+    const event = await createEvent({ capacity: 1, startsInMs: 2 * 3600000 });
+    const { body: receipt } = await register(p1, event.id).expect(201);
+    expect(await activeCount(event.id)).toBe(1);
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(event.startsAt.getTime() - 1);
+    const results = await Promise.all([cancel(p1, receipt.id), cancel(p1, receipt.id)]);
+    expect(results.map(r => r.status).sort()).toEqual([200, 409]);
+    expect(results.find(r => r.status === 409)!.body.error.code).toBe('INVALID_STATE');
+    const saved = await p1.agent.get(`/api/registrations/${receipt.id}`).expect(200);
+    expect(saved.body).toEqual(results.find(r => r.status === 200)!.body);
+    expect(saved.body).toMatchObject({ status: 'CANCELLED', cancelledBy: 'PARTICIPANT', cancelledAt: new Date().toISOString() });
+    expect(await activeCount(event.id)).toBe(0);
+    expect((await p1.agent.get(`/api/events/${event.id}`)).body.remainingPlaces).toBe(1);
+  });
+
+  test.each([0, 1])('T-21: start plus %i ms rejects without changing the receipt', async (offset) => {
+    const event = await createEvent({ startsInMs: 2 * 3600000 });
+    const { body: receipt } = await register(p1, event.id).expect(201);
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(event.startsAt.getTime() + offset);
+    const response = await cancel(p1, receipt.id).expect(409);
+    expect(response.body.error.code).toBe('CANCELLATION_CLOSED');
+    expect((await p1.agent.get(`/api/registrations/${receipt.id}`)).body).toEqual(receipt);
+  });
+
+  test('T-22: rebook with a new ID, then another participant takes the freed seat', async () => {
+    const event = await createEvent({ capacity: 1 });
+    const { body: first } = await register(p1, event.id).expect(201);
+    await cancel(p1, first.id).expect(200);
+    const { body: next } = await register(p1, event.id).expect(201);
+    expect(next.id).not.toBe(first.id);
+    await cancel(p1, next.id).expect(200);
+    await cancel(p1, next.id).expect(409);
+    expect(await activeCount(event.id)).toBe(0);
+    await register(p2, event.id).expect(201);
+    expect((await register(p1, event.id).expect(409)).body.error.code).toBe('EVENT_FULL');
+    expect(await activeCount(event.id)).toBe(1);
+    const history = await p1.agent.get('/api/registrations/mine').expect(200);
+    expect(history.body.items.map((r: { id: number; status: string }) => [r.id, r.status]))
+      .toEqual([[first.id, 'CANCELLED'], [next.id, 'CANCELLED']]);
+    const owner = await loginAs(app, organizer.email);
+    const roster = await owner.agent.get(`/api/events/${event.id}/registrations`).expect(200);
+    expect(roster.body.count).toBe(1);
+  });
+
+  test('T-23: only the authenticated holder with valid CSRF can cancel', async () => {
+    const event = await createEvent();
+    const { body: receipt } = await register(p1, event.id).expect(201);
+    const path = `/api/registrations/${receipt.id}/cancel`;
+    await request(app).post(path).expect(401);
+    expect((await p1.agent.post(path).expect(403)).body.error.code).toBe('CSRF_INVALID');
+    await cancel(await loginAs(app, organizer.email), receipt.id).expect(403);
+    await cancel(p1, 2147483647).expect(404);
+    expect((await cancel(p2, receipt.id).expect(404)).body.error.code).toBe('NOT_FOUND');
+    expect((await p1.agent.get(`/api/registrations/${receipt.id}`)).body).toEqual(receipt);
+    expect(await activeCount(event.id)).toBe(1);
+  });
+});
+
 describe('T-10 / AC-10: successful registration is stored and retrievable', () => {
   test('201 ACTIVE for the session participant, row stored, remainingPlaces drops, same id in a new session', async () => {
     const event = await createEvent({ capacity: 3 });

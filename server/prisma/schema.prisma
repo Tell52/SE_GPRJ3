@@ -19,6 +19,7 @@ enum EventStatus {
 
 enum RegistrationStatus {
   ACTIVE
+  CANCELLED
 }
 
 model User {
@@ -73,6 +74,8 @@ model Registration {
   participantId Int
   status        RegistrationStatus @default(ACTIVE)
   registeredAt  DateTime           @default(now()) @db.Timestamptz(3)
+  cancelledAt   DateTime?          @db.Timestamptz(3)
+  cancelledBy   Role?
   event         Event              @relation(fields: [eventId], references: [id], onDelete: Restrict)
   participant   User               @relation(fields: [participantId], references: [id], onDelete: Restrict)
 

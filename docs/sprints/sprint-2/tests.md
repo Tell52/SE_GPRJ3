@@ -45,4 +45,13 @@ Unless specified, O owns published event E on 1 December 2026 from 12:00 to 14:0
 
 ## Execution results
 
-All cases are planned. Record each test ID, implementation file, tested commit, observed outcome and evidence link during #51–#54.
+### Sprint 2 completion table
+
+| Issue / criterion | Executed test | Observed result on 27 November 2026 |
+|---|---|---|
+| #51 / AC-20 | T-20 [PostgreSQL API](../../../server/tests/api/registrations.test.ts), [receipt UI](../../../client/tests/Registrations.test.tsx), [desktop and mobile journey](../../../e2e/tests/participant-cancellation.spec.ts) | At start −1 ms, two cancellation requests returned 200 and 409 INVALID_STATE. One ACTIVE row became zero. A fresh GET matched the cancelled receipt, including actor and time. Both browser viewports retained the cancellation on reload and showed the freed place on event detail. |
+| #51 / AC-21 | T-21 [PostgreSQL API](../../../server/tests/api/registrations.test.ts) | At start and start +1 ms the API returned 409 CANCELLATION_CLOSED. The saved receipt remained ACTIVE. |
+| #51 / AC-22 | T-22 [PostgreSQL API](../../../server/tests/api/registrations.test.ts) | On a capacity-one event, P rebooked under a new ID. After cancelling again and retrying cancellation, ACTIVE count was zero. R booked and the count became one. P received 409 EVENT_FULL and retained both cancelled receipts. |
+| #51 / AC-23 | T-23 [PostgreSQL API](../../../server/tests/api/registrations.test.ts) | Another participant received 404 NOT_FOUND. Anonymous, missing CSRF and organizer requests received 401, 403 and 403. The owner's receipt and ACTIVE count were unchanged. |
+
+Tested working tree on `sprint2-issue2`, based on `1e75308`. Implementation commit and PR link pending commit and review. Build passed. The full server and client suites passed (118 and 51 tests). The focused cancellation journey passed at desktop and mobile widths. Cases T-24 through T-36 remain planned.
