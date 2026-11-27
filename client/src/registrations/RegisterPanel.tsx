@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ApiError, apiFetch } from '../api';
 import type { EventRecord } from '../events/model';
@@ -9,6 +9,21 @@ export function RegisterPanel({ event, onFull, onRefresh }: { event: EventRecord
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [expired, setExpired] = useState(false);
+  const remainingMs = Date.parse(event.effectiveCutoff) - Date.parse(event.serverTime);
+  useEffect(() => {
+    setExpired(false);
+    if (!Number.isFinite(remainingMs) || remainingMs <= 0) return;
+    const end = performance.now() + remainingMs;
+    let timer: ReturnType<typeof setTimeout>;
+    function schedule() {
+      const delay = end - performance.now();
+      if (delay <= 0) setExpired(true);
+      else timer = setTimeout(schedule, Math.min(delay, 2147483647));
+    }
+    schedule();
+    return () => clearTimeout(timer);
+  }, [event.id, event.serverTime, remainingMs]);
 
   if (event.myRegistration) {
     return <div className="register-panel">
@@ -27,13 +42,14 @@ export function RegisterPanel({ event, onFull, onRefresh }: { event: EventRecord
     } catch (e) {
       setError(registerErrorMessage(e));
       if (e instanceof ApiError && e.code === 'EVENT_FULL') onFull?.();
+      if (e instanceof ApiError && e.code === 'REGISTRATION_CLOSED') setExpired(true);
       // Registered in another tab: reload so the page shows the registration instead of a Register button.
       if (e instanceof ApiError && e.code === 'ALREADY_REGISTERED') onRefresh?.();
       setBusy(false);
     }
   }
 
-  if (registrationClosed(event.startsAt)) {
+  if (expired || (Number.isFinite(remainingMs) ? remainingMs <= 0 : registrationClosed(event.startsAt))) {
     return <div className="register-panel"><p role="status">{REGISTRATION_CLOSED_MESSAGE}</p></div>;
   }
 

@@ -6,7 +6,7 @@ The author asked Codex to prepare the #50 contracts, then requested the seven-fi
 
 ## Human verification and attribution
 
-The team owns acceptance of the contracts. The proposed BR-08 reconciliation requires a team decision before #53. Record the teammate walkthrough and reviewed revision in the [review record](reviewer.md).
+The team owns acceptance of the contracts. The selected BR-08 rule is documented in the #53 specification revision. Record the teammate walkthrough and reviewed revision in the [review record](reviewer.md).
 
 ## Corrections and limits
 

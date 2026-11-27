@@ -54,6 +54,7 @@ model Event {
   description   String?
   location      String
   startsAt      DateTime       @db.Timestamptz(3)
+  registrationDeadline DateTime? @db.Timestamptz(3)
   endsAt        DateTime       @db.Timestamptz(3)
   capacity      Int
   status        EventStatus    @default(DRAFT)

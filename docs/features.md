@@ -13,7 +13,7 @@
 | F-09 | Check in | Organizer checks in active registrations during the check in window. | FR-11, BR-11 | F-04 | 3 | |
 | F-10 | Attendance reporting and summaries | Attendance report, cross event summary, CSV export. | FR-12, BR-12 | F-09 | 3 | |
 
-See the [Sprint 2 contracts and test specifications](sprints/sprint-2/contracts.md) for #50 and the open BR-08 decision.
+See the [Sprint 2 contracts and test specifications](sprints/sprint-2/contracts.md) for #50 and the BR-08 deadline rule.
 
 ## System responsibilities
 

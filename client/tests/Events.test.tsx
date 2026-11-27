@@ -145,6 +145,28 @@ test('T-06 client validation enforces capacity and field boundaries', () => {
   expect(validateEventForm({ ...form, title: 'x'.repeat(121), location: 'x'.repeat(201), description: 'x'.repeat(2001), endsAt: form.startsAt })).toMatchObject({ title: expect.any(String), location: expect.any(String), description: expect.any(String), endsAt: expect.any(String) });
 });
 
+test('T-24: save, reopen, update and clear a Bangkok deadline on the owner form', async () => {
+  let saved: string | null = null;
+  const detail = () => ({ status: 200, body: { ...event, registrationDeadline: saved } });
+  routes['GET /api/events/7'] = async () => detail();
+  routes['PATCH /api/events/7'] = async () => {
+    saved = JSON.parse(calls.at(-1)!.init.body as string).registrationDeadline;
+    return detail();
+  };
+  renderAt('/organizer/events/7/edit');
+  const label = 'Registration deadline (optional)';
+  for (const [local, iso] of [['2099-11-20T10:00', '2099-11-20T03:00:00.000Z'],
+    ['2099-11-20T14:00', '2099-11-20T07:00:00.000Z'], ['', null]] as const) {
+    await screen.findByLabelText(label);
+    fill(label, local);
+    fireEvent.click(screen.getByRole('button', { name: 'Save changes' }));
+    await screen.findByText('Event updated');
+    expect(saved).toBe(iso);
+    fireEvent.click(screen.getByRole('link', { name: 'Edit event' }));
+    expect(await screen.findByLabelText(label)).toHaveValue(local);
+  }
+});
+
 describe('T-28 / T-29 (UI), #52: owner edits an event', () => {
   const published = { ...event, status: 'PUBLISHED', publishedAt: '2099-11-01T00:00:00Z', capacity: 4, activeCount: 3, remainingPlaces: 1 };
 

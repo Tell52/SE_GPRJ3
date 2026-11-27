@@ -89,6 +89,7 @@ export function EventDetailPage({ organizer = false }: { organizer?: boolean }) 
       {success && <p role="status">{success}</p>}
       <p className="event-description">{event.description}</p><p>{event.location}</p>
       <p>Start: {formatTime(event.startsAt)} (Bangkok)</p><p>End: {formatTime(event.endsAt)} (Bangkok)</p>
+      {event.effectiveCutoff && <p>Registration closes: {formatTime(event.effectiveCutoff)} (Bangkok)</p>}
       <p>Organizer: {event.organizer.name}</p><Places event={event} />
       {!organizer && user?.role === 'PARTICIPANT' && event.status === 'PUBLISHED' && <RegisterPanel event={event} onFull={() => setEvent({ ...event, remainingPlaces: 0 })} onRefresh={refreshEvent} />}
       {organizer && event.organizer.id === user?.id && event.status === 'DRAFT' &&

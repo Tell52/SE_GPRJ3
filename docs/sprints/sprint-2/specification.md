@@ -1,6 +1,6 @@
 # Sprint 2 Specification
 
-Draft v0.2 for #50. Session handling, roles, deployment and seed identities carry forward from Sprint 1. Each feature below links to the planned verification cases.
+Revision 0.3 includes the F-06 decision for #53. Session handling, roles, deployment and seed identities carry forward from Sprint 1. Each feature below links to its verification cases.
 
 
 ## F-05 Registration cancellation
@@ -21,7 +21,7 @@ Requirements: FR-07 / BR-07.
 
 FR-08 / BR-08 and BR-02, extending F-03 and the #52 edit form. Sprint 1 at 489e5bf closed at start. The [TA-approved #49 decision](https://github.com/Tell52/SE_GPRJ3/issues/49#issuecomment-7128346309) closes registration at start minus 60 minutes, by server time inside the locked transaction. Existing receipts stay Active. This decision reached main at 4fb8732.
 
-**Open decision before #53.** The integrated SRS BR-08/DEC-05 caps the stored deadline at start minus 60 minutes. [#53](https://github.com/Tell52/SE_GPRJ3/issues/53) requires accepting equality with start. Approval for #49 excluded per-event deadlines. Proposed reconciliation: allow storage up to start, and enforce the earlier of that value and start minus 60 minutes. Null uses the fixed cutoff. This preserves roster preparation time. The team must decide whether to revise BR-08 before implementation and record the decision, rationale and corresponding SRS/test revision. The planned tests specify the proposal.
+**BR-08 decision for #53, 27 November 2026.** The owner may store a deadline up to and including start. Registration closes at the earlier of that value and start minus 60 minutes. Clearing the deadline restores the fixed #49 cutoff. For a 12:00 event, a stored deadline of 10:00 closes at 10:00, while 12:00 or null closes at 11:00. Equality closes registration, preserving the roster preparation window.
 
 - **AC-24** Manage stored deadline. [T-24](tests.md#f-06-registration-deadline)
 - **AC-25** Validate merged schedule and ownership. [T-25](tests.md#f-06-registration-deadline)

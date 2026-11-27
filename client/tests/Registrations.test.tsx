@@ -100,12 +100,12 @@ describe('T-11 to T-14 (UI): rejections show the matching message', () => {
     expect(screen.queryByText(/places? left/)).not.toBeInTheDocument();
   });
 
-  test('REGISTRATION_CLOSED shows the closed message and keeps the button for a retry', async () => {
+  test('REGISTRATION_CLOSED replaces a stale Register button with the closed message', async () => {
     routes['POST /api/events/7/registrations'] = apiError(409, 'REGISTRATION_CLOSED', 'server text');
     renderAt('/events/7');
     fireEvent.click(await registerButton());
-    expect(await screen.findByRole('alert')).toHaveTextContent('Registration for this event is closed.');
-    expect(screen.getByRole('button', { name: 'Register' })).toBeEnabled();
+    expect(await screen.findByText('Registration for this event is closed.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Register' })).not.toBeInTheDocument();
   });
 
   test('ALREADY_REGISTERED (registered in another tab) shows the message, then the saved registration', async () => {

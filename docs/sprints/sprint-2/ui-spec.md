@@ -10,7 +10,7 @@ Open an Active receipt from My registrations. Before start, show Cancel registra
 
 ## F-06 Registration deadline
 
-In the owner edit form, show an optional local date/time and a way to clear it. Reopen the form with the stored value. Under the [proposed deadline rule](specification.md#f-06-registration-deadline), display the effective cutoff when it differs from the stored deadline. For an upcoming published event, retain the discovery entry after closing. Participant detail replaces Register with “Registration for this event is closed.” A previously booked participant can still open their Active receipt.
+In the owner edit form, show an optional local date/time and a way to clear it. Reopen the form with the stored value. Under the [deadline rule](specification.md#f-06-registration-deadline), display the effective cutoff when it differs from the stored deadline. For an upcoming published event, retain the discovery entry after closing. Participant detail replaces Register with “Registration for this event is closed.” A previously booked participant can still open their Active receipt.
 
 ## F-07 Event editing and capacity
 

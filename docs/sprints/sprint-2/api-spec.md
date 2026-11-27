@@ -12,7 +12,7 @@ FR-07 / BR-07, extending F-03. From My registrations open an Active receipt, con
 
 ## F-06 Registration deadline
 
-O sets a local date/time in the edit form. PATCH /api/events/:id accepts registrationDeadline as an ISO instant, null to clear, or omission to preserve. Validate against the resulting startsAt. Persist a nullable timestamp (legacy events read null). Return the stored deadline and effective cutoff on event reads. Show both in the form when different. Participant detail shows the effective cutoff and server-derived closed state. POST /api/events/:id/registrations remains authoritative.
+O sets a local date/time in the edit form. PATCH /api/events/:id accepts registrationDeadline as an ISO instant, null to clear, or omission to preserve. Validate against the resulting startsAt. Persist a nullable timestamp (legacy events read null). Event reads include registrationDeadline, effectiveCutoff and serverTime as UTC instants (registrationDeadline may be null). Show both in the form when different. Participant detail shows the effective cutoff and server-derived closed state. POST /api/events/:id/registrations remains authoritative.
 
 
 ## F-07 Event editing and capacity

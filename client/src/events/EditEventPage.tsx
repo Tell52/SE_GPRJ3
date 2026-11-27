@@ -3,14 +3,17 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ApiError, apiFetch } from '../api';
 import { useAuth } from '../auth/AuthContext';
 import { fields } from './CreateEventPage';
-import { errorMessage, validateEventForm, type EventForm, type EventRecord } from './model';
+import { errorMessage, formatTime, validateEventForm, type EventForm, type EventRecord } from './model';
 import './events.css';
 
 const BANGKOK_MS = 7 * 3600000;
 /** ISO instant to the datetime-local value shown in Bangkok time (UTC+7). */
 export const toBangkokInput = (iso: string) => new Date(Date.parse(iso) + BANGKOK_MS).toISOString().slice(0, 16);
 const toIso = (local: string) => new Date(local + ':00+07:00').toISOString();
-const formOf = (e: EventRecord): EventForm => ({
+const editFields = [...fields, ['registrationDeadline', 'Registration deadline (optional)', 'datetime-local']] as const;
+type EditForm = EventForm & { registrationDeadline: string };
+const formOf = (e: EventRecord): EditForm => ({
+  registrationDeadline: e.registrationDeadline ? toBangkokInput(e.registrationDeadline) : '',
   title: e.title, description: e.description ?? '', location: e.location,
   startsAt: toBangkokInput(e.startsAt), endsAt: toBangkokInput(e.endsAt), capacity: String(e.capacity),
 });
@@ -20,12 +23,13 @@ export function EditEventPage() {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [original, setOriginal] = useState<EventForm | null>(null);
-  const [form, setForm] = useState<EventForm | null>(null);
-  const [errors, setErrors] = useState<Partial<Record<keyof EventForm, string>>>({});
+  const [original, setOriginal] = useState<EditForm | null>(null);
+  const [form, setForm] = useState<EditForm | null>(null);
+  const [errors, setErrors] = useState<Partial<Record<keyof EditForm, string>>>({});
   const [alert, setAlert] = useState('');
   const [loadError, setLoadError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [savedCutoff, setSavedCutoff] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -34,24 +38,31 @@ export function EditEventPage() {
       if (!active) return;
       if (event.organizer.id !== user?.id) { setLoadError('Event not found'); return; }
       setOriginal(formOf(event)); setForm(formOf(event));
+      setSavedCutoff(event.effectiveCutoff);
     }).catch((e) => { if (active) setLoadError(e instanceof ApiError && e.status === 404 ? 'Event not found' : errorMessage(e)); });
     return () => { active = false; };
   }, [id, user?.id]);
 
   function focusError(next: typeof errors) {
-    const first = fields.find(([key]) => next[key]);
+    const first = editFields.find(([key]) => next[key]);
     if (first) (formRef.current?.elements.namedItem(first[0]) as HTMLElement)?.focus();
   }
 
   async function submit(e: FormEvent) {
     e.preventDefault();
     if (!form || !original) return;
-    const next = validateEventForm(form);
+    const next: typeof errors = validateEventForm(form);
+    if (form.registrationDeadline && form.registrationDeadline > form.startsAt) {
+      next.registrationDeadline = 'Registration deadline must be at or before the event start.';
+    }
     // An unchanged start may already be in the past (capacity edits during the event).
     if (form.startsAt === original.startsAt) delete next.startsAt;
     setErrors(next); setAlert('');
     if (Object.keys(next).length) { focusError(next); return; }
-    const body: Record<string, string | number> = {};
+    const body: Record<string, string | number | null> = {};
+    if (form.registrationDeadline !== original.registrationDeadline) {
+      body.registrationDeadline = form.registrationDeadline ? toIso(form.registrationDeadline) : null;
+    }
     for (const [key] of fields) {
       if (form[key] === original[key]) continue;
       body[key] = key === 'capacity' ? Number(form.capacity) : key === 'startsAt' || key === 'endsAt' ? toIso(form[key]) : form[key];
@@ -76,10 +87,11 @@ export function EditEventPage() {
 
   return <section className="events-page"><h1>Edit event</h1>
     {loadError ? <p role="alert" className="alert">{loadError}</p> : !form ? <p>Loading...</p> : <>
-      <p>Enter start and end in Bangkok time (UTC+7).</p>
+      <p>Enter dates and times in Bangkok time (UTC+7). Leave the deadline blank to use the default cutoff.</p>
+      {savedCutoff && <p>Current saved cutoff: {formatTime(savedCutoff)} (Bangkok). A deadline can close registration earlier than one hour before start.</p>}
       <form ref={formRef} className="form" onSubmit={submit} noValidate>
         {alert && <p className="alert" role="alert">{alert}</p>}
-        {fields.map(([key, label, type]) => {
+        {editFields.map(([key, label, type]) => {
           const props = { id: key, name: key, value: form[key], disabled: busy,
             'aria-invalid': Boolean(errors[key]), 'aria-describedby': errors[key] ? `${key}-error` : undefined,
             onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm({ ...form, [key]: e.target.value }) };

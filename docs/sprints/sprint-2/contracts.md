@@ -1,6 +1,6 @@
 # Sprint 2 Contracts Index
 
-Draft v0.2 for [#50](https://github.com/Tell52/SE_GPRJ3/issues/50). Follow each row from the feature rules to its planned tests.
+Revision 0.3 of the [#50](https://github.com/Tell52/SE_GPRJ3/issues/50) contracts includes the F-06 cutoff decision. Follow each row from the feature rules to its tests.
 
 | Feature | Issue | Specification | API | UI | Tests |
 |---|---|---|---|---|---|
