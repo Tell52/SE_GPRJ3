@@ -27,3 +27,19 @@ export function decideRegistration({ event, hasActiveRegistration, activeCount, 
   if (activeCount >= event.capacity) return 'EVENT_FULL';
   return 'OK';
 }
+
+export type CheckInDecision = 'OK' | 'INVALID_STATE' | 'ALREADY_CHECKED_IN' | 'CHECK_IN_CLOSED';
+export const CHECK_IN_OPENS_BEFORE_START_MS = 60 * 60 * 1000;
+
+/**
+ * F-09 (BR-11): an ACTIVE registration on a PUBLISHED event may be checked in once, from start - 1 h until
+ * the event ends (half-open window, server clock). State is checked before time.
+ */
+export function decideCheckIn({ eventStatus, status, checkedInAt, startsAt, endsAt, now }: {
+  eventStatus: string; status: string; checkedInAt: Date | null; startsAt: Date; endsAt: Date; now: Date;
+}): CheckInDecision {
+  if (eventStatus !== 'PUBLISHED' || status !== 'ACTIVE') return 'INVALID_STATE';
+  if (checkedInAt) return 'ALREADY_CHECKED_IN';
+  if (now.getTime() < startsAt.getTime() - CHECK_IN_OPENS_BEFORE_START_MS || now.getTime() >= endsAt.getTime()) return 'CHECK_IN_CLOSED';
+  return 'OK';
+}
