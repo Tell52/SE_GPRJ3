@@ -5,6 +5,16 @@ const now = new Date('2026-11-10T00:00:00Z');
 const future = new Date('2026-11-20T00:00:00Z');
 const published = { status: 'PUBLISHED' as const, startsAt: future, capacity: 2 };
 
+test.each([null, 0, 120])('T-26 closes exactly at the effective cutoff (deadline %s minutes before start)', minutes => {
+  const start = future.getTime();
+  const registrationDeadline = minutes === null ? null : new Date(start - minutes * 60000);
+  const cutoff = start - (minutes === 120 ? 120 : 60) * 60000;
+  for (const offset of [-1, 0, 1]) {
+    expect(decideRegistration({ event: { ...published, registrationDeadline }, now: new Date(cutoff + offset),
+      activeCount: 0, hasActiveRegistration: false })).toBe(offset < 0 ? 'OK' : 'REGISTRATION_CLOSED');
+  }
+});
+
 describe('T-12 (unit, TDD) / AC-12: capacity rule in decideRegistration', () => {
   test('a full event is rejected with EVENT_FULL', () => {
     expect(decideRegistration({ event: published, hasActiveRegistration: false, activeCount: 2, now })).toBe('EVENT_FULL');

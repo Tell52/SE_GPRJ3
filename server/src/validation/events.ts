@@ -19,6 +19,7 @@ export type EventInput = z.infer<typeof eventInputSchema>;
  * Field limits are the BR-01 limits used for creation; the merged schedule is checked in the service.
  */
 export const eventPatchSchema = z.strictObject({
+  registrationDeadline: z.iso.datetime({ offset: true }).nullable(),
   title: z.string().trim().min(3).max(120),
   description: z.string().max(2000),
   location: z.string().trim().min(1).max(200),

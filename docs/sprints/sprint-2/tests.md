@@ -1,6 +1,6 @@
 # Sprint 2 Tests (Software Test Specification)
 
-Unless specified, O owns published event E on 1 December 2026 from 12:00 to 14:00 UTC, capacity 4. Q is another organizer. P and R are participants. Freeze server time at 09:00. Reset PostgreSQL fixtures for each independent boundary input. Race tests use separate connections and exercise both event-lock acquisition orders. Run the [common access checks](api-spec.md#common-access-checks) for each mutation. F-06 expectations depend on the [pending BR-08 decision](specification.md#f-06-registration-deadline).
+Unless specified, O owns published event E on 1 December 2026 from 12:00 to 14:00 UTC, capacity 4. Q is another organizer. P and R are participants. Freeze server time at 09:00. Reset PostgreSQL fixtures for each independent boundary input. Race tests use separate connections and exercise both event-lock acquisition orders. Run the [common access checks](api-spec.md#common-access-checks) for each mutation. F-06 expectations depend on the [BR-08 decision](specification.md#f-06-registration-deadline).
 
 
 ## F-05 Registration cancellation
@@ -53,5 +53,11 @@ Unless specified, O owns published event E on 1 December 2026 from 12:00 to 14:0
 | #51 / AC-21 | T-21 [PostgreSQL API](../../../server/tests/api/registrations.test.ts) | At start and start +1 ms the API returned 409 CANCELLATION_CLOSED. The saved receipt remained ACTIVE. |
 | #51 / AC-22 | T-22 [PostgreSQL API](../../../server/tests/api/registrations.test.ts) | On a capacity-one event, P rebooked under a new ID. After cancelling again and retrying cancellation, ACTIVE count was zero. R booked and the count became one. P received 409 EVENT_FULL and retained both cancelled receipts. |
 | #51 / AC-23 | T-23 [PostgreSQL API](../../../server/tests/api/registrations.test.ts) | Another participant received 404 NOT_FOUND. Anonymous, missing CSRF and organizer requests received 401, 403 and 403. The owner's receipt and ACTIVE count were unchanged. |
+| #53 / AC-24 (stored value) | T-24 [API](../../../server/tests/api/event-editing.test.ts), [form](../../../client/tests/Events.test.tsx), [desktop and mobile reload](../../../e2e/tests/event-deadline.spec.ts) | The owner set an earlier deadline, changed it to event start and cleared it. Each value survived reload. Omitting the field preserved it on a title edit. |
+| #53 / AC-25 | T-25 [API](../../../server/tests/api/event-editing.test.ts) | Malformed deadlines, start +1 ms and moving the start before the stored deadline returned 400. A participant received 403 and a different organizer received 404. Stored times were unchanged. |
+| #53 / AC-26 | T-26 [unit](../../../server/tests/unit/registration-rules.test.ts), [PostgreSQL API](../../../server/tests/api/event-editing.test.ts) | With null, early and start-equal deadlines, a request 1 ms before the effective cutoff returned 201. At equality and 1 ms after, direct booking returned 409 REGISTRATION_CLOSED. The existing receipt remained ACTIVE, total rows stayed at one and three of four places remained available. |
+| #53 / AC-27 | T-27 [API](../../../server/tests/api/event-editing.test.ts), [desktop and mobile](../../../e2e/tests/event-deadline.spec.ts) | An upcoming published event with an expired custom deadline remained in discovery. Its detail showed the closed message and hid Register on both viewports. |
 
-Tested working tree on `sprint2-issue2`, based on `1e75308`. Implementation commit and PR link pending commit and review. Build passed. The full server and client suites passed (118 and 51 tests). The focused cancellation journey passed at desktop and mobile widths. Cases T-24 through T-36 remain planned.
+#51 was tested on `sprint2-issue2`, based on `1e75308`. Build, 118 server tests, 51 client tests and both cancellation browser journeys passed.
+
+#53 was tested on the working tree based on `a4bc2be`. Server and client builds passed. All 136 server tests, 55 client tests and four focused browser cases passed. Record the implementation commit and PR link after commit and review.

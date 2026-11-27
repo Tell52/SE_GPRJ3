@@ -54,6 +54,65 @@ beforeEach(async () => { await prisma.registration.deleteMany(); await prisma.ev
 afterEach(() => vi.useRealTimers());
 afterAll(async () => { await prisma.$disconnect(); await appPrisma.$disconnect(); });
 
+test.each([null, 0, 120])('T-26/T-27: direct booking boundary and existing receipt (deadline %s min before start)', async minutes => {
+  // Stay within the lifetime of the sessions created in beforeAll.
+  const event = await createEvent({ startsInMs: 3 * 3600000 });
+  const start = event.startsAt.getTime();
+  const deadline = minutes === null ? null : new Date(start - minutes * 60000).toISOString();
+  const cutoff = start - (minutes === 120 ? 120 : 60) * 60000;
+  const saved = await edit(o, event.id, { registrationDeadline: deadline }).expect(200);
+  expect(saved.body.effectiveCutoff).toBe(new Date(cutoff).toISOString());
+  const book = (login: Login) => login.agent.post(`/api/events/${event.id}/registrations`).set('X-CSRF-Token', login.csrfToken);
+  freezeAt(new Date(cutoff - 1));
+  const receipt = await book(r).expect(201);
+  for (const offset of [0, 1]) {
+    vi.setSystemTime(cutoff + offset);
+    const rejected = await book(p).expect(409);
+    expect(rejected.body.error).toMatchObject({ code: 'REGISTRATION_CLOSED', message: 'Registration for this event is closed.' });
+    expect(await prisma.registration.count({ where: { eventId: event.id } })).toBe(1);
+    const detail = await p.agent.get(`/api/events/${event.id}`).expect(200);
+    expect(detail.body).toMatchObject({ serverTime: new Date(cutoff + offset).toISOString(), remainingPlaces: 3 });
+  }
+  expect((await p.agent.get('/api/events')).body.items).toEqual(expect.arrayContaining([expect.objectContaining({ id: event.id })]));
+  expect((await r.agent.get(`/api/registrations/${receipt.body.id}`)).body.status).toBe('ACTIVE');
+});
+
+test('T-24: owner sets, updates, preserves and clears the stored deadline', async () => {
+  const event = await createEvent();
+  const early = new Date(event.startsAt.getTime() - 2 * 3600000).toISOString();
+  const start = event.startsAt.toISOString();
+  const cases = [
+    [{ registrationDeadline: early }, early],
+    [{ registrationDeadline: start }, start],
+    [{ title: 'Workshop' }, start],
+    [{ registrationDeadline: null }, null],
+  ] as const;
+  for (const [patch, expected] of cases) {
+    await edit(o, event.id, patch).expect(200);
+    expect((await o.agent.get(`/api/events/${event.id}`).expect(200)).body).toMatchObject({
+      registrationDeadline: expected,
+      effectiveCutoff: expected === early ? early : new Date(event.startsAt.getTime() - 3600000).toISOString(),
+    });
+  }
+});
+
+test('T-25: validate the resulting schedule and protect deadline edits', async () => {
+  const event = await createEvent();
+  const deadline = event.startsAt.toISOString();
+  await edit(o, event.id, { registrationDeadline: deadline }).expect(200);
+  for (const patch of [{ registrationDeadline: 'invalid' },
+    { registrationDeadline: new Date(event.startsAt.getTime() + 1).toISOString() },
+    { startsAt: new Date(event.startsAt.getTime() - 1).toISOString() }]) {
+    const res = await edit(o, event.id, patch).expect(400);
+    expect(res.body.error.details).toEqual(expect.arrayContaining([expect.objectContaining({ field: 'registrationDeadline' })]));
+  }
+  await edit(q, event.id, { registrationDeadline: null }).expect(404);
+  await request(app).patch(`/api/events/${event.id}`).send({ registrationDeadline: null }).expect(401);
+  await o.agent.patch(`/api/events/${event.id}`).send({ registrationDeadline: null }).expect(403);
+  await edit(p, event.id, { registrationDeadline: null }).expect(403);
+  expect(await stored(event.id)).toMatchObject({ registrationDeadline: event.startsAt, startsAt: event.startsAt });
+});
+
 describe('T-28 / AC-28: persist valid edits atomically', () => {
   test.each(['DRAFT', 'PUBLISHED'] as const)('%s event: title and location saved, survive a reload, status unchanged', async (status) => {
     const event = await createEvent({ status });

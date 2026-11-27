@@ -15,7 +15,7 @@ const rejections: Record<Exclude<RegistrationDecision, 'OK'>, () => AppError> = 
   EVENT_FULL: () => new AppError(409, 'EVENT_FULL', 'This event has no places left.'),
 };
 
-type LockedEvent = { status: 'DRAFT' | 'PUBLISHED'; startsAt: Date; capacity: number };
+type LockedEvent = { status: 'DRAFT' | 'PUBLISHED'; startsAt: Date; registrationDeadline: Date | null; capacity: number };
 
 // Requests for the same event queue behind the row lock. Prisma's defaults (2 s to get a connection,
 // 5 s per transaction) are too short when many people register at once, so queued requests failed with
@@ -31,7 +31,7 @@ export async function registerForEvent(eventId: number, participantId: number) {
   try {
     return await prisma.$transaction(async (tx) => {
       const [event] = await tx.$queryRaw<LockedEvent[]>`
-        SELECT "status"::text AS "status", "startsAt", "capacity" FROM "Event" WHERE "id" = ${eventId} FOR UPDATE`;
+        SELECT "status"::text AS "status", "startsAt", "registrationDeadline", "capacity" FROM "Event" WHERE "id" = ${eventId} FOR UPDATE`;
       const [hasActiveRegistration, activeCount] = event ? await Promise.all([
         tx.registration.count({ where: { eventId, participantId, status: 'ACTIVE' } }).then((n) => n > 0),
         tx.registration.count({ where: { eventId, status: 'ACTIVE' } }),

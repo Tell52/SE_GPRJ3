@@ -1,19 +1,21 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '../db.js';
+import { registrationCutoff } from './registration-rules.js';
 import { AppError, notFound } from '../errors.js';
 import type { SessionUser } from '../auth/session.js';
 import type { EventInput, EventPatch } from '../validation/events.js';
 
 const eventSelect = {
   id: true, title: true, description: true, location: true, startsAt: true, endsAt: true,
-  capacity: true, status: true, publishedAt: true,
+  capacity: true, status: true, publishedAt: true, registrationDeadline: true,
   organizer: { select: { id: true, name: true } },
   _count: { select: { registrations: { where: { status: 'ACTIVE' } } } },
 } satisfies Prisma.EventSelect;
 
 type SelectedEvent = Prisma.EventGetPayload<{ select: typeof eventSelect }>;
 function present({ _count, ...event }: SelectedEvent) {
-  return { ...event, activeCount: _count.registrations, remainingPlaces: event.capacity - _count.registrations };
+  const effectiveCutoff = registrationCutoff(event.startsAt, event.registrationDeadline);
+  return { ...event, effectiveCutoff, serverTime: new Date(), activeCount: _count.registrations, remainingPlaces: event.capacity - _count.registrations };
 }
 
 export async function createEvent(input: EventInput, organizerId: number) {
@@ -66,13 +68,18 @@ const TRANSACTION_LIMITS = { maxWait: 15000, timeout: 15000 };
  */
 export async function updateEvent(id: number, patch: EventPatch, organizerId: number) {
   return prisma.$transaction(async (tx) => {
-    const [current] = await tx.$queryRaw<{ startsAt: Date; endsAt: Date; capacity: number }[]>`
-      SELECT "startsAt", "endsAt", "capacity" FROM "Event" WHERE "id" = ${id} AND "organizerId" = ${organizerId} FOR UPDATE`;
+    const [current] = await tx.$queryRaw<{ startsAt: Date; endsAt: Date; capacity: number; registrationDeadline: Date | null }[]>`
+      SELECT "startsAt", "endsAt", "capacity", "registrationDeadline" FROM "Event" WHERE "id" = ${id} AND "organizerId" = ${organizerId} FOR UPDATE`;
     if (!current) throw notFound();
     const now = new Date();
     const startsAt = patch.startsAt ? new Date(patch.startsAt) : current.startsAt;
     const endsAt = patch.endsAt ? new Date(patch.endsAt) : current.endsAt;
     const details: { field: string; message: string }[] = [];
+    const deadline = patch.registrationDeadline === undefined ? current.registrationDeadline
+      : patch.registrationDeadline === null ? null : new Date(patch.registrationDeadline);
+    if (deadline && deadline > startsAt) {
+      details.push({ field: 'registrationDeadline', message: 'Registration deadline must be at or before the event start.' });
+    }
     // An unchanged start may already be in the past (capacity edits during the event); a changed one may not.
     if (patch.startsAt && startsAt.getTime() !== current.startsAt.getTime() && startsAt <= now) {
       details.push({ field: 'startsAt', message: 'Start must be in the future.' });
