@@ -1,0 +1,289 @@
+﻿
+> @event-planner/server@0.1.0 pretest
+> npm run build
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+npm : Environment variables loaded from .env
+At line:2 char:1
++ npm test --workspace server 2>&1 | Out-File -Encoding utf8 docs\evide ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Environment variables loaded from .env:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 122ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+
+> @event-planner/server@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/chuti/Documents/SE_GPRJ3/server
+
+ ❯ tests/api/roster.test.ts (10 tests | 1 failed) 5367ms
+   × T-16: owner receives exact stored fields in time order and count, without private fields or writes 28ms
+   ✓ T-16: an owned empty draft returns an empty collection 10ms
+   ✓ T-17 / T-03: anonymous 401, participant 403, foreign organizer 404; no roster query or private data 16ms
+   ✓ missing or invalid event 0 returns 404 6ms
+   ✓ missing or invalid event -1 returns 404 6ms
+   ✓ missing or invalid event 1.5 returns 404 5ms
+   ✓ missing or invalid event abc returns 404 5ms
+   ✓ missing or invalid event 2147483648 returns 404 5ms
+   ✓ missing or invalid event 999999999999999999999 returns 404 5ms
+   ✓ missing or invalid event 999999 returns 404 6ms
+ ✓ tests/api/foundation.test.ts (5 tests) 25527ms
+   ✓ T-19: fresh migration, repeat seed, changed passwords and edited events survive  12689ms
+   ✓ T-19: two real API process starts preserve every existing row  4801ms
+ ✓ tests/api/registrations.test.ts (14 tests) 16412ms
+     ✓ T-20: one cancellation at start minus 1 ms persists across reads and frees one seat  2149ms
+     ✓ T-22: rebook with a new ID, then another participant takes the freed seat  365ms
+     ✓ five concurrent requests from the same participant store exactly one ACTIVE row  2095ms
+     ✓ capacity 1 and ten participants at once: exactly one 201, nine 409 EVENT_FULL, one ACTIVE row  2833ms
+     ✓ mine lists only own registrations with event details; another participant gets 404; survives an app restart  2360ms
+ ✓ tests/api/auth.test.ts (15 tests) 9781ms
+     ✓ valid credentials return the stored identity, a CSRF token and an HttpOnly SameSite=Lax sid cookie  2642ms
+     ✓ wrong password and unknown email return the identical 401 with no cookie and no session  743ms
+     ✓ stored hash differs from the password and no response exposes hashes or tokens  344ms
+     ✓ a session past its absolute expiry is rejected with 401  350ms
+     ✓ expiry is absolute: using the session does not extend expiresAt  323ms
+     ✓ requireRole returns 403 for the wrong role and passes the right role  554ms
+     ✓ a state changing request without or with a wrong X-CSRF-Token returns 403 and changes nothing  578ms
+     ✓ requireCsrf lets safe methods through without a token  363ms
+     ✓ role or userId in the login body is ignored; identity comes from the stored account  325ms
+     ✓ logout revokes the session, clears the cookie and the replayed old cookie is rejected  347ms
+     ✓ logging out one session leaves the user's other sessions working  578ms
+ ✓ tests/api/event-editing.test.ts (15 tests) 8838ms
+     ✓ ten concurrent races: always one of the two outcomes and the ACTIVE count never exceeds capacity  2433ms
+ ✓ tests/api/event-cancellation.test.ts (8 tests) 8475ms
+     ✓ ten concurrent races: cancel always succeeds, the booking is 201 (then organizer-cancelled) or 404, and zero ACTIVE remain  2522ms
+ ✓ tests/api/events.test.ts (26 tests) 7809ms
+     ✓ T-08 repeated and concurrent publication changes state only once; past start rejected  2136ms
+ ❯ tests/api/check-in.test.ts (8 tests | 8 failed) 7370ms
+     × start - 1 h - 1 ms gives (s, _e) => s.getTime() - HOUR - 1 35ms
+     × exactly start - 1 h gives (s, _e) => s.getTime() - HOUR 22ms
+     × end - 1 ms gives (_s, e) => e.getTime() - 1 21ms
+     × exactly at end gives (_s, e) => e.getTime() 23ms
+     × two concurrent check-ins: exactly one 200 and one 409 ALREADY_CHECKED_IN, one timestamp 2085ms
+     × a participant-cancelled receipt gets 409 INVALID_STATE and no timestamp 25ms
+     × a receipt on an organizer-cancelled event gets 409 INVALID_STATE and no timestamp 23ms
+     × other organizer 404, participant 403, anonymous 401, owner without CSRF 403; nothing written 25ms
+ ✓ tests/api/registration-capacity.test.ts (1 test) 4878ms
+     ✓ capacity 2 with two ACTIVE registrations: a third participant gets 409 EVENT_FULL and nothing is stored  2627ms
+ ✓ tests/api/cloud-ready.test.ts (6 tests) 2148ms
+     ✓ GET /api/ready answers 200 when PostgreSQL responds  2090ms
+ ✓ tests/unit/password.test.ts (4 tests) 1071ms
+     ✓ hash is bcrypt cost 12, differs from plaintext and verifies only the right password  606ms
+     ✓ two hashes of the same password differ (salted)  462ms
+ ✓ tests/unit/events.test.ts (19 tests) 11ms
+ ✓ tests/unit/test-database.test.ts (7 tests) 5ms
+ ✓ tests/unit/registration-rules.test.ts (14 tests) 5ms
+ ❯ tests/unit/check-in-rules.test.ts (2 tests | 2 failed) 7ms
+     × window opens exactly at start - 1 h and closes exactly at end 5ms
+     × state is checked before the window: cancelled event or registration is INVALID_STATE, a second check-in is ALREADY_CHECKED_IN 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/api/check-in.test.ts > T-37 / AC-37: check-in window [start - 1 h, end) > start - 1 h - 1 ms gives (s, _e) => s.getTime() - HOUR - 1
+ FAIL  tests/api/check-in.test.ts > T-37 / AC-37: check-in window [start - 1 h, end) > exactly at end gives (_s, e) => e.getTime()
+AssertionError: expected 403 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 403
+
+ ❯ tests/api/check-in.test.ts:63:29
+     61|     freezeAt(now);
+     62|     const response = await checkIn(o, registration.id);
+     63|     expect(response.status).toBe(expected);
+       |                             ^
+     64|     if (expected === 200) {
+     65|       expect(response.body).toMatchObject({ id: registration.id, statu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  tests/api/check-in.test.ts > T-37 / AC-37: check-in window [start - 1 h, end) > exactly start - 1 h gives (s, _e) => s.getTime() - HOUR
+ FAIL  tests/api/check-in.test.ts > T-37 / AC-37: check-in window [start - 1 h, end) > end - 1 ms gives (_s, e) => e.getTime() - 1
+AssertionError: expected 403 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 403
+
+ ❯ tests/api/check-in.test.ts:63:29
+     61|     freezeAt(now);
+     62|     const response = await checkIn(o, registration.id);
+     63|     expect(response.status).toBe(expected);
+       |                             ^
+     64|     if (expected === 200) {
+     65|       expect(response.body).toMatchObject({ id: registration.id, statu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  tests/api/check-in.test.ts > T-38 / AC-38: at most once, ACTIVE registrations only > two concurrent check-ins: exactly one 200 and one 409 
+ALREADY_CHECKED_IN, one timestamp
+AssertionError: expected [ 403, 403 ] to deeply equal [ 200, 409 ]
+
+- Expected
++ Received
+
+  [
+-   200,
+-   409,
++   403,
++   403,
+  ]
+
+ ❯ tests/api/check-in.test.ts:81:49
+     79|     freezeAt(new Date(event.startsAt.getTime() + 60000));
+     80|     const results = await Promise.all([checkIn(o, registration.id), ch…
+     81|     expect(results.map((r) => r.status).sort()).toEqual([200, 409]);
+       |                                                 ^
+     82|     expect(results.find((r) => r.status === 409)!.body.error.code).toB…
+     83|     const saved = results.find((r) => r.status === 200)!.body.checkedI…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  tests/api/check-in.test.ts > T-38 / AC-38: at most once, ACTIVE registrations only > a participant-cancelled receipt gets 409 INVALID_STATE and no 
+timestamp
+ FAIL  tests/api/check-in.test.ts > T-38 / AC-38: at most once, ACTIVE registrations only > a receipt on an organizer-cancelled event gets 409 
+INVALID_STATE and no timestamp
+AssertionError: expected [ 403, 'FORBIDDEN' ] to deeply equal [ 409, 'INVALID_STATE' ]
+
+- Expected
++ Received
+
+  [
+-   409,
+-   "INVALID_STATE",
++   403,
++   "FORBIDDEN",
+  ]
+
+ ❯ tests/api/check-in.test.ts:94:57
+     92|     freezeAt(new Date(event.startsAt.getTime() + 60000));
+     93|     const response = await checkIn(o, registration.id);
+     94|     expect([response.status, response.body.error.code]).toEqual([409, …
+       |                                                         ^
+     95|     expect(await storedCheckIn(registration.id)).toBeNull();
+     96|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  tests/api/check-in.test.ts > T-39 / AC-39: only the owning organizer can check in > other organizer 404, participant 403, anonymous 401, owner 
+without CSRF 403; nothing written
+AssertionError: expected 403 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 403
+
+ ❯ tests/api/check-in.test.ts:103:56
+    101|     const { event, registration } = await eventWithRegistration();
+    102|     freezeAt(new Date(event.startsAt.getTime() + 60000));
+    103|     expect((await checkIn(q, registration.id)).status).toBe(404);
+       |                                                        ^
+    104|     const asParticipant = await checkIn(p, registration.id);
+    105|     expect([asParticipant.status, asParticipant.body.error.code]).toEq…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  tests/api/roster.test.ts > T-16: owner receives exact stored fields in time order and count, without private fields or writes
+AssertionError: expected { event: { id: 1, …(2) }, …(2) } to deeply equal { event: { id: 1, …(2) }, …(2) }
+
+- Expected
++ Received
+
+@@ -5,22 +5,20 @@
+      "id": 1,
+      "title": "Private roster",
+    },
+    "items": [
+      {
+-       "checkedInAt": null,
+        "id": 2,
+        "participant": {
+          "email": "roster-first@example.test",
+          "id": 3,
+          "name": "roster-first",
+        },
+        "registeredAt": "2026-11-06T01:00:00.000Z",
+        "status": "ACTIVE",
+      },
+      {
+-       "checkedInAt": null,
+        "id": 1,
+        "participant": {
+          "email": "roster-second@example.test",
+          "id": 4,
+          "name": "roster-second",
+
+ ❯ tests/api/roster.test.ts:46:25
+     44|   const response = await owner.agent.get(`/api/events/${eventId}/regis…
+     45|   expect(response.status).toBe(200);
+     46|   expect(response.body).toEqual({ event: { id: eventId, title: 'Privat…
+       |                         ^
+     47|   expect(await prisma.registration.findMany()).toEqual(before);
+     48| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  tests/unit/check-in-rules.test.ts > T-37 / T-38 (unit), F-09: decideCheckIn > window opens exactly at start - 1 h and closes exactly at end
+AssertionError: expected 'not implemented' to be 'CHECK_IN_CLOSED' // Object.is equality
+
+Expected: "CHECK_IN_CLOSED"
+Received: "not implemented"
+
+ ❯ tests/unit/check-in-rules.test.ts:17:86
+     15| describe('T-37 / T-38 (unit), F-09: decideCheckIn', () => {
+     16|   test('window opens exactly at start - 1 h and closes exactly at end'…
+     17|     expect(decideCheckIn({ ...base, now: new Date(startsAt.getTime() -…
+       |                                                                                      ^
+     18|     expect(decideCheckIn({ ...base, now: new Date(startsAt.getTime() -…
+     19|     expect(decideCheckIn({ ...base, now: new Date(endsAt.getTime() - 1…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  tests/unit/check-in-rules.test.ts > T-37 / T-38 (unit), F-09: decideCheckIn > state is checked before the window: cancelled event or registration 
+is INVALID_STATE, a second check-in is ALREADY_CHECKED_IN
+AssertionError: expected 'not implemented' to be 'INVALID_STATE' // Object.is equality
+
+Expected: "INVALID_STATE"
+Received: "not implemented"
+
+ ❯ tests/unit/check-in-rules.test.ts:24:80
+     22|   test('state is checked before the window: cancelled event or registr…
+     23|     const outside = new Date(endsAt.getTime() + HOUR);
+     24|     expect(decideCheckIn({ ...base, eventStatus: 'CANCELLED', now: out…
+       |                                                                                ^
+     25|     expect(decideCheckIn({ ...base, status: 'CANCELLED', now: outside …
+     26|     expect(decideCheckIn({ ...base, checkedInAt: startsAt, now: outsid…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+
+ Test Files  3 failed | 12 passed (15)
+      Tests  11 failed | 143 passed (154)
+   Start at  00:12:27
+   Duration  109.21s (transform 325ms, setup 0ms, import 3.62s, tests 97.71s, environment 1ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error workspace @event-planner/server@0.1.0
+npm error location C:\Users\chuti\Documents\SE_GPRJ3\server
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c vitest run
