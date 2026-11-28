@@ -33,8 +33,9 @@ beforeAll(async () => {
   // Insert in reverse time order, so sorting by insertion ID alone cannot pass.
   const second = await prisma.registration.create({ data: { eventId, participantId: p2.id, registeredAt: new Date('2026-11-06T02:00:00Z') } });
   const first = await prisma.registration.create({ data: { eventId, participantId: p1.id, registeredAt: new Date('2026-11-06T01:00:00Z') } });
+  // F-09 (Sprint 3 contract v0.1) adds checkedInAt to every roster row; null until checked in.
   expected = ([[first, p1], [second, p2]] as const).map(([r, p]) => ({ id: r.id, status: r.status,
-    registeredAt: r.registeredAt.toISOString(), participant: { id: p.id, name: p.name, email: p.email } }));
+    registeredAt: r.registeredAt.toISOString(), checkedInAt: null, participant: { id: p.id, name: p.name, email: p.email } }));
 });
 afterAll(async () => { await resetTables(prisma); await prisma.$disconnect(); await appPrisma.$disconnect(); });
 

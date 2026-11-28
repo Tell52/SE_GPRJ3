@@ -1,0 +1,50 @@
+﻿
+> event-planner@0.1.0 test:e2e
+> npm run build --workspace server && npm test --workspace e2e
+
+
+> @event-planner/server@0.1.0 build
+> prisma generate && tsc -p tsconfig.json
+
+npm : Environment variables loaded from .env
+At line:4 char:29
++ $env:PW_CHANNEL="chromium"; npm run test:e2e 2>&1 | Out-File -Encodin ...
++                             ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Environment variables loaded from .env:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\..\node_modules\@prisma\client in 83ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+
+> @event-planner/e2e@0.1.0 test
+> playwright test
+
+[WebServer] (node:23000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:11428) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+  ✓   1 [desktop] › tests\event-deadline.spec.ts:9:1 › T-27: a closed custom deadline keeps the upcoming event visible and removes Register (2.0s)
+  ✓   2 [desktop] › tests\event-deadline.spec.ts:32:1 › T-24: organizer can set, update and clear a deadline across reloads (1.5s)
+  ✓   3 [desktop] › tests\participant-cancellation.spec.ts:9:1 › T-20: cancel a saved receipt, reload it and see the freed place (1.0s)
+  ✓   4 [desktop] › tests\sprint1-journey.spec.ts:18:1 › T-18 / AC-18: publish, register, rejections, roster and restart persistence (12.7s)
+  ✓   5 [desktop] › tests\sprint2-release.spec.ts:10:1 › demo A: retrieve a cancelled receipt and reject repeat cancellation (1.1s)
+  ✓   6 [desktop] › tests\sprint2-release.spec.ts:37:1 › demo B: retrieve a saved edit and reject a different organizer at the API (1.8s)
+  ✓   7 [desktop] › tests\uat-findings.spec.ts:14:1 › UAT-F-01 (#45) and UAT-F-02 (#46): reload message and long title layout (1.1s)
+  ✓   8 [mobile] › tests\event-deadline.spec.ts:9:1 › T-27: a closed custom deadline keeps the upcoming event visible and removes Register (1.8s)
+  ✓   9 [mobile] › tests\event-deadline.spec.ts:32:1 › T-24: organizer can set, update and clear a deadline across reloads (1.5s)
+  ✓  10 [mobile] › tests\participant-cancellation.spec.ts:9:1 › T-20: cancel a saved receipt, reload it and see the freed place (1.1s)
+  ✓  11 [mobile] › tests\sprint1-journey.spec.ts:18:1 › T-18 / AC-18: publish, register, rejections, roster and restart persistence (14.3s)
+  ✓  12 [mobile] › tests\sprint2-release.spec.ts:10:1 › demo A: retrieve a cancelled receipt and reject repeat cancellation (1.0s)
+  ✓  13 [mobile] › tests\sprint2-release.spec.ts:37:1 › demo B: retrieve a saved edit and reject a different organizer at the API (1.8s)
+  ✓  14 [mobile] › tests\uat-findings.spec.ts:14:1 › UAT-F-01 (#45) and UAT-F-02 (#46): reload message and long title layout (1.1s)
+
+  14 passed (1.3m)

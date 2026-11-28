@@ -3,6 +3,7 @@ import { requireCsrf, requireRole, requireSession } from '../middleware/auth.js'
 import { notFound } from '../errors.js';
 import { cancelMyRegistration, getMyRegistration, listMyRegistrations, registerForEvent } from '../services/registrations.js';
 import { getEventRoster } from '../services/roster.js';
+import { checkInRegistration } from '../services/check-in.js';
 
 function positiveId(value: unknown) {
   if (typeof value !== 'string' || !/^[1-9]\d{0,9}$/.test(value) || Number(value) > 2147483647) throw notFound();
@@ -22,6 +23,10 @@ eventRegistrationsRouter.post('/', requireSession, requireRole('PARTICIPANT'), r
 
 /** GET /api/registrations/mine and GET /api/registrations/:id, Participants only. */
 export const registrationsRouter = Router();
+// F-09: the owning organizer checks in a registration. Registered before the participant-only middleware below.
+registrationsRouter.post('/:id/check-in', requireSession, requireRole('ORGANIZER'), requireCsrf, async (req, res) => {
+  res.json(await checkInRegistration(positiveId(req.params.id), req.user!.id));
+});
 registrationsRouter.use(requireSession, requireRole('PARTICIPANT'));
 registrationsRouter.post('/:id/cancel', requireCsrf, async (req, res) => {
   res.json(await cancelMyRegistration(positiveId(req.params.id), req.user!.id));

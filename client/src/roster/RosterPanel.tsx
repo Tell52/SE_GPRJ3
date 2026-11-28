@@ -3,11 +3,12 @@ import { ApiError, apiFetch } from '../api';
 import { errorMessage, formatTime } from '../events/model';
 import './roster.css';
 
+type RosterItem = { id: number; status: string; registeredAt: string; checkedInAt?: string | null;
+  participant: { id: number; name: string; email: string } };
 type Roster = {
   event: { id: number; title: string; capacity: number };
   count: number;
-  items: { id: number; status: string; registeredAt: string;
-    participant: { id: number; name: string; email: string } }[];
+  items: RosterItem[];
 };
 
 export function RosterPanel({ eventId }: { eventId: number }) {
@@ -15,9 +16,23 @@ export function RosterPanel({ eventId }: { eventId: number }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [attempt, setAttempt] = useState(0);
+  const [busyId, setBusyId] = useState<number | null>(null);
+  const [actionError, setActionError] = useState('');
+
+  // F-09: the API decides the window and once-only rule; a rejection reloads the roster.
+  async function checkIn(item: RosterItem) {
+    setBusyId(item.id); setActionError('');
+    try {
+      const saved = await apiFetch<RosterItem>(`/api/registrations/${item.id}/check-in`, { method: 'POST' });
+      setData((current) => current && { ...current, items: current.items.map((row) => row.id === saved.id ? saved : row) });
+    } catch (e) {
+      setActionError(errorMessage(e));
+      setAttempt((n) => n + 1);
+    } finally { setBusyId(null); }
+  }
   useEffect(() => {
     let active = true;
-    setData(null); setError(''); setLoading(true);
+    setError(''); setLoading(true);
     apiFetch<Roster>(`/api/events/${eventId}/registrations`)
       .then((result) => { if (active) setData(result); })
       .catch((e) => { if (active) setError(e instanceof ApiError && e.status === 404 ? 'Event not found' : errorMessage(e)); })
@@ -31,15 +46,20 @@ export function RosterPanel({ eventId }: { eventId: number }) {
       <button className="secondary" onClick={() => setAttempt(attempt + 1)}>Retry roster</button>
     </> : data && <>
       <p>{data.count} of {data.event.capacity} places taken</p>
+      {actionError && <p role="alert" className="alert">{actionError}</p>}
       {data.items.length === 0 ? <p>No registrations yet</p> :
         <table className="roster-table"><caption>Event registrations</caption>
-          <thead><tr><th scope="col">Registration ID</th><th scope="col">Participant</th><th scope="col">Email</th><th scope="col">Status</th><th scope="col">Registered (Bangkok)</th></tr></thead>
+          <thead><tr><th scope="col">Registration ID</th><th scope="col">Participant</th><th scope="col">Email</th><th scope="col">Status</th><th scope="col">Registered (Bangkok)</th><th scope="col">Checked in (Bangkok)</th></tr></thead>
           <tbody>{data.items.map((item) => <tr key={item.id}>
             <td data-label="Registration ID">{item.id}</td>
             <td data-label="Participant">{item.participant.name}</td>
             <td data-label="Email">{item.participant.email}</td>
             <td data-label="Status">{item.status}</td>
             <td data-label="Registered (Bangkok)"><time dateTime={item.registeredAt}>{formatTime(item.registeredAt)}</time></td>
+            <td data-label="Checked in (Bangkok)">{item.checkedInAt
+              ? <time dateTime={item.checkedInAt}>{formatTime(item.checkedInAt)}</time>
+              : item.status === 'ACTIVE' && <button className="secondary" disabled={busyId !== null} aria-label={busyId === item.id ? 'Checking in...' : `Check in ${item.participant.name}`}
+                  onClick={() => checkIn(item)}>{busyId === item.id ? 'Checking in...' : 'Check in'}</button>}</td>
           </tr>)}</tbody>
         </table>}
     </>}

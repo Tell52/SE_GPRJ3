@@ -16,7 +16,7 @@ Sprint 2 criteria and planned test inputs are in the [versioned feature contract
 | FR-08 | F-06 | 2 | AC-24–AC-27 | T-24–T-27 |
 | FR-09 | F-07 | 2 | AC-28–AC-32 | T-28–T-32 |
 | FR-10 | F-08 | 2 | AC-33–AC-36 | T-33–T-36 |
-| FR-11 | F-09 | 3 | S3 contract | S3 contract |
+| FR-11 | F-09 | 3 | AC-37, AC-38, AC-39 | T-37, T-38, T-39 |
 | FR-12 | F-10 | 3 | S3 contract | S3 contract |
 | BR-01 | F-02 | 1 | AC-06 | T-06 |
 | BR-02 | F-03 | 1 | AC-14 | T-14, T-14b |
@@ -29,7 +29,7 @@ Sprint 2 criteria and planned test inputs are in the [versioned feature contract
 | BR-08 | F-06 | 2 | AC-24–AC-27 | T-24–T-27 |
 | BR-09 | F-07 | 2 | AC-28–AC-32 | T-28–T-32 |
 | BR-10 | F-08 | 2 | AC-33–AC-36 | T-33–T-36 |
-| BR-11 | F-09 | 3 | S3 contract | S3 contract |
+| BR-11 | F-09 | 3 | AC-37, AC-38 | T-37, T-38 |
 | BR-12 | F-10 | 3 | S3 contract | S3 contract |
 | NFR-01 | F-01 to F-04, SYS-UI | 1 | AC-03, AC-07, AC-09, AC-14, AC-15, AC-17 | T-03, T-07, T-09, T-14, T-15, T-17 |
 | NFR-02 | F-01 | 1 | AC-02, AC-03, AC-04 | T-02, T-03, T-04 |
@@ -62,6 +62,9 @@ Sprint 2 criteria and planned test inputs are in the [versioned feature contract
 | AC-17 | F-04 | T-17 | API |
 | AC-18 | SYS-UI | T-18, M-02 | E2E + manual |
 | AC-19 | SYS-FOUND | T-19, M-01 | Integration + manual |
+| AC-37 | F-09 | T-37 | Unit + API (TDD) |
+| AC-38 | F-09 | T-38 | Unit + API (concurrent) |
+| AC-39 | F-09 | T-39 | API |
 
 Execution results (test file and name, result, tested commit) are recorded in the Execution Results section of [tests.md](sprints/sprint-1/tests.md).
 

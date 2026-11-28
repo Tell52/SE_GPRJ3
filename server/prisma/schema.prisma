@@ -77,6 +77,7 @@ model Registration {
   status        RegistrationStatus @default(ACTIVE)
   registeredAt  DateTime           @default(now()) @db.Timestamptz(3)
   cancelledAt   DateTime?          @db.Timestamptz(3)
+  checkedInAt   DateTime?          @db.Timestamptz(3)
   cancelledBy   Role?
   event         Event              @relation(fields: [eventId], references: [id], onDelete: Restrict)
   participant   User               @relation(fields: [participantId], references: [id], onDelete: Restrict)

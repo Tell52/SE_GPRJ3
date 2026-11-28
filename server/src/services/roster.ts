@@ -1,5 +1,6 @@
 import { prisma } from '../db.js';
 import { notFound } from '../errors.js';
+import { rosterItemSelect } from './check-in.js';
 
 export async function getEventRoster(id: number, organizerId: number) {
   const event = await prisma.event.findFirst({
@@ -9,8 +10,7 @@ export async function getEventRoster(id: number, organizerId: number) {
   if (!event) throw notFound();
   const items = await prisma.registration.findMany({
     where: { eventId: id }, orderBy: [{ registeredAt: 'asc' }, { id: 'asc' }],
-    select: { id: true, status: true, registeredAt: true,
-      participant: { select: { id: true, name: true, email: true } } },
+    select: rosterItemSelect,
   });
   return { event, count: items.filter((item) => item.status === 'ACTIVE').length, items };
 }

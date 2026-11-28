@@ -10,8 +10,8 @@
 | F-06 | Registration deadline | Optional deadline set by the Organizer and enforced on registration. | FR-08, BR-08, BR-02 | F-03, F-07 | 2 | #53 |
 | F-07 | Event editing and capacity change | Organizer edits own event and changes capacity within limits. | FR-09, BR-09 | F-02, F-03 | 2 | #52 |
 | F-08 | Event cancellation | Organizer cancels own published event. | FR-10, BR-10 | F-02, F-03 | 2 | #54 |
-| F-09 | Check in | Organizer checks in active registrations during the check in window. | FR-11, BR-11 | F-04 | 3 | |
-| F-10 | Attendance reporting and summaries | Attendance report, cross event summary, CSV export. | FR-12, BR-12 | F-09 | 3 | |
+| F-09 | Check in | Organizer checks in active registrations during the check in window. Implemented and tested for Deliverable 2 ([contract](sprints/sprint-3/contracts.md)). | FR-11, BR-11 | F-04 | 3 | #<F09> |
+| F-10 | Attendance reporting and summaries | Attendance report, cross event summary, CSV export. Specified, planned ([contract](sprints/sprint-3/contracts.md)). | FR-12, BR-12 | F-09 | 3 | |
 
 See the [Sprint 2 contracts and test specifications](sprints/sprint-2/contracts.md) for #50 and the BR-08 deadline rule.
 
